@@ -1,0 +1,83 @@
+# generation shop style
+generation-shop:
+ background-glow: false
+ # Use the 1.13 name for the item name and the plugin will automatically convert it to lower version names.
+ background-item: WHITE_STAINED_GLASS_PANE
+ name: "&9Genbucket Shop"
+ rows: 5
+
+# disable gen buckets with enemies nearby
+nearby-check: true
+
+# radius distance for nearby player check
+radius: 50
+
+# horizontal generation distance
+distance: 10
+
+# delay between each block being generated
+# 20 equals 1 second (counting with ticks)
+
+#####################################################
+# WARNING: ANY DELAY LESS THAN 5 IS NOT RECOMMENDED #
+#####################################################
+
+delay: 15
+
+# should genbuckets use buckets or blocks
+use-bucket: true
+
+# should sponge check be enabled
+# cancels generation if sponge is within 3 blocks
+sponge-check: false
+
+genbucket-lore:
+ - '&7Type:&4 %type%'
+ - '&7Placement:&4 $%price%'
+
+# blocks you want the genbuckets to override.
+
+#########################################
+# WARNING: SOLID BLOCKS NOT RECOMMENDED #
+#########################################
+# Use 1.13 ID's they will be converted to legacy item names automatically.
+replace-blocks:
+ - AIR
+ - TALL_GRASS
+ - LARGE_FERN
+
+VERTICAL:
+  GRAVEL:
+    name: '&aGravel Scaffold'
+    price: 200
+    slot: 10
+  SAND:
+    name: '&aSand Scaffold'
+    price: 5000
+    slot: 13
+  COBBLESTONE:
+    name: '&aCobblestone Vertical'
+    price: 10
+    slot: 16
+  OBSIDIAN:
+    name: '&aObsidian Vertical'
+    price: 1000
+    slot: 19
+
+HORIZONTAL:
+  COBBLESTONE:
+    name: '&aCobblestone Horizontal'
+    price: 30
+    slot: 22
+  OBSIDIAN:
+    name: '&aObsidian Horizontal'
+    price: 500
+    slot: 25
+  NETHERRACK:
+    name: '&aNetherrack Horizontal'
+    price: 20
+    slot: 30
+  DIRT:
+    name: '&aDirt Horizontal'
+    price: 20
+    slot: 32

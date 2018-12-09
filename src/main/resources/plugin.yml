@@ -1,0 +1,9 @@
+name: SavageGenBuckets
+main: net.prosavage.genbucket.GenBucket
+version: ${project.version}
+api-version: 1.13
+authors: [ProSavage, Rages]
+depend: [Factions, Vault]
+commands:
+  genbucket:
+    aliases: [genbucket, gb, genshop, gen]
