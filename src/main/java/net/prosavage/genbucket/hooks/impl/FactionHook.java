@@ -17,7 +17,7 @@ public class FactionHook implements PluginHook<FactionHook> {
 			Logger.print("Factions could not be found", Logger.PrefixType.WARNING);
 			return null;
 		}
-		if (GenBucket.get().getServer().getPluginManager().getPlugin("MassiveCore") != null) {
+		if (!GenBucket.get().getServer().getPluginManager().getPlugin(getName()).getDescription().getAuthors().contains("drtshock")) {
 			Logger.print("Server Factions type has been set to (MassiveCore)", Logger.PrefixType.DEFAULT);
 			return new FactionMCHook();
 		} else {

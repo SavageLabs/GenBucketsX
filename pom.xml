@@ -21,6 +21,16 @@
             <id>vault-repo</id>
             <url>http://nexus.hc.to/content/repositories/pub_releases</url>
         </repository>
+        <repository>
+            <id>savagefactions-repo</id>
+            <url>https://cdn.jsdelivr.net/gh/ProSavage/SavageFactions@1.6.x/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -52,9 +62,8 @@
         <dependency>
             <groupId>com.massivecraft</groupId>
             <artifactId>factions</artifactId>
-            <scope>system</scope>
-            <version>1.6.9.5-U0.2.3</version>
-            <systemPath>${project.basedir}/dependencies/FactionsUUID.jar</systemPath>
+            <scope>provided</scope>
+            <version>1.6.9.5-U0.2.1-RC-1.5-BETA</version>
         </dependency>
         <dependency>
             <groupId>com.massivecraft.</groupId>
