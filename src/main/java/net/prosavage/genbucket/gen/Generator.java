@@ -84,6 +84,11 @@ public abstract class Generator {
 			setFinished(true);
 			return false;
 		}
+
+		if (GenBucket.get().getConfig().getBoolean("psuedo") && getMaterial().equals(block.getType())) {
+			return true;
+		}
+
 		if (!GenBucket.get().getReplacements().contains(block.getType())) {
 			return false;
 		}

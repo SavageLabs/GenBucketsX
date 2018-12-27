@@ -12,7 +12,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
 
 public class HorizontalGen extends Generator {
 
@@ -22,7 +24,7 @@ public class HorizontalGen extends Generator {
 		super(plugin, player, material, block, GenType.HORIZONTAL);
 		this.blockFace = blockFace;
 		if (isValidLocation(block)) {
-			block.setType(MultiversionMaterials.GREEN_WOOL.parseMaterial());
+			block.setType(MultiversionMaterials.valueOf(getPlugin().getConfig().getString("sourceblock.item-name")).parseMaterial());
 		} else {
 			player.sendMessage(Message.GEN_CANT_PLACE.getMessage());
 		}
@@ -55,7 +57,7 @@ public class HorizontalGen extends Generator {
 				return;
 			}
 			
-			if(getBlock().getType() != MultiversionMaterials.GREEN_WOOL.parseMaterial() && getPlayer() != null) {
+			if (getBlock().getType() != MultiversionMaterials.valueOf(getPlugin().getConfig().getString("sourceblock.item-name")).parseMaterial() && getPlayer() != null) {
 				getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
 				getBlock().setType(getMaterial());
 				setFinished(true);

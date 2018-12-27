@@ -34,6 +34,7 @@ public class GenBucket extends JavaPlugin {
 		Arrays.asList(new MessageFile(), new DataFile()).forEach(CustomFile::init);
 		getServer().getPluginManager().registerEvents(new GenListener(this), this);
 		getConfig().getStringList("replace-blocks").forEach(s -> materials.add(MultiversionMaterials.valueOf(s).parseMaterial()));
+
 		this.generationShopGUI = new GenerationShopGUI(this);
 	}
 

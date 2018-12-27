@@ -144,6 +144,7 @@ public class GenListener implements Listener, Runnable {
 	public boolean withdraw(String type, Player player) {
 		int price = plugin.getConfig().getInt(type + ".price");
 		if (GenBucket.econ.withdrawPlayer(player, price).transactionSuccess()) {
+			player.sendMessage(Message.GEN_CHARGED.getMessage().replace("{amount}", price + ""));
 			return true;
 		}
 		player.sendMessage(Message.GEN_CANT_AFFORD.getMessage());

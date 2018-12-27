@@ -11,6 +11,7 @@ import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.gen.impl.HorizontalGen;
 import net.prosavage.genbucket.gen.impl.VerticalGen;
+import org.bukkit.Bukkit;
 
 public class DataFile extends CustomFile {
 
@@ -26,24 +27,25 @@ public class DataFile extends CustomFile {
 	}
 
 	public void init() {
-		
-		for (String string : getConfig().getStringList("gen-vertical")) {
-			VerticalGen verticalGen = new VerticalGen(string);
-			GenListener.generations.add(verticalGen);
-		}
-		
-		for (String string : getConfig().getStringList("gen-horizontal")) {
-			HorizontalGen horizontalGen = new HorizontalGen(string);
-			GenListener.generations.add(horizontalGen);
-		}
-		
-		if (GenListener.generations.size() != 0) {
-			GenBucket.get().start();
-		}
-		vertical.clear();
-		horizontal.clear();
-		Logger.print(GenListener.generations.size() + " Generations have been continued", Logger.PrefixType.DEFAULT);
-		getConfigFile().delete();
+		Bukkit.getScheduler().scheduleSyncDelayedTask(GenBucket.get(), () -> {
+			for (String string : getConfig().getStringList("gen-vertical")) {
+				VerticalGen verticalGen = new VerticalGen(string);
+				GenListener.generations.add(verticalGen);
+			}
+
+			for (String string : getConfig().getStringList("gen-horizontal")) {
+				HorizontalGen horizontalGen = new HorizontalGen(string);
+				GenListener.generations.add(horizontalGen);
+			}
+
+			if (GenListener.generations.size() != 0) {
+				GenBucket.get().start();
+			}
+			vertical.clear();
+			horizontal.clear();
+			Logger.print(GenListener.generations.size() + " Generations have been continued", Logger.PrefixType.DEFAULT);
+			getConfigFile().delete();
+		}, 100L);
 	}
 
 	@Override

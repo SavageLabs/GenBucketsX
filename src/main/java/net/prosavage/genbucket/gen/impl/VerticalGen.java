@@ -22,7 +22,7 @@ public class VerticalGen extends Generator {
 		super(plugin, player, material, block, GenType.VERTICAL);
 		setIndex(material.hasGravity() ? 1 : -1);
 		if (isValidLocation(block)) {
-			block.setType(MultiversionMaterials.GREEN_WOOL.parseMaterial());
+			block.setType(MultiversionMaterials.valueOf(getPlugin().getConfig().getString("sourceblock.item-name")).parseMaterial());
 		} else {
 			player.sendMessage(Message.GEN_CANT_PLACE.getMessage());
 		}
@@ -45,7 +45,7 @@ public class VerticalGen extends Generator {
 			return;
 		}
 
-		if (getBlock().getType() != MultiversionMaterials.GREEN_WOOL.parseMaterial() && getPlayer() != null) {
+		if (getBlock().getType() != MultiversionMaterials.valueOf(getPlugin().getConfig().getString("sourceblock.item-name")).parseMaterial() && getPlayer() != null) {
 			getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
 			getBlock().setType(getMaterial());
 			setFinished(true);

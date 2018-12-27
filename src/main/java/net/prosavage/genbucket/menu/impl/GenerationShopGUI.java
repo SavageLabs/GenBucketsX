@@ -40,6 +40,10 @@ public class GenerationShopGUI extends MenuBuilder {
 	private final ItemStack getBlankItem() {
 		// Auto converts to 1.8 / 1.13 material as needed.
 		ItemStack item = new ItemStack(MultiversionMaterials.fromString(getPlugin().getConfig().getString("generation-shop.background-item")).parseMaterial());
+		if (!getPlugin().getServer().getVersion().contains("1.13")) {
+			item.setDurability( (short) getPlugin().getConfig().getInt("generation-shop.background-item-durability"));
+		}
+
 		if (getPlugin().getConfig().getBoolean("generation-shop.background-glow")) {
 			item.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 1);
 		}

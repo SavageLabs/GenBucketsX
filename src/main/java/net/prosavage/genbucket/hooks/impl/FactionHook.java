@@ -9,6 +9,8 @@ import net.prosavage.genbucket.hooks.PluginHook;
 import net.prosavage.genbucket.hooks.impl.factions.FactionMCHook;
 import net.prosavage.genbucket.hooks.impl.factions.FactionUUIDHook;
 
+import java.util.List;
+
 public class FactionHook implements PluginHook<FactionHook> {
 
 	@Override
@@ -17,11 +19,12 @@ public class FactionHook implements PluginHook<FactionHook> {
 			Logger.print("Factions could not be found", Logger.PrefixType.WARNING);
 			return null;
 		}
-		if (!GenBucket.get().getServer().getPluginManager().getPlugin(getName()).getDescription().getAuthors().contains("drtshock")) {
+		List<String> authors = GenBucket.get().getServer().getPluginManager().getPlugin(getName()).getDescription().getAuthors();
+		if (!authors.contains("drtshock") && !authors.contains("Benzimmer")) {
 			Logger.print("Server Factions type has been set to (MassiveCore)", Logger.PrefixType.DEFAULT);
 			return new FactionMCHook();
 		} else {
-			Logger.print("Server Factions type has been set to (FactionsUUID)", Logger.PrefixType.DEFAULT);
+			Logger.print("Server Factions type has been set to (FactionsUUID/SavageFactions/FactionsUltimate)", Logger.PrefixType.DEFAULT);
 			return new FactionUUIDHook();
 		}
 	}
