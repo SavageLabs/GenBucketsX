@@ -1,24 +1,25 @@
 package net.prosavage.genbucket;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import net.prosavage.genbucket.menu.impl.GenerationShopGUI;
-import net.prosavage.genbucket.utils.MultiversionMaterials;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
+import net.md_5.bungee.api.ChatColor;
+import net.milkbowl.vault.economy.Economy;
 import net.prosavage.genbucket.file.CustomFile;
 import net.prosavage.genbucket.file.impl.DataFile;
 import net.prosavage.genbucket.file.impl.MessageFile;
 import net.prosavage.genbucket.hooks.HookManager;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.hooks.impl.VaultHook;
+import net.prosavage.genbucket.menu.impl.GenerationShopGUI;
+import net.prosavage.genbucket.utils.Message;
+import net.prosavage.genbucket.utils.MultiversionMaterials;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import net.milkbowl.vault.economy.Economy;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class GenBucket extends JavaPlugin {
 
@@ -46,6 +47,15 @@ public class GenBucket extends JavaPlugin {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (command.getName().equalsIgnoreCase("Genbucket") && sender instanceof Player) {
 			((Player) sender).openInventory(generationShopGUI.init().getInventory());
+		}
+		if (args.length == 1) {
+			if (args[0].equalsIgnoreCase("reload") && sender.hasPermission(getConfig().getString("general.reload-permission"))) {
+				reloadConfig();
+				getConfig().getStringList("replace-blocks").forEach(s -> materials.add(MultiversionMaterials.valueOf(s).parseMaterial()));
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("general.reloaded-message")));
+			} else {
+				sender.sendMessage(String.valueOf(Message.NO_PERMISSION));
+			}
 		}
 		return true;
 	}

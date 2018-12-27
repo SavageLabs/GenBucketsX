@@ -60,10 +60,10 @@
             <systemPath>${project.basedir}/dependencies/MassiveCore.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>com.massivecraft</groupId>
-            <artifactId>factions</artifactId>
+            <groupId>com.github.ProSavage</groupId>
+            <artifactId>SavageFactions</artifactId>
+            <version>1.6.x-0.1.21-gbdd5473-400</version>
             <scope>provided</scope>
-            <version>1.6.9.5-U0.2.1-RC-1.5-BETA</version>
         </dependency>
         <dependency>
             <groupId>com.massivecraft.</groupId>
@@ -72,8 +72,6 @@
             <version>2.14.1-SNAPSHOT</version>
             <systemPath>${project.basedir}/dependencies/Factions.jar</systemPath>
         </dependency>
-
-
     </dependencies>
 
 
