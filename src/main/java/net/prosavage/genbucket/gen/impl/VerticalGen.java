@@ -5,10 +5,7 @@ import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.MultiversionMaterials;
-import org.bukkit.DyeColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 
 import org.bukkit.entity.Player;
@@ -33,6 +30,29 @@ public class VerticalGen extends Generator {
 		setIndex(Integer.valueOf(data.split(",")[2]));
 		setData(true);
 	}
+
+	@Override
+	public boolean isValidLocation(Block block) {
+		Location loc = block.getLocation();
+		WorldBorder wb = loc.getWorld().getWorldBorder();
+		double size = wb.getSize() / 2.0;
+
+		if(loc.getBlockX() >= size || -loc.add(1, 0, 0).getX() >= size || loc.getBlockZ() >= size || -loc.add(0, 0, 1).getBlockZ() >= size) {
+			setFinished(true);
+			return false;
+		}
+
+		if (GenBucket.get().getConfig().getBoolean("psuedo") && getMaterial().equals(block.getType())) {
+			return true;
+		}
+
+		if (!GenBucket.get().getReplacements().contains(block.getType())) {
+			return false;
+		}
+		return true;
+
+	}
+
 
 	public void run() {
 		Block gen = getBlock().getWorld().getBlockAt(getBlock().getX(), getBlock().getY() + getIndex(), getBlock().getZ());
