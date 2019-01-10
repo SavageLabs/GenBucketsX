@@ -8,10 +8,10 @@ import net.prosavage.genbucket.file.impl.MessageFile;
 import net.prosavage.genbucket.hooks.HookManager;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.hooks.impl.VaultHook;
+import net.prosavage.genbucket.hooks.impl.WorldGuardHook;
 import net.prosavage.genbucket.menu.impl.GenerationShopGUI;
 import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.MultiversionMaterials;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -24,56 +24,56 @@ import java.util.List;
 
 public class GenBucket extends JavaPlugin {
 
-	private static GenBucket instance;
-	public int taskID;
-	public static Economy econ;
-	public GenerationShopGUI generationShopGUI;
-	private List<Material> materials = new ArrayList<Material>();
-	
-	public void onEnable() {
-		(GenBucket.instance = this).saveDefaultConfig();
-		getClass().isInstance(new HookManager(Arrays.asList(new FactionHook(), new VaultHook())));
-		Arrays.asList(new MessageFile(), new DataFile()).forEach(CustomFile::init);
-		getServer().getPluginManager().registerEvents(new GenListener(this), this);
-		getConfig().getStringList("replace-blocks").forEach(s -> materials.add(MultiversionMaterials.valueOf(s).parseMaterial()));
+   public static Economy econ;
+   private static GenBucket instance;
+   public int taskID;
+   public GenerationShopGUI generationShopGUI;
+   private List<Material> materials = new ArrayList<Material>();
 
-		this.generationShopGUI = new GenerationShopGUI(this);
-	}
+   public static GenBucket get() {
+      return instance;
+   }
 
-	@Override
-	public void onDisable() {
-		Arrays.asList(new DataFile()).forEach(CustomFile::onExit);
-	}
+   public void onEnable() {
+      (GenBucket.instance = this).saveDefaultConfig();
+      getClass().isInstance(new HookManager(Arrays.asList(new FactionHook(), new VaultHook(), new WorldGuardHook())));
+      Arrays.asList(new MessageFile(), new DataFile()).forEach(CustomFile::init);
+      getServer().getPluginManager().registerEvents(new GenListener(this), this);
+      getConfig().getStringList("replace-blocks").forEach(s -> materials.add(MultiversionMaterials.valueOf(s).parseMaterial()));
 
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (command.getName().equalsIgnoreCase("Genbucket") && sender instanceof Player) {
-			((Player) sender).openInventory(generationShopGUI.init().getInventory());
-		}
-		if (args.length == 1) {
-			if (args[0].equalsIgnoreCase("reload") && sender.hasPermission(getConfig().getString("general.reload-permission"))) {
-				reloadConfig();
-				getConfig().getStringList("replace-blocks").forEach(s -> materials.add(MultiversionMaterials.valueOf(s).parseMaterial()));
-				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("general.reloaded-message")));
-			} else {
-				sender.sendMessage(String.valueOf(Message.NO_PERMISSION));
-			}
-		}
-		return true;
-	}
+      this.generationShopGUI = new GenerationShopGUI(this);
+   }
 
-	public void start() {
-		taskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, (Runnable) new GenListener(this), 0L, getConfig().getInt("delay"));
-	}
+   @Override
+   public void onDisable() {
+      Arrays.asList(new DataFile()).forEach(CustomFile::onExit);
+   }
 
-	public void stop() {
-		getServer().getScheduler().cancelTask(taskID);
-	}
+   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+      if (command.getName().equalsIgnoreCase("Genbucket") && sender instanceof Player) {
+         ((Player) sender).openInventory(generationShopGUI.init().getInventory());
+      }
+      if (args.length == 1) {
+         if (args[0].equalsIgnoreCase("reload") && sender.hasPermission(getConfig().getString("general.reload-permission"))) {
+            reloadConfig();
+            getConfig().getStringList("replace-blocks").forEach(s -> materials.add(MultiversionMaterials.valueOf(s).parseMaterial()));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("general.reloaded-message")));
+         } else {
+            sender.sendMessage(String.valueOf(Message.NO_PERMISSION));
+         }
+      }
+      return true;
+   }
 
-	public List<Material> getReplacements() {
-		return materials;
-	}
+   public void start() {
+      taskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new GenListener(this), 0L, getConfig().getInt("delay"));
+   }
 
-	public static GenBucket get() {
-		return instance;
-	}
+   public void stop() {
+      getServer().getScheduler().cancelTask(taskID);
+   }
+
+   public List<Material> getReplacements() {
+      return materials;
+   }
 }

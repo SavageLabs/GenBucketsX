@@ -9,6 +9,10 @@ generation-shop:
   background-glow: false
   # Use the 1.13 name for the item name and the plugin will automatically convert it to lower version names.
   background-item: WHITE_STAINED_GLASS_PANE
+  blank-item:
+    name: '&9 '
+    lore:
+      - '&7Click a GenBucket to buy!'
   # This will only be used if the plugin is running on a server under the 1.13 API Level.
   background-item-durability: 0
   name: "&9Genbucket Shop"
@@ -19,6 +23,9 @@ psuedo: true
 
 # Source Block
 sourceblock:
+  # If this option is true, the source block will just be same type as the genbucket's block.
+  # So a cobble genbucket will have a cobble sourceblock.
+  no-source: false
   # Use the 1.13 name for the item name and the plugin will automatically convert it to lower version names.
   # Colors currently do not work for blocks due to the 1.13 API.
   item-name: WHITE_WOOL

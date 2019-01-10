@@ -5,24 +5,24 @@ import org.bukkit.ChatColor;
 
 public class Logger {
 
-	public static void print(String message, PrefixType type) {
-		GenBucket.get().getServer().getConsoleSender().sendMessage(type.getPrefix() + message);
-	}
+   public static void print(String message, PrefixType type) {
+      GenBucket.get().getServer().getConsoleSender().sendMessage(type.getPrefix() + message);
+   }
 
-	public enum PrefixType {
+   public enum PrefixType {
 
-		WARNING(ChatColor.RED + "WARNING: "), NONE(""), DEFAULT(ChatColor.GOLD + "[GENBUCKET] "), FAILED(ChatColor.RED + "FAILED: ");
+      WARNING(ChatColor.RED + "WARNING: "), NONE(""), DEFAULT(ChatColor.GOLD + "[GENBUCKET] "), FAILED(ChatColor.RED + "FAILED: ");
 
-		private String prefix;
+      private String prefix;
 
-		PrefixType(String prefix) {
-			this.prefix = prefix;
-		}
+      PrefixType(String prefix) {
+         this.prefix = prefix;
+      }
 
-		public String getPrefix() {
-			return this.prefix;
-		}
+      public String getPrefix() {
+         return this.prefix;
+      }
 
-	}
+   }
 
 }

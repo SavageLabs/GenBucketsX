@@ -6,19 +6,19 @@ import net.prosavage.genbucket.utils.Message;
 
 public class MessageFile extends CustomFile {
 
-	public MessageFile() {
-		super(GenBucket.get(), "", "messages");
-		for (Message message : Message.values()) {
-			getConfig().addDefault(message.getConfig(), message.getMessage().replace("�", "&"));
-		}
-		getConfig().options().copyDefaults(true);
-		saveConfig();
-	}
+   public MessageFile() {
+      super(GenBucket.get(), "", "messages");
+      for (Message message : Message.values()) {
+         getConfig().addDefault(message.getConfig(), message.getMessage().replace("�", "&"));
+      }
+      getConfig().options().copyDefaults(true);
+      saveConfig();
+   }
 
-	
-	public void init() {
-		for (Message message : Message.values()) {
-			message.setMessage(getConfig().getString(message.getConfig()).replace("&", "�"));
-		}
-	}
+
+   public void init() {
+      for (Message message : Message.values()) {
+         message.setMessage(getConfig().getString(message.getConfig()).replace("&", "�"));
+      }
+   }
 }

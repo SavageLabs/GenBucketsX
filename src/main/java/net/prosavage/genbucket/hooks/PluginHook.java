@@ -2,8 +2,8 @@ package net.prosavage.genbucket.hooks;
 
 public interface PluginHook<T> {
 
-	T setup();
+   T setup();
 
-	String getName();
-	
+   String getName();
+
 }

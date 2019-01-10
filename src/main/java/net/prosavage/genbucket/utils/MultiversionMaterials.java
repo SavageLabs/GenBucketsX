@@ -859,7 +859,7 @@ public enum MultiversionMaterials {
    ZOMBIE_VILLAGER_SPAWN_EGG("MONSTER_EGG", 0),
    ZOMBIE_WALL_HEAD("SKULL", 0),
    ;
-   static int newV = - 1;
+   static int newV = -1;
    private static HashMap<String, MultiversionMaterials> cachedSearch = new HashMap<>();
    String m;
    int data;
