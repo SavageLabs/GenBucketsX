@@ -6,7 +6,7 @@
 
     <groupId>net.prosavage</groupId>
     <artifactId>SavageGenbuckets</artifactId>
-    <version>1.4</version>
+    <version>1.5.1</version>
 
     <repositories>
         <repository>
@@ -80,8 +80,6 @@
             <systemPath>${project.basedir}/dependencies/worldguard-bukkit-6.2.2.jar</systemPath>
         </dependency>
     </dependencies>
-
-
     <build>
         <resources>
             <resource>

@@ -50,7 +50,7 @@ public class GenBucket extends JavaPlugin {
    }
 
    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-      if (command.getName().equalsIgnoreCase("Genbucket") && sender instanceof Player) {
+      if (command.getName().equalsIgnoreCase("Genbucket") && sender instanceof Player && args.length == 0) {
          ((Player) sender).openInventory(generationShopGUI.init().getInventory());
       }
       if (args.length == 1) {
@@ -62,6 +62,7 @@ public class GenBucket extends JavaPlugin {
             sender.sendMessage(String.valueOf(Message.NO_PERMISSION));
          }
       }
+
       return true;
    }
 

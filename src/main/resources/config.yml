@@ -1,7 +1,7 @@
 #general command message/permissions
 general:
   reload-permission: 'savagegen.reload'
-  reloaded-message: '&c(!) &2Configuation files successfully reloaded!'
+  reloaded-message: '&c(!) &aConfiguation files successfully reloaded!'
 
 
 # generation shop style
