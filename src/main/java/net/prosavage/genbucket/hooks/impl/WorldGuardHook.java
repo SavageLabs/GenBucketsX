@@ -10,22 +10,30 @@ public class WorldGuardHook implements PluginHook<WorldGuardHook> {
 
    private WorldGuardPlugin worldGuardPlugin;
 
+   private static boolean instantiated = false;
+
+   public WorldGuardHook() {
+      super();
+   }
+
    @Override
    public WorldGuardHook setup() {
-      if (GenBucket.get().getServer().getPluginManager().getPlugin("WorldGuard") == null) {
-         this.worldGuardPlugin = null;
-         return this;
-      }
+//      if (GenBucket.get().getServer().getPluginManager().getPlugin("WorldGuard") == null) {
+//         this.worldGuardPlugin = null;
+//         return this;
+//      }
       this.worldGuardPlugin = WorldGuardPlugin.inst();
+      instantiated = true;
       return this;
    }
 
    public boolean canBuild(Player player, Block block) {
-      if (worldGuardPlugin == null) {
+      if (!instantiated) {
          return true;
       }
       return worldGuardPlugin.canBuild(player, block);
    }
+
 
    @Override
    public String getName() {

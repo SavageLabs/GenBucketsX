@@ -100,7 +100,8 @@ public abstract class Generator {
       }
 
       WorldGuardHook wgHook = ((WorldGuardHook) HookManager.getPluginMap().get("WorldGuard"));
-      if (!wgHook.canBuild(player, block)) {
+
+      if (wgHook != null && !wgHook.canBuild(player, block)) {
          return false;
       }
 

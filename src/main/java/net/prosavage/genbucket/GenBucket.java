@@ -6,12 +6,14 @@ import net.prosavage.genbucket.file.CustomFile;
 import net.prosavage.genbucket.file.impl.DataFile;
 import net.prosavage.genbucket.file.impl.MessageFile;
 import net.prosavage.genbucket.hooks.HookManager;
+import net.prosavage.genbucket.hooks.PluginHook;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.hooks.impl.VaultHook;
 import net.prosavage.genbucket.hooks.impl.WorldGuardHook;
 import net.prosavage.genbucket.menu.impl.GenerationShopGUI;
 import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.MultiversionMaterials;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -36,7 +38,11 @@ public class GenBucket extends JavaPlugin {
 
    public void onEnable() {
       (GenBucket.instance = this).saveDefaultConfig();
-      getClass().isInstance(new HookManager(Arrays.asList(new FactionHook(), new VaultHook(), new WorldGuardHook())));
+      List<PluginHook<?>> hooks = Arrays.asList(new FactionHook(), new VaultHook());
+      if (Bukkit.getPluginManager().getPlugin("WorldGaurd") != null) {
+         hooks.add(new WorldGuardHook());
+      }
+      new HookManager(hooks);
       Arrays.asList(new MessageFile(), new DataFile()).forEach(CustomFile::init);
       getServer().getPluginManager().registerEvents(new GenListener(this), this);
       getConfig().getStringList("replace-blocks").forEach(s -> materials.add(MultiversionMaterials.valueOf(s).parseMaterial()));

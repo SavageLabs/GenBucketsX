@@ -9,6 +9,7 @@ import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.hooks.impl.WorldGuardHook;
 import net.prosavage.genbucket.utils.ItemUtils;
 import net.prosavage.genbucket.utils.Message;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -49,8 +50,15 @@ public class GenListener implements Listener, Runnable {
          Material mat = Material.valueOf(ItemUtils.getKeyString(item, "MATERIAL"));
 
          FactionHook facHook = ((FactionHook) HookManager.getPluginMap().get("Factions"));
-         WorldGuardHook wgHook = ((WorldGuardHook) HookManager.getPluginMap().get("WorldGuard"));
-         if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player) && wgHook.canBuild(player, block)) {
+         if (HookManager.getPluginMap().get("WorldGuard") != null) {
+            WorldGuardHook wgHook = ((WorldGuardHook) HookManager.getPluginMap().get("WorldGuard"));
+            if (!wgHook.canBuild(player, block)) {
+               event.getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
+               return;
+            }
+         }
+
+         if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
             if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), event.getPlayer())) {
                register(new VerticalGen(plugin, event.getPlayer(), mat, block));
             } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), event.getPlayer())) {
@@ -72,9 +80,16 @@ public class GenListener implements Listener, Runnable {
             String name = ItemUtils.getKeyString(item, "GENBUCKET");
             Material mat = Material.valueOf(ItemUtils.getKeyString(item, "MATERIAL"));
 
-            FactionHook facHook = (FactionHook) HookManager.getPluginMap().get("Factions");
-            WorldGuardHook wgHook = ((WorldGuardHook) HookManager.getPluginMap().get("WorldGuard"));
-            if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player) && wgHook.canBuild(player, block)) {
+
+            FactionHook facHook = ((FactionHook) HookManager.getPluginMap().get("Factions"));
+            if (HookManager.getPluginMap().get("WorldGuard") != null) {
+               WorldGuardHook wgHook = ((WorldGuardHook) HookManager.getPluginMap().get("WorldGuard"));
+               if (!wgHook.canBuild(player, block)) {
+                  event.getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
+                  return;
+               }
+            }
+            if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
                if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), event.getPlayer())) {
                   register(new VerticalGen(plugin, event.getPlayer(), mat, block));
                } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), event.getPlayer())) {

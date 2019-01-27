@@ -74,18 +74,22 @@ replace-blocks:
 
 VERTICAL:
   GRAVEL:
+    direction: up
     name: '&aGravel Scaffold'
     price: 200
     slot: 10
   SAND:
+    direction: up
     name: '&aSand Scaffold'
     price: 5000
     slot: 13
   COBBLESTONE:
+    direction: down
     name: '&aCobblestone Vertical'
     price: 10
     slot: 16
   OBSIDIAN:
+    direction: down
     name: '&aObsidian Vertical'
     price: 1000
     slot: 19

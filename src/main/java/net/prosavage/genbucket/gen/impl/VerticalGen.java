@@ -5,6 +5,7 @@ import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.MultiversionMaterials;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.WorldBorder;
@@ -14,9 +15,12 @@ import org.bukkit.entity.Player;
 
 public class VerticalGen extends Generator {
 
+   protected String direction;
+
    public VerticalGen(GenBucket plugin, Player player, Material material, Block block) {
       super(plugin, player, material, block, GenType.VERTICAL);
-      setIndex(material.hasGravity() ? 1 : -1);
+      direction = GenBucket.get().getConfig().getString("VERTICAL." + getMaterial().toString() + ".direction", getMaterial().hasGravity() ? "up" : "down");
+      setIndex(getIndex() + (direction.equalsIgnoreCase("up") ? 1 : -1));
       if (isValidLocation(block)) {
          if (GenBucket.get().getConfig().getBoolean("sourceblock.no-source")) {
             this.setSourceMaterial(getMaterial());
@@ -51,6 +55,7 @@ public class VerticalGen extends Generator {
          return true;
       }
 
+
       return GenBucket.get().getReplacements().contains(block.getType());
 
    }
@@ -58,7 +63,10 @@ public class VerticalGen extends Generator {
 
    public void run() {
       Block gen = getBlock().getWorld().getBlockAt(getBlock().getX(), getBlock().getY() + getIndex(), getBlock().getZ());
-      setIndex(getIndex() + (getMaterial().hasGravity() ? 1 : -1));
+
+      setIndex(getIndex() + (direction.equalsIgnoreCase("up") ? 1 : -1));
+
+
       getBlock().getChunk().load();
 
       if (!isDataGen() && !isValidLocation(gen)) {
@@ -66,17 +74,16 @@ public class VerticalGen extends Generator {
          setFinished(true);
          return;
       }
-
       if (getBlock().getType() != getSourceMaterial() && getPlayer() != null) {
          getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
          getBlock().setType(getMaterial());
          setFinished(true);
          return;
       }
-
       if (!isNearSponge(gen, 3) && (getBlock().getY() + getIndex()) >= 0 && (getBlock().getY() + getIndex()) < 256) {
          gen.setType(getMaterial());
       } else {
+
          getBlock().setType(getMaterial());
          setFinished(true);
       }
