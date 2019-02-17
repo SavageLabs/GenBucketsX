@@ -32,7 +32,7 @@ import static org.bukkit.block.BlockFace.*;
 public class GenListener implements Listener, Runnable {
 
    private static final List<BlockFace> DIRECTIONS = ImmutableList.of(NORTH, EAST, SOUTH, WEST);
-   public static List<Generator> generations = new ArrayList<Generator>();
+   public static List<Generator> generations = new ArrayList<>();
    private GenBucket plugin;
 
    public GenListener(GenBucket plugin) {

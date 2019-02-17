@@ -22,6 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class GenBucket extends JavaPlugin {
@@ -30,7 +31,7 @@ public class GenBucket extends JavaPlugin {
    private static GenBucket instance;
    public int taskID;
    public GenerationShopGUI generationShopGUI;
-   private List<Material> materials = new ArrayList<Material>();
+   private List<Material> materials = new ArrayList<>();
 
    public static GenBucket get() {
       return instance;
@@ -52,7 +53,7 @@ public class GenBucket extends JavaPlugin {
 
    @Override
    public void onDisable() {
-      Arrays.asList(new DataFile()).forEach(CustomFile::onExit);
+      Collections.singletonList(new DataFile()).forEach(CustomFile::onExit);
    }
 
    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

@@ -5,7 +5,6 @@ import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.MultiversionMaterials;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.WorldBorder;
@@ -35,7 +34,7 @@ public class VerticalGen extends Generator {
    }
 
    public VerticalGen(String data) {
-      super(GenBucket.get(), null, Material.valueOf(data.split(",")[0]), getBlockfromString(data.split(",")[1]), GenType.VERTICAL);
+      super(GenBucket.get(), null, Material.valueOf(data.split(",")[0]), getBlockFromString(data.split(",")[1]), GenType.VERTICAL);
       setIndex(Integer.valueOf(data.split(",")[2]));
       setData(true);
    }

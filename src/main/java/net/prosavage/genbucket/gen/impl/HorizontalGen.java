@@ -7,7 +7,6 @@ import net.prosavage.genbucket.hooks.HookManager;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.MultiversionMaterials;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -36,7 +35,7 @@ public class HorizontalGen extends Generator {
    }
 
    public HorizontalGen(String data) {
-      super(GenBucket.get(), null, Material.valueOf(data.split(",")[0]), getBlockfromString(data.split(",")[1]), GenType.VERTICAL);
+      super(GenBucket.get(), null, Material.valueOf(data.split(",")[0]), getBlockFromString(data.split(",")[1]), GenType.VERTICAL);
       setIndex(Integer.valueOf(data.split(",")[2]));
       blockFace = BlockFace.valueOf(data.split(",")[3]);
       setData(true);

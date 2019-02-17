@@ -29,8 +29,8 @@ public abstract class Generator {
 
    }
 
-   public static Block getBlockfromString(String s) {
-      if (s == null || s.trim() == "") {
+   public static Block getBlockFromString(String s) {
+      if (s == null || s.trim().isEmpty()) {
          return null;
       }
       String[] parts = s.split(":");
