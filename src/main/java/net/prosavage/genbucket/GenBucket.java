@@ -39,7 +39,7 @@ public class GenBucket extends JavaPlugin {
    public void onEnable() {
       (GenBucket.instance = this).saveDefaultConfig();
       List<PluginHook<?>> hooks = Arrays.asList(new FactionHook(), new VaultHook());
-      if (Bukkit.getPluginManager().getPlugin("WorldGaurd") != null) {
+      if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
          hooks.add(new WorldGuardHook());
       }
       new HookManager(hooks);
