@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 
 public class VerticalGen extends Generator {
 
-   protected String direction;
+   protected String direction = "up";
 
    public VerticalGen(GenBucket plugin, Player player, Material material, Block block) {
       super(plugin, player, material, block, GenType.VERTICAL);
