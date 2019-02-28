@@ -20,10 +20,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class GenBucket extends JavaPlugin {
 
@@ -31,7 +28,7 @@ public class GenBucket extends JavaPlugin {
    private static GenBucket instance;
    public int taskID;
    public GenerationShopGUI generationShopGUI;
-   private List<Material> materials = new ArrayList<>();
+	private Set<Material> materials = new HashSet<>();
 
    public static GenBucket get() {
       return instance;
@@ -83,7 +80,7 @@ public class GenBucket extends JavaPlugin {
       getServer().getScheduler().cancelTask(taskID);
    }
 
-   public List<Material> getReplacements() {
+	public Set<Material> getReplacements() {
       return materials;
    }
 }
