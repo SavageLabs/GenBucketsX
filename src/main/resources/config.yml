@@ -9,6 +9,7 @@ generation-shop:
   background-glow: false
   # Use the 1.13 name for the item name and the plugin will automatically convert it to lower version names.
   background-item: WHITE_STAINED_GLASS_PANE
+  no-lore: false
   blank-item:
     name: '&9 '
     lore:

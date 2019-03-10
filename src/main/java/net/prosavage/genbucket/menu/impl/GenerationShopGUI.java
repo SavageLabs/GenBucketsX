@@ -6,6 +6,7 @@ import net.prosavage.genbucket.utils.ItemUtils;
 import net.prosavage.genbucket.utils.MultiversionMaterials;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -39,12 +40,13 @@ public class GenerationShopGUI extends MenuBuilder {
 
    private ItemStack getBlankItem() {
       // Auto converts to 1.8 / 1.13 material as needed.
-      ItemStack item = new ItemStack(MultiversionMaterials.fromString(getPlugin().getConfig().getString("generation-shop.background-item")).parseMaterial());
+      FileConfiguration config = getPlugin().getConfig();
+      ItemStack item = new ItemStack(MultiversionMaterials.fromString(config.getString("generation-shop.background-item")).parseMaterial());
       if (!getPlugin().getServer().getVersion().contains("1.13")) {
-         item.setDurability((short) getPlugin().getConfig().getInt("generation-shop.background-item-durability"));
+         item.setDurability((short) config.getInt("generation-shop.background-item-durability"));
       }
 
-      if (getPlugin().getConfig().getBoolean("generation-shop.background-glow")) {
+      if (config.getBoolean("generation-shop.background-glow")) {
          item.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 1);
       }
       ItemMeta itemMeta = item.getItemMeta();
@@ -52,8 +54,10 @@ public class GenerationShopGUI extends MenuBuilder {
          itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
       }
       item.setItemMeta(itemMeta);
-      item = ItemUtils.setDisplayName(item, getPlugin().getConfig().getString("generation-shop.blank-item.name"));
-      item = ItemUtils.setLore(item, getPlugin().getConfig().getStringList("generation-shop.blank-item.lore"));
+      item = ItemUtils.setDisplayName(item, config.getString("generation-shop.blank-item.name"));
+      if (!config.getBoolean("generation-shop.no-lore")) {
+         item = ItemUtils.setLore(item, config.getStringList("generation-shop.blank-item.lore"));
+      }
       return item;
    }
 
