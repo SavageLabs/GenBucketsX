@@ -16,7 +16,7 @@ public class FactionUUIDHook extends FactionHook {
 
    @Override
    public boolean canBuild(Block block, Player player) {
-      if (!FactionsBlockListener.playerCanBuildDestroyBlock(player, block.getLocation(), "break", true)) {
+      if (!FactionsBlockListener.playerCanBuildDestroyBlock(player, block.getLocation(), "build", true)) {
          player.sendMessage(Message.GEN_CANT_PLACE.getMessage());
          return false;
       }
