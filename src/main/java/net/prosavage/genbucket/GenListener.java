@@ -1,6 +1,8 @@
 package net.prosavage.genbucket;
 
 import com.google.common.collect.ImmutableList;
+import net.prosavage.genbucket.api.PlayerGenEvent;
+import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.gen.impl.HorizontalGen;
 import net.prosavage.genbucket.gen.impl.VerticalGen;
@@ -61,10 +63,13 @@ public class GenListener implements Listener, Runnable {
          if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
             if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), event.getPlayer())) {
                register(new VerticalGen(plugin, event.getPlayer(), mat, block));
+               Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.VERTICAL));
             } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), event.getPlayer())) {
                register(new HorizontalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace()));
+               Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.HORIZONTAL));
             }
          }
+
       }
    }
 
@@ -92,8 +97,11 @@ public class GenListener implements Listener, Runnable {
             if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
                if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), event.getPlayer())) {
                   register(new VerticalGen(plugin, event.getPlayer(), mat, block));
+                  Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.VERTICAL));
                } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), event.getPlayer())) {
                   register(new HorizontalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace()));
+                  Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.HORIZONTAL));
+
                }
             }
          }
