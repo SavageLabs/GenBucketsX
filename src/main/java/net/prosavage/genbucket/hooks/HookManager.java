@@ -4,10 +4,8 @@ import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.hooks.impl.VaultHook;
 import net.prosavage.genbucket.hooks.impl.WorldGuardHook;
-import net.prosavage.genbucket.utils.Logger;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 

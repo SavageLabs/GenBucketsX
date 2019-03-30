@@ -8,6 +8,7 @@ import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.Message;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -17,7 +18,7 @@ public class FactionUUIDHook extends FactionHook {
    @Override
    public boolean canBuild(Block block, Player player) {
       if (!FactionsBlockListener.playerCanBuildDestroyBlock(player, block.getLocation(), "build", true)) {
-         player.sendMessage(Message.GEN_CANT_PLACE.getMessage());
+         player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANT_PLACE.getMessage()));
          return false;
       }
       return true;
@@ -43,7 +44,7 @@ public class FactionUUIDHook extends FactionHook {
          double distZ = Math.abs(loc.getZ() - otherLoc.getZ());
          int radius = GenBucket.get().getConfig().getInt("radius");
          if (distX <= radius && distZ <= radius) {
-            player.sendMessage(Message.GEN_ENEMY_NEARBY.getMessage());
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_ENEMY_NEARBY.getMessage()));
             return true;
          }
       }

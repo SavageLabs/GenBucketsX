@@ -1,9 +1,7 @@
 package net.prosavage.genbucket.gen;
 
 import net.prosavage.genbucket.GenBucket;
-import net.prosavage.genbucket.hooks.HookManager;
 import net.prosavage.genbucket.hooks.impl.WorldGuardHook;
-import net.prosavage.genbucket.utils.MultiversionMaterials;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -26,7 +24,6 @@ public abstract class Generator {
         this.material = material;
         this.block = block;
         this.type = genType;
-
     }
 
     public static Block getBlockFromString(String s) {

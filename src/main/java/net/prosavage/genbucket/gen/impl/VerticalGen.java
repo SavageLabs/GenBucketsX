@@ -5,6 +5,7 @@ import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.MultiversionMaterials;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.WorldBorder;
@@ -29,7 +30,7 @@ public class VerticalGen extends Generator {
             block.setType(getSourceMaterial());
          }
       } else {
-         player.sendMessage(Message.GEN_CANT_PLACE.getMessage());
+         player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANT_PLACE.getMessage()));
       }
    }
 
@@ -63,19 +64,18 @@ public class VerticalGen extends Generator {
 
    public void run() {
 
-      Block gen = getBlock().getWorld().getBlockAt(getBlock().getX(), getBlock().getY() + getIndex(), getBlock().getZ());
+      Block gen = getBlock().getChunk().getBlock(getBlock().getX(), getBlock().getY() + getIndex(), getBlock().getZ());
       setIndex(getIndex() + (direction.equalsIgnoreCase("up") ? 1 : -1));
-      getBlock().getChunk().load();
 
       if (!isValidLocation(gen)) {
-         getBlock().setType(getMaterial());
+         getBlock().setType(getMaterial(), false);
          setFinished(true);
          return;
       }
 
       if (getBlock().getType() != getSourceMaterial() && getPlayer() != null) {
-         getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
-         getBlock().setType(getMaterial());
+         getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANCELLED.getMessage()));
+         getBlock().setType(getMaterial(), false);
          setFinished(true);
          return;
       }
@@ -83,7 +83,8 @@ public class VerticalGen extends Generator {
       if (!isNearSponge(gen, 3) && (getBlock().getY() + getIndex()) >= 0 && (getBlock().getY() + getIndex()) < 256) {
          gen.setType(getMaterial());
       } else {
-         getBlock().setType(getMaterial());
+         // false = no block updates
+         getBlock().setType(getMaterial(), false);
          setFinished(true);
       }
    }

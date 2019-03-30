@@ -6,7 +6,6 @@ import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.gen.impl.HorizontalGen;
 import net.prosavage.genbucket.gen.impl.VerticalGen;
-import net.prosavage.genbucket.hooks.HookManager;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.hooks.impl.WorldGuardHook;
 import net.prosavage.genbucket.utils.ItemUtils;

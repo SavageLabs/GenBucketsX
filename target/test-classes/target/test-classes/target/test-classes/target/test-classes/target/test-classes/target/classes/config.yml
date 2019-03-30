@@ -1,0 +1,112 @@
+#general command message/permissions
+general:
+  reload-permission: 'savagegen.reload'
+  reloaded-message: '&c(!) &aConfiguation files successfully reloaded!'
+
+
+# generation shop style
+generation-shop:
+  background-glow: false
+  # Use the 1.13 name for the item name and the plugin will automatically convert it to lower version names.
+  background-item: WHITE_STAINED_GLASS_PANE
+  no-lore: false
+  blank-item:
+    name: '&9 '
+    lore:
+      - '&7Click a GenBucket to buy!'
+  # This will only be used if the plugin is running on a server under the 1.13 API Level.
+  background-item-durability: 0
+  name: "&9Genbucket Shop"
+  rows: 5
+
+# This makes it so gen buckets will ignore blocks of their own type. So it makes repairing walls etc easier.
+psuedo: true
+
+# Source Block
+sourceblock:
+  # If this option is true, the source block will just be same type as the genbucket's block.
+  # So a cobble genbucket will have a cobble sourceblock.
+  no-source: false
+  # Use the 1.13 name for the item name and the plugin will automatically convert it to lower version names.
+  # Colors currently do not work for blocks due to the 1.13 API.
+  item-name: WHITE_WOOL
+
+# disable gen buckets with enemies nearby
+nearby-check: true
+
+# radius distance for nearby player check
+radius: 50
+
+# horizontal generation distance
+distance: 10
+
+# delay between each block being generated
+# 20 equals 1 second (counting with ticks)
+
+#####################################################
+# WARNING: ANY DELAY LESS THAN 5 IS NOT RECOMMENDED #
+#####################################################
+
+delay: 15
+
+# should genbuckets use buckets or blocks
+use-bucket: true
+
+# should sponge check be enabled
+# cancels generation if sponge is within 3 blocks
+sponge-check: false
+
+genbucket-lore:
+  - '&7Type:&4 %type%'
+  - '&7Placement:&4 $%price%'
+
+# blocks you want the genbuckets to override.
+
+#########################################
+# WARNING: SOLID BLOCKS NOT RECOMMENDED #
+#########################################
+# Use 1.13 ID's they will be converted to legacy item names automatically.
+replace-blocks:
+  - AIR
+  - TALL_GRASS
+  - LARGE_FERN
+
+VERTICAL:
+  GRAVEL:
+    direction: up
+    name: '&aGravel Scaffold'
+    price: 200
+    slot: 10
+  SAND:
+    direction: up
+    name: '&aSand Scaffold'
+    price: 5000
+    slot: 13
+  COBBLESTONE:
+    direction: down
+    name: '&aCobblestone Vertical'
+    price: 10
+    slot: 16
+  OBSIDIAN:
+    direction: down
+    name: '&aObsidian Vertical'
+    price: 1000
+    slot: 19
+
+HORIZONTAL:
+  COBBLESTONE:
+    name: '&aCobblestone Horizontal'
+    price: 30
+    slot: 22
+  OBSIDIAN:
+    name: '&aObsidian Horizontal'
+    price: 500
+    slot: 25
+  NETHERRACK:
+    name: '&aNetherrack Horizontal'
+    price: 20
+    slot: 30
+  DIRT:
+    name: '&aDirt Horizontal'
+    price: 20
+    slot: 32

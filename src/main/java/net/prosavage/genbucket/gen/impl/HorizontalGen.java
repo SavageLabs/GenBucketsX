@@ -7,6 +7,7 @@ import net.prosavage.genbucket.hooks.HookManager;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.MultiversionMaterials;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -29,7 +30,7 @@ public class HorizontalGen extends Generator {
             block.setType(getSourceMaterial());
          }
       } else {
-         player.sendMessage(Message.GEN_CANT_PLACE.getMessage());
+         player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANT_PLACE.getMessage()));
       }
 
    }
@@ -44,34 +45,31 @@ public class HorizontalGen extends Generator {
    public void run() {
       if (isDataGen() || ((FactionHook) getPlugin().getHookManager().getPluginMap().get("Factions")).canBuild(getBlock(), getPlayer())) {
          setIndex(getIndex() + 1);
-         Block gen = getBlock().getWorld().getBlockAt(getBlock().getX() + getIndex() * blockFace.getModX(), getBlock().getY(), getBlock().getZ() + getIndex() * blockFace.getModZ());
-
-         getBlock().getChunk().load();
-         gen.getChunk().load();
+         Block gen = getBlock().getChunk().getBlock(getBlock().getX() + getIndex() * blockFace.getModX(), getBlock().getY(), getBlock().getZ() + getIndex() * blockFace.getModZ());
 
          if (!isDataGen() && !isValidLocation(gen)) {
-            getBlock().setType(getMaterial());
+            getBlock().setType(getMaterial(), false);
             setFinished(true);
             return;
          }
 
          if (getPlayer() == null || !((FactionHook) getPlugin().getHookManager().getPluginMap().get("Factions")).canBuild(gen, getPlayer())) {
-            getBlock().setType(getMaterial());
+            getBlock().setType(getMaterial(), false);
             setFinished(true);
             return;
          }
 
          if (getBlock().getType() != getSourceMaterial() && getPlayer() != null) {
-            getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
-            getBlock().setType(getMaterial());
+            getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANCELLED.getMessage()));
+            getBlock().setType(getMaterial(), false);
             setFinished(true);
             return;
          }
 
          if (getIndex() < getPlugin().getConfig().getInt("distance")) {
-            gen.setType(getMaterial());
+            gen.setType(getMaterial(), false);
          } else {
-            getBlock().setType(getMaterial());
+            getBlock().setType(getMaterial(), false);
             setFinished(true);
          }
       }
