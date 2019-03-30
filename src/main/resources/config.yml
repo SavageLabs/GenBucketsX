@@ -31,8 +31,6 @@ sourceblock:
   # Colors currently do not work for blocks due to the 1.13 API.
   item-name: WHITE_WOOL
 
-
-
 # disable gen buckets with enemies nearby
 nearby-check: true
 

@@ -12,6 +12,7 @@ import net.prosavage.genbucket.hooks.impl.WorldGuardHook;
 import net.prosavage.genbucket.utils.ItemUtils;
 import net.prosavage.genbucket.utils.Message;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -51,11 +52,11 @@ public class GenListener implements Listener, Runnable {
          String name = ItemUtils.getKeyString(item, "GENBUCKET");
          Material mat = Material.valueOf(ItemUtils.getKeyString(item, "MATERIAL"));
 
-         FactionHook facHook = ((FactionHook) HookManager.getPluginMap().get("Factions"));
-         if (HookManager.getPluginMap().get("WorldGuard") != null) {
-            WorldGuardHook wgHook = ((WorldGuardHook) HookManager.getPluginMap().get("WorldGuard"));
+         FactionHook facHook = ((FactionHook) plugin.getHookManager().getPluginMap().get("Factions"));
+         if (plugin.getHookManager().getPluginMap().get("WorldGuard") != null) {
+            WorldGuardHook wgHook = ((WorldGuardHook) plugin.getHookManager().getPluginMap().get("WorldGuard"));
             if (!wgHook.canBuild(player, block)) {
-               event.getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
+               event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANCELLED.getMessage()));
                return;
             }
          }
@@ -85,12 +86,11 @@ public class GenListener implements Listener, Runnable {
             String name = ItemUtils.getKeyString(item, "GENBUCKET");
             Material mat = Material.valueOf(ItemUtils.getKeyString(item, "MATERIAL"));
 
-
-            FactionHook facHook = ((FactionHook) HookManager.getPluginMap().get("Factions"));
-            if (HookManager.getPluginMap().get("WorldGuard") != null) {
-               WorldGuardHook wgHook = ((WorldGuardHook) HookManager.getPluginMap().get("WorldGuard"));
+            FactionHook facHook = ((FactionHook) plugin.getHookManager().getPluginMap().get("Factions"));
+            if (plugin.getHookManager().getPluginMap().get("WorldGuard") != null) {
+               WorldGuardHook wgHook = ((WorldGuardHook) plugin.getHookManager().getPluginMap().get("WorldGuard"));
                if (!wgHook.canBuild(player, block)) {
-                  event.getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
+                  event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANCELLED.getMessage()));
                   return;
                }
             }
@@ -132,7 +132,7 @@ public class GenListener implements Listener, Runnable {
             if (!player.getInventory().contains(item)) {
                player.getInventory().addItem(item);
             } else {
-               player.sendMessage(Message.GEN_HAS_ALREADY.getMessage());
+               player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_HAS_ALREADY.getMessage()));
             }
          }
          event.setCancelled(true);
@@ -165,10 +165,10 @@ public class GenListener implements Listener, Runnable {
    public boolean withdraw(String type, Player player) {
       int price = plugin.getConfig().getInt(type + ".price");
       if (GenBucket.econ.withdrawPlayer(player, price).transactionSuccess()) {
-         player.sendMessage(Message.GEN_CHARGED.getMessage().replace("{amount}", price + ""));
+         player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CHARGED.getMessage().replace("{amount}", price + "")));
          return true;
       }
-      player.sendMessage(Message.GEN_CANT_AFFORD.getMessage());
+      player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANT_AFFORD.getMessage()));
       return false;
    }
 

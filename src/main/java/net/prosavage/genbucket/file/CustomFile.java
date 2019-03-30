@@ -6,13 +6,13 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
-public abstract class CustomFile {
+public abstract class CustomFile implements ICustomFile {
 
    private YamlConfiguration config;
    private File file;
    private File configFile;
 
-   public CustomFile(GenBucket instance, String parent, String name) {
+   public CustomFile(GenBucket instance, String parent) {
       if (!instance.getDataFolder().exists()) {
          instance.getDataFolder().mkdir();
       }
@@ -21,9 +21,9 @@ public abstract class CustomFile {
          if (!file.exists()) {
             file.mkdir();
          }
-         configFile = new File(file, name + ".yml");
+         configFile = new File(file, getName() + ".yml");
       } else {
-         configFile = new File(name + ".yml");
+         configFile = new File(getName() + ".yml");
       }
       try {
          configFile.createNewFile();
@@ -31,11 +31,6 @@ public abstract class CustomFile {
          e.printStackTrace();
       }
       reloadConfig();
-   }
-
-   public abstract void init();
-
-   public void onExit() {
    }
 
    public void reloadConfig() {
@@ -57,4 +52,6 @@ public abstract class CustomFile {
    public YamlConfiguration getConfig() {
       return config;
    }
+
+
 }

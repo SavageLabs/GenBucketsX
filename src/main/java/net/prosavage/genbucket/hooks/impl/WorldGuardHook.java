@@ -17,11 +17,7 @@ public class WorldGuardHook implements PluginHook<WorldGuardHook> {
    }
 
    @Override
-   public WorldGuardHook setup() {
-//      if (GenBucket.get().getServer().getPluginManager().getPlugin("WorldGuard") == null) {
-//         this.worldGuardPlugin = null;
-//         return this;
-//      }
+   public WorldGuardHook setup(GenBucket plugin) {
       this.worldGuardPlugin = WorldGuardPlugin.inst();
       instantiated = true;
       return this;

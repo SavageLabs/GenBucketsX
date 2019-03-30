@@ -8,7 +8,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 public class VaultHook implements PluginHook<VaultHook> {
 
    @Override
-   public VaultHook setup() {
+   public VaultHook setup(GenBucket plugin) {
       RegisteredServiceProvider<Economy> rsp = GenBucket.get().getServer().getServicesManager().getRegistration(Economy.class);
       if (rsp == null) {
          return null;

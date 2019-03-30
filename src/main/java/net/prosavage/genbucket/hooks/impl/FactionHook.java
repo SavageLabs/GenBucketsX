@@ -14,11 +14,7 @@ import java.util.List;
 public class FactionHook implements PluginHook<FactionHook> {
 
    @Override
-   public FactionHook setup() {
-      if (GenBucket.get().getServer().getPluginManager().getPlugin(getName()) == null) {
-         Logger.print("Factions could not be found", Logger.PrefixType.WARNING);
-         return null;
-      }
+   public FactionHook setup(GenBucket plugin) {
       List<String> authors = GenBucket.get().getServer().getPluginManager().getPlugin(getName()).getDescription().getAuthors();
       if (!authors.contains("drtshock") && !authors.contains("Benzimmer")) {
          Logger.print("Server Factions type has been set to (MassiveCore)", Logger.PrefixType.DEFAULT);

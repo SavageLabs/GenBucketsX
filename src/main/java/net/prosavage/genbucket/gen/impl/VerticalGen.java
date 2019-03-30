@@ -36,11 +36,13 @@ public class VerticalGen extends Generator {
    public VerticalGen(String data) {
       super(GenBucket.get(), null, Material.valueOf(data.split(",")[0]), getBlockFromString(data.split(",")[1]), GenType.VERTICAL);
       setIndex(Integer.valueOf(data.split(",")[2]));
+      this.direction = data.split(",")[3];
       setData(true);
    }
 
    @Override
    public boolean isValidLocation(Block block) {
+
       Location loc = block.getLocation();
       WorldBorder wb = loc.getWorld().getWorldBorder();
       double size = wb.getSize() / 2.0;
@@ -54,35 +56,33 @@ public class VerticalGen extends Generator {
          return true;
       }
 
-
       return GenBucket.get().getReplacements().contains(block.getType());
 
    }
 
 
    public void run() {
+
       Block gen = getBlock().getWorld().getBlockAt(getBlock().getX(), getBlock().getY() + getIndex(), getBlock().getZ());
-
       setIndex(getIndex() + (direction.equalsIgnoreCase("up") ? 1 : -1));
-
-
       getBlock().getChunk().load();
 
-      if (!isDataGen() && !isValidLocation(gen)) {
+      if (!isValidLocation(gen)) {
          getBlock().setType(getMaterial());
          setFinished(true);
          return;
       }
+
       if (getBlock().getType() != getSourceMaterial() && getPlayer() != null) {
          getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
          getBlock().setType(getMaterial());
          setFinished(true);
          return;
       }
+
       if (!isNearSponge(gen, 3) && (getBlock().getY() + getIndex()) >= 0 && (getBlock().getY() + getIndex()) < 256) {
          gen.setType(getMaterial());
       } else {
-
          getBlock().setType(getMaterial());
          setFinished(true);
       }
@@ -104,7 +104,7 @@ public class VerticalGen extends Generator {
 
    @Override
    public String toString() {
-      return this.getMaterial() + "," + getLocation(this.getBlock().getLocation()) + "," + getIndex();
+      return this.getMaterial() + "," + getLocation(this.getBlock().getLocation()) + "," + getIndex() + "," + direction;
    }
 
    public String getLocation(Location loc) {

@@ -1,86 +1,69 @@
 package net.prosavage.genbucket;
 
-import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.Economy;
-import net.prosavage.genbucket.file.CustomFile;
+import net.prosavage.genbucket.command.GenBucketCommand;
+import net.prosavage.genbucket.file.FileManager;
 import net.prosavage.genbucket.file.impl.DataFile;
-import net.prosavage.genbucket.file.impl.MessageFile;
 import net.prosavage.genbucket.hooks.HookManager;
-import net.prosavage.genbucket.hooks.PluginHook;
-import net.prosavage.genbucket.hooks.impl.FactionHook;
-import net.prosavage.genbucket.hooks.impl.VaultHook;
-import net.prosavage.genbucket.hooks.impl.WorldGuardHook;
 import net.prosavage.genbucket.menu.impl.GenerationShopGUI;
-import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.MultiversionMaterials;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GenBucket extends JavaPlugin {
 
-   public static Economy econ;
-   private static GenBucket instance;
-   public int taskID;
-   public GenerationShopGUI generationShopGUI;
-	private Set<Material> materials = new HashSet<>();
+    public static Economy econ;
+    private static GenBucket instance;
+    public int taskID;
+    public GenerationShopGUI generationShopGUI;
+    public Set<Material> materials = new HashSet<>();
 
-   public static GenBucket get() {
-      return instance;
-   }
+    private HookManager hookManager;
+    private FileManager fileManager;
 
-   public void onEnable() {
-      (GenBucket.instance = this).saveDefaultConfig();
-      List<PluginHook<?>> hooks = new ArrayList<>();
-      hooks.add(new FactionHook());
-      hooks.add(new VaultHook());
-      if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
-         hooks.add(new WorldGuardHook());
-      }
-      new HookManager(hooks);
-      Arrays.asList(new MessageFile(), new DataFile()).forEach(CustomFile::init);
-      getServer().getPluginManager().registerEvents(new GenListener(this), this);
-      getConfig().getStringList("replace-blocks").forEach(s -> materials.add(MultiversionMaterials.valueOf(s).parseMaterial()));
+    public static GenBucket get() {
+        return instance;
+    }
 
-      this.generationShopGUI = new GenerationShopGUI(this);
-   }
+    public void onEnable() {
+        (GenBucket.instance = this).saveDefaultConfig();
+        this.getCommand("genbucket").setExecutor(new GenBucketCommand(this));
 
-   @Override
-   public void onDisable() {
-      Collections.singletonList(new DataFile()).forEach(CustomFile::onExit);
-   }
+        this.hookManager = new HookManager(this);
+        this.fileManager = new FileManager(this);
 
-   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-      if (command.getName().equalsIgnoreCase("Genbucket") && sender instanceof Player && args.length == 0) {
-         ((Player) sender).openInventory(generationShopGUI.init().getInventory());
-      }
-      if (args.length == 1) {
-         if (args[0].equalsIgnoreCase("reload") && sender.hasPermission(getConfig().getString("general.reload-permission"))) {
-            reloadConfig();
-            getConfig().getStringList("replace-blocks").forEach(s -> materials.add(MultiversionMaterials.valueOf(s).parseMaterial()));
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("general.reloaded-message")));
-         } else {
-            sender.sendMessage(String.valueOf(Message.NO_PERMISSION));
-         }
-      }
+        getServer().getPluginManager().registerEvents(new GenListener(this), this);
+        getConfig().getStringList("replace-blocks").forEach(s -> materials.add(MultiversionMaterials.valueOf(s).parseMaterial()));
 
-      return true;
-   }
+        this.generationShopGUI = new GenerationShopGUI(this);
+    }
 
-   public void start() {
-      taskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new GenListener(this), 0L, getConfig().getInt("delay"));
-   }
+    @Override
+    public void onDisable() {
+        DataFile dataFile = (DataFile) this.fileManager.getFileMap().get("data");
+        dataFile.saveGenBuckets();
+    }
 
-   public void stop() {
-      getServer().getScheduler().cancelTask(taskID);
-   }
+    public void start() {
+        taskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new GenListener(this), 0L, getConfig().getInt("delay"));
+    }
 
-	public Set<Material> getReplacements() {
-      return materials;
-   }
+    public void stop() {
+        getServer().getScheduler().cancelTask(taskID);
+    }
+
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    public HookManager getHookManager() {
+        return hookManager;
+    }
+
+    public Set<Material> getReplacements() {
+        return materials;
+    }
 }
