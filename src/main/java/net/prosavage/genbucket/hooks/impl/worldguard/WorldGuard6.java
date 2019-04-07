@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Method;
 
-public class WorldGuardOld extends WorldGuardHook {
+public class WorldGuard6 extends WorldGuardHook {
 
     private Method method;
     {

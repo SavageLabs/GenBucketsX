@@ -1,6 +1,7 @@
 package net.prosavage.genbucket.hooks.impl.worldguard;
 
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.Flags;
@@ -11,7 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 
-public class WorldGuardLegacy extends WorldGuardHook {
+public class WorldGuard7 extends WorldGuardHook {
 
     private WorldGuardPlugin worldGuardPlugin;
 

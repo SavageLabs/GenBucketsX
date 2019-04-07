@@ -2,8 +2,8 @@ package net.prosavage.genbucket.hooks.impl;
 
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.hooks.PluginHook;
-import net.prosavage.genbucket.hooks.impl.worldguard.WorldGuardLegacy;
-import net.prosavage.genbucket.hooks.impl.worldguard.WorldGuardOld;
+import net.prosavage.genbucket.hooks.impl.worldguard.WorldGuard6;
+import net.prosavage.genbucket.hooks.impl.worldguard.WorldGuard7;
 import net.prosavage.genbucket.utils.Logger;
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.block.Block;
@@ -17,10 +17,10 @@ public class WorldGuardHook implements PluginHook<WorldGuardHook> {
         try {
             String api = GenBucket.get().getServer().getPluginManager().getPlugin(getName()).getDescription().getAPIVersion();
             Logger.print("Server WorldGuard type has been set to (Legacy)", Logger.PrefixType.DEFAULT);
-            return new WorldGuardLegacy();
+            return new WorldGuard7();
         } catch (NoSuchMethodError e) {
             Logger.print("Server WorldGuard type has been set to (Default)", Logger.PrefixType.DEFAULT);
-            return new WorldGuardOld();
+            return new WorldGuard6();
         }
 
     }
