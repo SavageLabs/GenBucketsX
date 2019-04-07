@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 public class WorldGuard6 extends WorldGuardHook {
 
     private Method method;
+
     {
         try {
             method = WorldGuardPlugin.class.getMethod("canBuild", Player.class, Block.class);

@@ -22,7 +22,7 @@ public class WorldGuard7 extends WorldGuardHook {
         com.sk89q.worldedit.util.Location loc = BukkitAdapter.adapt(block.getLocation());
         if (!hasBypass(player, block.getLocation())) {
             return query.testState(loc, worldGuardPlugin.wrapPlayer(player), Flags.BUILD);
-        }else {
+        } else {
             return true;
         }
     }

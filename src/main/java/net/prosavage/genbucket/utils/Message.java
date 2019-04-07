@@ -6,47 +6,47 @@ import java.util.List;
 
 public enum Message {
 
-   PLUGIN_RELOAD("plugin-reload", "&aYou have reloaded the config."),
-   PLAYER_REQUIRED("player-required", "&cYou need to be a player to run this command!"),
-   NO_PERMISSION("no-permission", "&cYou do not have permission."),
-   GEN_CANCELLED("gen-cancelled", "&cYou have cancelled your generation."),
-   GEN_HAS_ALREADY("gen-has-already", "&cYou already have this gen bucket!"),
-   GEN_CANT_PLACE("gen-cant-place", "&cYou can't place gen buckets here!"),
-   GEN_CANT_AFFORD("gen-cant-afford", "&cYou do not have sufficient funds."),
-   GEN_CHARGED("gen-charged", "&cYou have been charged ${amount}"),
-   GEN_ENEMY_NEARBY("gen-enemy-nearby", "&cYou cannot place gen buckets with enemies nearby!");
+    PLUGIN_RELOAD("plugin-reload", "&aYou have reloaded the config."),
+    PLAYER_REQUIRED("player-required", "&cYou need to be a player to run this command!"),
+    NO_PERMISSION("no-permission", "&cYou do not have permission."),
+    GEN_CANCELLED("gen-cancelled", "&cYou have cancelled your generation."),
+    GEN_HAS_ALREADY("gen-has-already", "&cYou already have this gen bucket!"),
+    GEN_CANT_PLACE("gen-cant-place", "&cYou can't place gen buckets here!"),
+    GEN_CANT_AFFORD("gen-cant-afford", "&cYou do not have sufficient funds."),
+    GEN_CHARGED("gen-charged", "&cYou have been charged ${amount}"),
+    GEN_ENEMY_NEARBY("gen-enemy-nearby", "&cYou cannot place gen buckets with enemies nearby!");
 
-   String config, message;
-   String[] messages;
+    String config, message;
+    String[] messages;
 
-   Message(String config, String message) {
-      this.config = config;
-      this.message = message;
-   }
+    Message(String config, String message) {
+        this.config = config;
+        this.message = message;
+    }
 
-   Message(String config, String[] messages) {
-      this.config = config;
-      this.messages = messages;
-   }
+    Message(String config, String[] messages) {
+        this.config = config;
+        this.messages = messages;
+    }
 
-   public String getConfig() {
-      return config;
-   }
+    public String getConfig() {
+        return config;
+    }
 
-   public String getMessage() {
-      return message;
-   }
+    public String getMessage() {
+        return message;
+    }
 
-   public String[] getMessages() {
-      return this.messages;
-   }
+    public void setMessage(String message) {
+        this.message = ChatColor.translateAlternateColorCodes('&', message);
+    }
 
-   public void setMessages(List<String> list) {
-      this.messages = list.stream().toArray(String[]::new);
-   }
+    public String[] getMessages() {
+        return this.messages;
+    }
 
-   public void setMessage(String message) {
-      this.message = ChatColor.translateAlternateColorCodes('&', message);
-   }
+    public void setMessages(List<String> list) {
+        this.messages = list.stream().toArray(String[]::new);
+    }
 
 }

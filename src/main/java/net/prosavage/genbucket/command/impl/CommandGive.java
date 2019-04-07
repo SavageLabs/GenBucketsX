@@ -3,7 +3,6 @@ package net.prosavage.genbucket.command.impl;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.command.AbstractCommand;
 import net.prosavage.genbucket.utils.ItemUtils;
-import net.prosavage.genbucket.utils.MultiversionMaterials;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

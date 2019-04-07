@@ -5,9 +5,11 @@ import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.MultiversionMaterials;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.WorldBorder;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 
@@ -65,7 +67,7 @@ public class VerticalGen extends Generator {
         Block gen = getBlock().getWorld().getBlockAt(getBlock().getX(), getBlock().getY() + getIndex(), getBlock().getZ());
 
         if (!(getMaterial().hasGravity() && direction.equalsIgnoreCase("down")))
-        setIndex(getIndex() + (direction.equalsIgnoreCase("up") ? 1 : -1));
+            setIndex(getIndex() + (direction.equalsIgnoreCase("up") ? 1 : -1));
 
         if (!isValidLocation(gen)) {
             getBlock().setType(getMaterial(), false);

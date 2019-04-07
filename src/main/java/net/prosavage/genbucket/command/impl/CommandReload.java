@@ -3,7 +3,6 @@ package net.prosavage.genbucket.command.impl;
 import net.md_5.bungee.api.ChatColor;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.command.AbstractCommand;
-import net.prosavage.genbucket.command.GenBucketCommand;
 import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.MultiversionMaterials;
 import org.bukkit.command.CommandSender;

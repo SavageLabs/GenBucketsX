@@ -25,6 +25,10 @@ public class PlayerGenEvent extends Event implements Cancellable {
         this.genType = genType;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     @Override
     public boolean isCancelled() {
         return cancelled;
@@ -37,10 +41,6 @@ public class PlayerGenEvent extends Event implements Cancellable {
 
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 
