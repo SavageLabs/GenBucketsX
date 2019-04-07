@@ -1,6 +1,5 @@
 package net.prosavage.genbucket.hooks.impl;
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.hooks.PluginHook;
 import net.prosavage.genbucket.hooks.impl.worldguard.WorldGuardLegacy;

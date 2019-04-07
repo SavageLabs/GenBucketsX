@@ -45,7 +45,7 @@ public class HorizontalGen extends Generator {
    public void run() {
       if (isDataGen() || ((FactionHook) getPlugin().getHookManager().getPluginMap().get("Factions")).canBuild(getBlock(), getPlayer())) {
          setIndex(getIndex() + 1);
-         Block gen = getBlock().getChunk().getBlock(getBlock().getX() + getIndex() * blockFace.getModX(), getBlock().getY(), getBlock().getZ() + getIndex() * blockFace.getModZ());
+         Block gen = getBlock().getWorld().getBlockAt(getBlock().getX() + getIndex() * blockFace.getModX(), getBlock().getY(), getBlock().getZ() + getIndex() * blockFace.getModZ());
 
          if (!isDataGen() && !isValidLocation(gen)) {
             getBlock().setType(getMaterial(), false);

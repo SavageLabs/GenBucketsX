@@ -17,8 +17,11 @@ public class GenBucket extends JavaPlugin {
 
     public static Economy econ;
     private static GenBucket instance;
+
     public int taskID;
+
     public GenerationShopGUI generationShopGUI;
+
     public Set<Material> materials = new HashSet<>();
 
     private HookManager hookManager;
