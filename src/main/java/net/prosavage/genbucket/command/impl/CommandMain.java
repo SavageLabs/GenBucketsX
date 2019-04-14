@@ -26,7 +26,7 @@ public class CommandMain extends AbstractCommand {
 
     @Override
     public String getPermission() {
-        return null;
+        return "genbucket.command.menu";
     }
 
 }

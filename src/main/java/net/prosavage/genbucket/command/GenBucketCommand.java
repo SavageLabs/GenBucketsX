@@ -36,7 +36,7 @@ public class GenBucketCommand implements CommandExecutor {
             AbstractCommand helpCommand = subcommands.get(CommandHelp.class);
             if (helpCommand.getPermission() != null && commandSender.hasPermission(helpCommand.getPermission())) {
                 subcommands.get(CommandHelp.class).execute(commandSender, args);
-            } else {
+            } else if (commandSender.hasPermission(subcommands.get(CommandMain.class).getPermission())) {
                 subcommands.get(CommandMain.class).execute(commandSender, args);
             }
             return false;
