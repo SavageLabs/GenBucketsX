@@ -119,7 +119,7 @@ public class GenListener implements Listener, Runnable {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        if (event.getInventory().getName().equals(plugin.generationShopGUI.getTitle()) && event.getClickedInventory() != player.getInventory()) {
+        if (event.getInventory().getName().equals(plugin.generationShopGUI.getTitle()) && event.getInventory() != player.getInventory()) {
             if (event.getCurrentItem() != null && event.getInventory() != null && ItemUtils.hasKey(event.getCurrentItem(), "GENBUCKET")) {
                 ItemStack item = event.getCurrentItem().clone();
                 if (item != null && item.getType() != Material.LAVA_BUCKET) {
