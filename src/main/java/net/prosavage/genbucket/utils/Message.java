@@ -9,6 +9,7 @@ public enum Message {
     PLUGIN_RELOAD("plugin-reload", "&aYou have reloaded the config."),
     PLAYER_REQUIRED("player-required", "&cYou need to be a player to run this command!"),
     NO_PERMISSION("no-permission", "&cYou do not have permission."),
+    GEN_BLOCKED_ACTION("blocked-action", "&cYou may not shift click or place the bucket in this slot!"),
     GEN_CANCELLED("gen-cancelled", "&cYou have cancelled your generation."),
     GEN_HAS_ALREADY("gen-has-already", "&cYou already have this gen bucket!"),
     GEN_CANT_PLACE("gen-cant-place", "&cYou can't place gen buckets here!"),
@@ -34,7 +35,7 @@ public enum Message {
     }
 
     public String getMessage() {
-        return message;
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     public void setMessage(String message) {
