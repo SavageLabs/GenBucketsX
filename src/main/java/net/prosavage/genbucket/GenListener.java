@@ -22,6 +22,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -71,6 +72,15 @@ public class GenListener implements Listener, Runnable {
                 }
             }
 
+        }
+    }
+
+    @EventHandler
+    public void inventoryClick(InventoryClickEvent event) {
+        ItemStack item = event.getCursor();
+        Player player = (Player) event.getWhoClicked();
+        if (item.hasItemMeta() && ItemUtils.hasKey(item, "GENBUCKET") && event.getSlotType() == InventoryType.SlotType.FUEL) {
+            event.setCancelled(true);
         }
     }
 
