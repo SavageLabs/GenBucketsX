@@ -89,9 +89,13 @@ public abstract class Generator {
 
     public boolean isValidLocation(Block block) {
         Location loc = block.getLocation();
-        WorldBorder wb = loc.getWorld().getWorldBorder();
-        double size = wb.getSize() / 2.0;
-        if (loc.getBlockX() >= size || -loc.add(1, 0, 0).getX() >= size || loc.getBlockZ() >= size || -loc.add(0, 0, 1).getBlockZ() >= size) {
+
+        WorldBorder border = loc.getWorld().getWorldBorder();
+        double size = border.getSize()/2;
+        Location center = border.getCenter();
+        double x = loc.getX() - center.getX(), z = loc.getZ() - center.getZ();
+
+        if (((x+1) > size || (-x) > size) || ((z+1) > size || (-z) > size)) {
             setFinished(true);
             return false;
         }

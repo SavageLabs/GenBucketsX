@@ -5,10 +5,7 @@ import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.MultiversionMaterials;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.WorldBorder;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -45,10 +42,13 @@ public class VerticalGen extends Generator {
     public boolean isValidLocation(Block block) {
 
         Location loc = block.getLocation();
-        WorldBorder wb = loc.getWorld().getWorldBorder();
-        double size = wb.getSize() / 2.0;
 
-        if (loc.getBlockX() >= size || -loc.add(1, 0, 0).getX() >= size || loc.getBlockZ() >= size || -loc.add(0, 0, 1).getBlockZ() >= size) {
+        WorldBorder border = loc.getWorld().getWorldBorder();
+        double size = border.getSize()/2;
+        Location center = border.getCenter();
+        double x = loc.getX() - center.getX(), z = loc.getZ() - center.getZ();
+
+        if (((x+1) > size || (-x) > size) || ((z+1) > size || (-z) > size)) {
             setFinished(true);
             return false;
         }
