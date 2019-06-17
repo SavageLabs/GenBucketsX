@@ -77,10 +77,17 @@ public class GenListener implements Listener, Runnable {
 
     @EventHandler
     public void inventoryClick(InventoryClickEvent event) {
+        if (event.getInventory() == null) return;
+        if (event.getInventory().getTitle().equals(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("generation-shop.name"))))
+            return;
         ItemStack item = event.getCursor();
+        if (item.getType() == Material.AIR && event.getClick().isShiftClick()) item = event.getCurrentItem();
         Player player = (Player) event.getWhoClicked();
-        if (item.hasItemMeta() && ItemUtils.hasKey(item, "GENBUCKET") && event.getSlotType() == InventoryType.SlotType.FUEL) {
+
+        if (item.hasItemMeta() && ItemUtils.hasKey(item, "GENBUCKET") && (event.getClick().isShiftClick() || event.getSlotType() == InventoryType.SlotType.FUEL)) {
             event.setCancelled(true);
+            player.sendMessage(Message.GEN_BLOCKED_ACTION.getMessage());
+            player.closeInventory();
         }
     }
 
