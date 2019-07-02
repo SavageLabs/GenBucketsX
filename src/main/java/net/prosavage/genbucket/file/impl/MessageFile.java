@@ -18,7 +18,11 @@ public class MessageFile extends CustomFile {
     public MessageFile init() {
         this.reloadConfig();
         for (Message message : Message.values()) {
-            message.setMessages(getConfig().getStringList(message.getConfig()));
+            if (message.getMessages() != null) {
+                message.setMessages(getConfig().getStringList(message.getConfig()));
+            } else {
+                message.setMessage(getConfig().getString(message.getConfig()));
+            }
         }
         return this;
     }
