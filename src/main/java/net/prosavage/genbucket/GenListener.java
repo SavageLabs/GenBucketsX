@@ -80,7 +80,7 @@ public class GenListener implements Listener, Runnable {
     @EventHandler
     public void inventoryClick(InventoryClickEvent event) {
         if (event.getView() == null) return;
-        if (event.getView().getTopInventory().getName().equals(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("generation-shop.name"))))
+        if (event.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("generation-shop.name"))))
             return;
         ItemStack item = event.getCursor();
         if (item.getType() == Material.AIR && event.getClick().isShiftClick()) item = event.getCurrentItem();
@@ -138,7 +138,7 @@ public class GenListener implements Listener, Runnable {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        if (event.getView().getTopInventory().getName().equals(plugin.generationShopGUI.getTitle()) && event.getView().getTopInventory() != player.getInventory()) {
+        if (event.getView().getTitle().equals(plugin.generationShopGUI.getTitle()) && event.getView().getTopInventory() != player.getInventory()) {
             if (event.getCurrentItem() != null && event.getView().getTopInventory() != null && ItemUtils.hasKey(event.getCurrentItem(), "GENBUCKET")) {
                 ItemStack item = event.getCurrentItem().clone();
                 if (item != null && item.getType() != Material.LAVA_BUCKET) {
