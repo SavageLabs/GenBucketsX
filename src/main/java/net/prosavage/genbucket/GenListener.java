@@ -80,7 +80,7 @@ public class GenListener implements Listener, Runnable {
     @EventHandler
     public void inventoryClick(InventoryClickEvent event) {
         if (event.getView() == null) return;
-        if (event.getView().getTopInventory().getTitle().equals(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("generation-shop.name"))))
+        if (event.getView().getTopInventory().getName().equals(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("generation-shop.name"))))
             return;
         ItemStack item = event.getCursor();
         if (item.getType() == Material.AIR && event.getClick().isShiftClick()) item = event.getCurrentItem();
