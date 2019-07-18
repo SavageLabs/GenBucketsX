@@ -24,6 +24,7 @@ import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -128,10 +129,10 @@ public class GenListener implements Listener, Runnable {
     }
 
     @EventHandler
-    public void onDropItem(ItemSpawnEvent event) {
-        ItemStack item = event.getEntity().getItemStack();
+    public void onDropItem(PlayerDropItemEvent event) {
+        ItemStack item = event.getItemDrop().getItemStack();
         if (ItemUtils.hasKey(item, "GENBUCKET")) {
-            event.getEntity().remove();
+            event.getItemDrop().remove();
         }
     }
 
