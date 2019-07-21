@@ -41,7 +41,7 @@ public class CommandGive extends AbstractCommand {
                         item.setAmount(Integer.parseInt(args[4]));
                     }
 
-                    ((Player) sender).getInventory().addItem(item);
+                    Bukkit.getPlayer(args[1]).getInventory().addItem(item);
                     return false;
                 }
             }
@@ -50,6 +50,8 @@ public class CommandGive extends AbstractCommand {
         sender.sendMessage(ChatColor.RED + "Usage: /gen give [Player] [GenType] [Material] [Amount]");
         return false;
     }
+
+
 
     @Override
     public String getDescription() {
