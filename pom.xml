@@ -6,7 +6,7 @@
 
     <groupId>net.prosavage</groupId>
     <artifactId>SavageGenbuckets</artifactId>
-    <version>1.9.1</version>
+    <version>1.9.2</version>
 
     <repositories>
         <repository>
