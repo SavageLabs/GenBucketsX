@@ -6,7 +6,7 @@ import net.prosavage.genbucket.file.FileManager;
 import net.prosavage.genbucket.file.impl.DataFile;
 import net.prosavage.genbucket.hooks.HookManager;
 import net.prosavage.genbucket.menu.impl.GenerationShopGUI;
-import net.prosavage.genbucket.utils.MultiversionMaterials;
+import net.prosavage.genbucket.utils.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -39,7 +39,7 @@ public class GenBucket extends JavaPlugin {
         this.fileManager = new FileManager(this);
 
         getServer().getPluginManager().registerEvents(new GenListener(this), this);
-        getConfig().getStringList("replace-blocks").forEach(s -> materials.add(MultiversionMaterials.valueOf(s).parseMaterial()));
+        getConfig().getStringList("replace-blocks").forEach(s -> materials.add(XMaterial.valueOf(s).parseMaterial()));
 
         this.generationShopGUI = new GenerationShopGUI(this);
     }

@@ -5,7 +5,7 @@ import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.Message;
-import net.prosavage.genbucket.utils.MultiversionMaterials;
+import net.prosavage.genbucket.utils.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,7 +25,7 @@ public class HorizontalGen extends Generator {
                 this.setSourceMaterial(getMaterial());
                 block.setType(getMaterial());
             } else {
-                this.setSourceMaterial(MultiversionMaterials.valueOf(GenBucket.get().getConfig().getString("sourceblock.item-name")).parseMaterial());
+                this.setSourceMaterial(XMaterial.valueOf(GenBucket.get().getConfig().getString("sourceblock.item-name")).parseMaterial());
                 block.setType(getSourceMaterial());
             }
         } else {

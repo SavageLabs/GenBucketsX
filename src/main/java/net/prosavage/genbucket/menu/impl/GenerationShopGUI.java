@@ -3,7 +3,8 @@ package net.prosavage.genbucket.menu.impl;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.menu.MenuBuilder;
 import net.prosavage.genbucket.utils.ItemUtils;
-import net.prosavage.genbucket.utils.MultiversionMaterials;
+import net.prosavage.genbucket.utils.XMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -41,8 +42,7 @@ public class GenerationShopGUI extends MenuBuilder {
     private ItemStack getBlankItem() {
         // Auto converts to 1.8 / 1.13 material as needed.
         FileConfiguration config = getPlugin().getConfig();
-        ItemStack item = new ItemStack(MultiversionMaterials.fromString(config.getString("generation-shop.background-item")).parseItem().getType());
-
+        ItemStack item = new ItemStack(XMaterial.matchXMaterial(config.getString("generation-shop.background-item")).parseItem());
         if (config.getBoolean("generation-shop.background-glow")) {
             item.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 1);
         }

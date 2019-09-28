@@ -4,7 +4,7 @@ import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.utils.Message;
-import net.prosavage.genbucket.utils.MultiversionMaterials;
+import net.prosavage.genbucket.utils.XMaterial;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -23,7 +23,7 @@ public class VerticalGen extends Generator {
                 this.setSourceMaterial(getMaterial());
                 block.setType(getMaterial(), false);
             } else {
-                this.setSourceMaterial(MultiversionMaterials.valueOf(GenBucket.get().getConfig().getString("sourceblock.item-name")).parseMaterial());
+                this.setSourceMaterial(XMaterial.valueOf(GenBucket.get().getConfig().getString("sourceblock.item-name")).parseMaterial());
                 block.setType(getSourceMaterial(), false);
             }
         } else {
