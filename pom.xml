@@ -66,10 +66,10 @@
             <systemPath>${project.basedir}/dependencies/MassiveCore.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>com.github.ProSavage</groupId>
-            <artifactId>SavageFactions</artifactId>
-            <version>1.6.x-0.1.21-gbdd5473-400</version>
-            <scope>provided</scope>
+             <groupId>com.massivecraft</groupId>
+             <artifactId>SavageFactions</artifactId>
+             <version>1.6.9.5-U0.2.1-RC-1.6.2-RC-2.5-RC-6</version>
+             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.massivecraft.</groupId>
