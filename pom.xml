@@ -6,7 +6,7 @@
 
     <groupId>net.prosavage</groupId>
     <artifactId>SavageGenbuckets</artifactId>
-    <version>1.9.2</version>
+    <version>1.9.3</version>
 
     <repositories>
         <repository>
@@ -18,12 +18,13 @@
             <url>https://jitpack.io</url>
         </repository>
         <repository>
-            <id>essx-repo</id>
-            <url>https://ci.ender.zone/plugin/repository/everything/</url>
-        </repository>
-        <repository>
             <id>sk89q-repo</id>
-            <url>http://maven.sk89q.com/repo/</url>
+            <url>https://maven.enginehub.org/repo/</url>
+        </repository>
+
+        <repository>
+            <id>illyria-io</id>
+            <url>https://nexus.illyria.io/repository/maven-public/</url>
         </repository>
     </repositories>
 
@@ -66,10 +67,10 @@
             <systemPath>${project.basedir}/dependencies/MassiveCore.jar</systemPath>
         </dependency>
         <dependency>
-             <groupId>com.massivecraft</groupId>
-             <artifactId>SavageFactions</artifactId>
-             <version>1.6.9.5-U0.2.1-RC-1.6.2-RC-2.5-RC-6</version>
-             <scope>provided</scope>
+            <groupId>com.massivecraft</groupId>
+            <artifactId>SavageFactions</artifactId>
+            <version>1.6.9.5-U0.2.1-RC-1.6.2-RC-2.5-RC-6</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.massivecraft.</groupId>
