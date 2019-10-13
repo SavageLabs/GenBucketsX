@@ -20,7 +20,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
@@ -138,7 +137,7 @@ public class GenListener implements Listener, Runnable {
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         if (event.getView().getTitle().equals(plugin.generationShopGUI.getTitle()) && event.getView().getTopInventory() != player.getInventory()) {
-            if (event.getCurrentItem() != null && event.getView().getTopInventory() != null && ItemUtils.hasKey(event.getCurrentItem(), "GENBUCKET")) {
+            if (event.getCurrentItem() != null && event.getView().getTopInventory() != null && event.getCurrentItem().getType() != Material.AIR && ItemUtils.hasKey(event.getCurrentItem(), "GENBUCKET")) {
                 ItemStack item = event.getCurrentItem().clone();
                 if (item != null && item.getType() != Material.LAVA_BUCKET) {
                     if (plugin.getConfig().getBoolean("use-bucket")) {

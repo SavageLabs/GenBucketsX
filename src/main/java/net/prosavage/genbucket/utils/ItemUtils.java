@@ -26,6 +26,7 @@ public class ItemUtils {
     }
 
     public static boolean hasKey(ItemStack itemStack, String key) {
+        if (itemStack == null) return false;
         return new NBTItem(itemStack).hasKey(key);
     }
 
