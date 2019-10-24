@@ -4,7 +4,6 @@ import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.menu.MenuBuilder;
 import net.prosavage.genbucket.utils.ItemUtils;
 import net.prosavage.genbucket.utils.XMaterial;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
