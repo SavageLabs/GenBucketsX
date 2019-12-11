@@ -1,6 +1,7 @@
 package net.prosavage.genbucket.hooks;
 
 import net.prosavage.genbucket.GenBucket;
+import net.prosavage.genbucket.hooks.impl.EssentialsHook;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.hooks.impl.VaultHook;
 import net.prosavage.genbucket.hooks.impl.WorldGuardHook;
@@ -19,11 +20,12 @@ public class HookManager {
         hookPlugin(new WorldGuardHook());
         hookPlugin(new VaultHook());
         hookPlugin(new FactionHook());
+        hookPlugin(new EssentialsHook());
     }
 
     private void hookPlugin(PluginHook pluginHook) {
         if (plugin.getServer().getPluginManager().getPlugin(pluginHook.getName()) == null) {
-            plugin.getServer().getLogger().log(Level.SEVERE, "Plugin failed to find " + pluginHook.getName());
+            plugin.getServer().getLogger().log(Level.WARNING, "Plugin failed to find " + pluginHook.getName()+", disabling hook");
             return;
         }
         pluginMap.put(pluginHook.getName(), (PluginHook<?>) pluginHook.setup(plugin));
