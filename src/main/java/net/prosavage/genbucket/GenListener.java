@@ -45,7 +45,7 @@ public class GenListener implements Listener, Runnable {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEmptyBucket(PlayerBucketEmptyEvent event) {
-        ItemStack item = event.getPlayer().getItemInHand();
+        ItemStack item = getTool(event.getPlayer());
         if ((item.getType() == Material.LAVA_BUCKET || item.getType() == Material.WATER_BUCKET) && ItemUtils.hasKey(item, "GENBUCKET")) {
             event.setCancelled(true);
             Block block = event.getBlockClicked().getRelative(event.getBlockFace());
@@ -57,17 +57,17 @@ public class GenListener implements Listener, Runnable {
             if (plugin.getHookManager().getPluginMap().get("WorldGuard") != null) {
                 WorldGuardHook wgHook = ((WorldGuardHook) plugin.getHookManager().getPluginMap().get("WorldGuard"));
                 if (!wgHook.canBuild(player, block)) {
-                    event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANCELLED.getMessage()));
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANCELLED.getMessage()));
                     return;
                 }
             }
 
             if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
-                if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), event.getPlayer())) {
-                    register(new VerticalGen(plugin, event.getPlayer(), mat, block));
+                if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), player)) {
+                    register(new VerticalGen(plugin, player, mat, block));
                     Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.VERTICAL));
-                } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), event.getPlayer())) {
-                    register(new HorizontalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace()));
+                } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), player)) {
+                    register(new HorizontalGen(plugin, player, mat, block, event.getBlockFace()));
                     Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.HORIZONTAL));
                 }
             }
@@ -84,7 +84,7 @@ public class GenListener implements Listener, Runnable {
         if (item.getType() == Material.AIR && event.getClick().isShiftClick()) item = event.getCurrentItem();
         Player player = (Player) event.getWhoClicked();
 
-        if (item.hasItemMeta() &&  player.getOpenInventory().getType().equals(InventoryType.FURNACE) && ItemUtils.hasKey(item, "GENBUCKET") && event.getClick().isShiftClick()) {
+        if (item.hasItemMeta() && player.getOpenInventory().getType().equals(InventoryType.FURNACE) && ItemUtils.hasKey(item, "GENBUCKET") && event.getClick().isShiftClick()) {
             event.setCancelled(true);
             player.sendMessage(Message.GEN_BLOCKED_ACTION.getMessage());
             player.closeInventory();
@@ -93,7 +93,7 @@ public class GenListener implements Listener, Runnable {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlaceBlock(PlayerInteractEvent event) {
-        ItemStack item = event.getPlayer().getItemInHand();
+        ItemStack item = getTool(event.getPlayer());
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK && !plugin.getConfig().getBoolean("use-bucket")) {
             if (item.hasItemMeta() && ItemUtils.hasKey(item, "GENBUCKET")) {
                 event.setCancelled(true);
@@ -157,7 +157,7 @@ public class GenListener implements Listener, Runnable {
     }
 
     public void run() {
-        if (generations.size() != 0) {
+        if (!generations.isEmpty()) {
             for (Iterator<Generator> iterator = generations.iterator(); iterator.hasNext(); ) {
                 Generator generator = iterator.next();
                 if (generator.isFinished()) {
@@ -173,7 +173,7 @@ public class GenListener implements Listener, Runnable {
     }
 
     public void register(Generator generator) {
-        if (generations.size() == 0) {
+        if (generations.isEmpty()) {
             GenBucket.get().start();
         }
         generations.add(generator);
@@ -187,6 +187,15 @@ public class GenListener implements Listener, Runnable {
         }
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANT_AFFORD.getMessage()));
         return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    public static ItemStack getTool(Player player) {
+        if (GenBucket.getServerVersion() <= 8) {
+            return player.getInventory().getItemInHand();
+        } else {
+            return player.getInventory().getItemInMainHand();
+        }
     }
 
 }

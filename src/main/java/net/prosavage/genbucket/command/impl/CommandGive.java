@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class CommandGive extends AbstractCommand {
@@ -26,11 +25,14 @@ public class CommandGive extends AbstractCommand {
                 if (Bukkit.getPlayer(args[1]) != null && Material.valueOf(args[3].toUpperCase()) != null) {
                     int amount;
                     if (args[4].matches("-?\\d+(\\.\\d+)?")) {
-                        amount = Integer.parseInt(args[4]);
+                        try {
+                            amount = Integer.parseInt(args[4]);
+                        } catch (NumberFormatException nfe) {
+                            amount = 1;
+                        }
                     } else {
                         amount = 1;
                     }
-
                     ItemStack item = new ItemStack(Material.valueOf(args[3].toUpperCase()));
                     String type = args[2].substring(0, 1).toUpperCase() + args[2].substring(1).toLowerCase();
                     item = ItemUtils.createItem(item, getPlugin().getConfig(), args[2].toUpperCase() + "." + args[3].toUpperCase(), type);
@@ -38,7 +40,7 @@ public class CommandGive extends AbstractCommand {
                     if (getPlugin().getConfig().getBoolean("use-bucket")) {
                         item.setType(Material.LAVA_BUCKET);
                     } else {
-                        item.setAmount(Integer.parseInt(args[4]));
+                        item.setAmount(amount);
                     }
 
                     Bukkit.getPlayer(args[1]).getInventory().addItem(item);
@@ -50,7 +52,6 @@ public class CommandGive extends AbstractCommand {
         sender.sendMessage(ChatColor.RED + "Usage: /gen give [Player] [GenType] [Material] [Amount]");
         return false;
     }
-
 
 
     @Override

@@ -36,7 +36,7 @@ public class HorizontalGen extends Generator {
 
     public HorizontalGen(String data) {
         super(GenBucket.get(), null, Material.valueOf(data.split(",")[0]), getBlockFromString(data.split(",")[1]), GenType.VERTICAL);
-        setIndex(Integer.valueOf(data.split(",")[2]));
+        setIndex(Integer.parseInt(data.split(",")[2]));
         blockFace = BlockFace.valueOf(data.split(",")[3]);
         setData(true);
     }

@@ -7,6 +7,7 @@ import net.prosavage.genbucket.file.impl.DataFile;
 import net.prosavage.genbucket.hooks.HookManager;
 import net.prosavage.genbucket.menu.impl.GenerationShopGUI;
 import net.prosavage.genbucket.utils.XMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -33,6 +34,7 @@ public class GenBucket extends JavaPlugin {
 
     public void onEnable() {
         (GenBucket.instance = this).saveDefaultConfig();
+        checkServerVersion();
         this.getCommand("genbucket").setExecutor(new GenBucketCommand(this));
 
         this.hookManager = new HookManager(this);
@@ -48,6 +50,8 @@ public class GenBucket extends JavaPlugin {
     public void onDisable() {
         DataFile dataFile = (DataFile) this.fileManager.getFileMap().get("data");
         dataFile.saveGenBuckets();
+        instance = null;
+        getServer().getScheduler().cancelTasks(this);
     }
 
     public void start() {
@@ -69,4 +73,15 @@ public class GenBucket extends JavaPlugin {
     public Set<Material> getReplacements() {
         return materials;
     }
+
+    private static int ver;
+
+    private void checkServerVersion() {
+        ver = Integer.parseInt(Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3].replace("1_", "").substring(1).replaceAll("_R\\d", ""));
+    }
+
+    public static int getServerVersion() {
+        return ver;
+    }
+
 }

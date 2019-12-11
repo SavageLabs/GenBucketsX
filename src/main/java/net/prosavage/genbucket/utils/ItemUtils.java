@@ -34,7 +34,7 @@ public class ItemUtils {
         item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString(key + ".name")));
-        ArrayList<String> lore = new ArrayList<String>();
+        ArrayList<String> lore = new ArrayList<>();
         for (String s : config.getStringList("genbucket-lore")) {
             lore.add(ChatColor.translateAlternateColorCodes('&', s.replace("%type%", type).replace("%price%", String.valueOf(config.getInt(key + ".price")))));
         }
