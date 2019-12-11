@@ -7,6 +7,7 @@ import com.massivecraft.massivecore.ps.PS;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.Message;
+import net.prosavage.genbucket.utils.VanishUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -28,7 +29,7 @@ public class FactionMCHook extends FactionHook {
         Location loc = player.getLocation();
         for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
             Location otherLoc = otherPlayer.getLocation();
-            if (player == otherPlayer || otherPlayer.isOp() || !player.canSee(otherPlayer) || loc.getWorld() != otherLoc.getWorld()) {
+            if (player == otherPlayer || otherPlayer.isOp() || !player.canSee(otherPlayer) || VanishUtils.isVanished(otherPlayer) || loc.getWorld() != otherLoc.getWorld()) {
                 continue;
             }
 

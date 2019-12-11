@@ -7,12 +7,12 @@ import com.massivecraft.factions.struct.Relation;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.Message;
+import net.prosavage.genbucket.utils.VanishUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.metadata.MetadataValue;
 
 public class FactionUUIDHook extends FactionHook {
 
@@ -33,21 +33,10 @@ public class FactionUUIDHook extends FactionHook {
         Location loc = player.getLocation();
         for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
             Location otherLoc = otherPlayer.getLocation();
-            if (player == otherPlayer || otherPlayer.isOp() || loc.getWorld() != otherLoc.getWorld()) {
+            if (player == otherPlayer || otherPlayer.isOp() || !player.canSee(otherPlayer) || VanishUtils.isVanished(otherPlayer) || loc.getWorld() != otherLoc.getWorld()) {
                 continue;
             }
-            boolean vanish = false;
-            if (!player.canSee(otherPlayer)) vanish = true;
-            if (!vanish && otherPlayer.hasMetadata("vanished")) {
-                for (MetadataValue meta : otherPlayer.getMetadata("vanished")) {
-                    if (meta == null) continue;
-                    if (meta.asBoolean()) {
-                        vanish = true;
-                        break;
-                    }
-                }
-            }
-            if (vanish) continue;
+
             FPlayer other = FPlayers.getInstance().getByPlayer(otherPlayer);
             Relation relation = other.getRelationTo(FPlayers.getInstance().getByPlayer(player));
             if (relation.isMember() || relation.isTruce() || relation.isAlly()) {
