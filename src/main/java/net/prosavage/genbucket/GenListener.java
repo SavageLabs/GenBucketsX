@@ -10,6 +10,7 @@ import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.hooks.impl.WorldGuardHook;
 import net.prosavage.genbucket.utils.ItemUtils;
 import net.prosavage.genbucket.utils.Message;
+import net.prosavage.genbucket.utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -138,7 +139,13 @@ public class GenListener implements Listener, Runnable {
         Player player = (Player) event.getWhoClicked();
         if (event.getView().getTitle().equals(plugin.generationShopGUI.getTitle()) && event.getView().getTopInventory() != player.getInventory()) {
             if (event.getCurrentItem() != null && event.getView().getTopInventory() != null && event.getCurrentItem().getType() != Material.AIR && ItemUtils.hasKey(event.getCurrentItem(), "GENBUCKET")) {
+                event.setCancelled(true);
                 ItemStack item = event.getCurrentItem().clone();
+                if ((item.getType() == XMaterial.WATER_BUCKET.parseMaterial() || item.getType() == XMaterial.LAVA_BUCKET.parseMaterial())
+                        && !plugin.getConfig().getBoolean("liquid-blocks")) {
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_LIQUID_DISABLED.getMessage()));
+                    return;
+                }
                 if (item != null && item.getType() != Material.LAVA_BUCKET) {
                     if (plugin.getConfig().getBoolean("use-bucket")) {
                         item.setType(Material.LAVA_BUCKET);
@@ -152,7 +159,7 @@ public class GenListener implements Listener, Runnable {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_HAS_ALREADY.getMessage()));
                 }
             }
-            event.setCancelled(true);
+
         }
     }
 

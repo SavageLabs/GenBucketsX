@@ -15,7 +15,8 @@ public enum Message {
     GEN_CANT_PLACE("gen-cant-place", "&cYou can't place gen buckets here!"),
     GEN_CANT_AFFORD("gen-cant-afford", "&cYou do not have sufficient funds."),
     GEN_CHARGED("gen-charged", "&cYou have been charged ${amount}"),
-    GEN_ENEMY_NEARBY("gen-enemy-nearby", "&cYou cannot place gen buckets with enemies nearby!");
+    GEN_ENEMY_NEARBY("gen-enemy-nearby", "&cYou cannot place gen buckets with enemies nearby!"),
+    GEN_LIQUID_DISABLED("gen-liquid-disabled", "&cLiquid buckets are disabled, as the water flow causes lag. This can be bypassed in config.yml, option \"liquid-blocks\".");
 
     String config, message;
     String[] messages;
