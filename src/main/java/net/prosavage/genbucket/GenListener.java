@@ -65,7 +65,7 @@ public class GenListener implements Listener, Runnable {
 
             if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
                 if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), player)) {
-                    register(new VerticalGen(plugin, player, mat, block));
+                    register(new VerticalGen(plugin, player, mat, block, event.getBlockFace()));
                     Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.VERTICAL));
                 } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), player)) {
                     register(new HorizontalGen(plugin, player, mat, block, event.getBlockFace()));
@@ -114,7 +114,7 @@ public class GenListener implements Listener, Runnable {
                 }
                 if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
                     if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), event.getPlayer())) {
-                        register(new VerticalGen(plugin, event.getPlayer(), mat, block));
+                        register(new VerticalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace()));
                         Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.VERTICAL));
                     } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), event.getPlayer())) {
                         register(new HorizontalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace()));

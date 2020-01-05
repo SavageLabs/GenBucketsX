@@ -85,7 +85,7 @@ VERTICAL:
     price: 5000
     slot: 13
   COBBLESTONE:
-    direction: down
+    direction: automatic
     name: '&aCobblestone Vertical'
     price: 10
     slot: 16
