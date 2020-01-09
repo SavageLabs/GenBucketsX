@@ -73,6 +73,9 @@ replace-blocks:
   - TALL_GRASS
   - LARGE_FERN
 
+# Buckets ignore liquid blocks, helpful for repairing waterlogged bases.
+replace-liquids: false
+
 VERTICAL:
   GRAVEL:
     direction: up

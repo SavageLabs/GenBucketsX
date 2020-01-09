@@ -24,6 +24,7 @@ public class GenBucket extends JavaPlugin {
     public GenerationShopGUI generationShopGUI;
 
     public Set<Material> replaceBlocksWhiteList = new HashSet<>();
+    public boolean replaceLiquids = false;
 
     private HookManager hookManager;
     private FileManager fileManager;
@@ -42,6 +43,7 @@ public class GenBucket extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new GenListener(this), this);
         getConfig().getStringList("replace-blocks").forEach(s -> replaceBlocksWhiteList.add(XMaterial.valueOf(s).parseMaterial()));
+        replaceLiquids = getConfig().getBoolean("replace-liquids", false);
 
         this.generationShopGUI = new GenerationShopGUI(this);
     }

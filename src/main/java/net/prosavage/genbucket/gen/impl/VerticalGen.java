@@ -61,6 +61,8 @@ public class VerticalGen extends Generator {
 			return true;
 		}
 
+		if (GenBucket.get().replaceLiquids && block.isLiquid()) return true;
+
 		return GenBucket.get().getReplacements().contains(block.getType());
 
 	}
