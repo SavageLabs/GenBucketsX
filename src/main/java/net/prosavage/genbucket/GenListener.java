@@ -28,6 +28,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -63,14 +64,22 @@ public class GenListener implements Listener, Runnable {
                 }
             }
 
-            if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
-                if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), player)) {
-                    register(new VerticalGen(plugin, player, mat, block, event.getBlockFace()));
-                    Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.VERTICAL));
-                } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), player)) {
-                    register(new HorizontalGen(plugin, player, mat, block, event.getBlockFace()));
-                    Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.HORIZONTAL));
+            try {
+                if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
+                    if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), player)) {
+                        register(new VerticalGen(plugin, player, mat, block, event.getBlockFace()));
+                        Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.VERTICAL));
+                    } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), player)) {
+                        register(new HorizontalGen(plugin, player, mat, block, event.getBlockFace()));
+                        Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.HORIZONTAL));
+                    }
                 }
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
 
         }
@@ -112,15 +121,23 @@ public class GenListener implements Listener, Runnable {
                         return;
                     }
                 }
-                if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
-                    if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), event.getPlayer())) {
-                        register(new VerticalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace()));
-                        Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.VERTICAL));
-                    } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), event.getPlayer())) {
-                        register(new HorizontalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace()));
-                        Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.HORIZONTAL));
+                try {
+                    if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
+                        if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), event.getPlayer())) {
+                            register(new VerticalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace()));
+                            Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.VERTICAL));
+                        } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), event.getPlayer())) {
+                            register(new HorizontalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace()));
+                            Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.HORIZONTAL));
 
+                        }
                     }
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
                 }
             }
         }
