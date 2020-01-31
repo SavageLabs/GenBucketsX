@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" version="4">
   <component name="FacetManager">
     <facet type="minecraft" name="Minecraft">
       <configuration>
@@ -57,11 +57,20 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="PROVIDED" name="Maven: com.massivecraft:SavageFactions:1.6.9.5-U0.2.1-RC-1.6.2-RC-2.5-RC-6" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.massivecraft.:SavageFactions:1.6.9.5-U0.2.1-RC-1.6.2-RC-2.5-RC-6" level="project" />
     <orderEntry type="module-library">
       <library name="Maven: com.massivecraft.:factions:2.14.1-SNAPSHOT">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/dependencies/Factions.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: com.massivecraft..:factions:2.14.1-SNAPSHOT">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/dependencies/FactionsUUID.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

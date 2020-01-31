@@ -6,7 +6,7 @@
 
     <groupId>net.prosavage</groupId>
     <artifactId>SavageGenbuckets</artifactId>
-    <version>1.9.8</version>
+    <version>1.9.9</version>
 
     <repositories>
         <repository>
@@ -67,7 +67,7 @@
             <systemPath>${project.basedir}/dependencies/MassiveCore.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>com.massivecraft</groupId>
+            <groupId>com.massivecraft.</groupId>
             <artifactId>SavageFactions</artifactId>
             <version>1.6.9.5-U0.2.1-RC-1.6.2-RC-2.5-RC-6</version>
             <scope>provided</scope>
@@ -78,6 +78,13 @@
             <scope>system</scope>
             <version>2.14.1-SNAPSHOT</version>
             <systemPath>${project.basedir}/dependencies/Factions.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.massivecraft..</groupId>
+            <artifactId>factions</artifactId>
+            <scope>system</scope>
+            <version>2.14.1-SNAPSHOT</version>
+            <systemPath>${project.basedir}/dependencies/FactionsUUID.jar</systemPath>
         </dependency>
     </dependencies>
     <build>
