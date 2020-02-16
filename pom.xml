@@ -23,8 +23,8 @@
         </repository>
 
         <repository>
-            <id>illyria-io</id>
-            <url>https://nexus.illyria.io/repository/maven-public/</url>
+            <id>savagelabs</id>
+            <url>https://nexus.savagelabs.net/repository/maven-public/</url>
         </repository>
     </repositories>
 
@@ -67,10 +67,12 @@
             <systemPath>${project.basedir}/dependencies/MassiveCore.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>com.massivecraft.</groupId>
+            <groupId>com.massivecraft</groupId>
             <artifactId>SavageFactions</artifactId>
-            <version>1.6.9.5-U0.2.1-RC-1.6.2-RC-2.5-RC-6</version>
-            <scope>provided</scope>
+            <version>1.6.9.5-U0.2.1-RC-1.6.2-RC-2.5-RC-9</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/dependencies/SavageFactions-2.5-RC-9.jar</systemPath>
+
         </dependency>
         <dependency>
             <groupId>com.massivecraft.</groupId>

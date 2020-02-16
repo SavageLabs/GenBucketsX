@@ -57,7 +57,15 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="PROVIDED" name="Maven: com.massivecraft.:SavageFactions:1.6.9.5-U0.2.1-RC-1.6.2-RC-2.5-RC-6" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: com.massivecraft:SavageFactions:1.6.9.5-U0.2.1-RC-1.6.2-RC-2.5-RC-9">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/dependencies/SavageFactions-2.5-RC-9.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="module-library">
       <library name="Maven: com.massivecraft.:factions:2.14.1-SNAPSHOT">
         <CLASSES>
