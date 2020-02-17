@@ -21,7 +21,7 @@ public class FactionHook implements PluginHook<FactionHook> {
         if (!authors.contains("drtshock") && !authors.contains("Benzimmer")) {
             Logger.print("Server Factions type has been set to (MassiveCore)", Logger.PrefixType.DEFAULT);
             return new FactionMCHook();
-        } else if (authors.contains("ProSavage")) {
+        } else if (authors.contains("ProSavage") || authors.contains("LockedThread")) {
             Logger.print("Server Factions type has been set to (SavageFactions/FactionsUltimate/StellarFactions/SaberFactions)", Logger.PrefixType.DEFAULT);
             return new SavageFactionsHook();
         } else {
