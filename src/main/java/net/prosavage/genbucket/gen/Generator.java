@@ -106,6 +106,8 @@ public abstract class Generator {
             return false;
         }
 
+        if (GenBucket.get().replaceLiquids && block.isLiquid()) return true;
+
         return GenBucket.get().getReplacements().contains(block.getType());
     }
 

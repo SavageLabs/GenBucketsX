@@ -41,6 +41,7 @@ public class GenBucketCommand implements CommandExecutor {
             if (commandSender.hasPermission(subcommands.get(CommandMain.class).getPermission())) {
                 subcommands.get(CommandMain.class).execute(commandSender, args);
             }
+            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.NO_PERMISSION.getMessage()));
             return false;
         }
 

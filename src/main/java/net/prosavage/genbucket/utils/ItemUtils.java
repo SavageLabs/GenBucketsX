@@ -3,6 +3,7 @@ package net.prosavage.genbucket.utils;
 
 import net.prosavage.genbucket.utils.nbt.NBTItem;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -31,6 +32,10 @@ public class ItemUtils {
     }
 
     public static ItemStack createItem(ItemStack item, FileConfiguration config, String key, String type) {
+        Material itemType = item.getType();
+        // Need to change water and lava to buckets.
+        if (item.getType() == XMaterial.WATER.parseMaterial()) item.setType(XMaterial.WATER_BUCKET.parseMaterial());
+        if (item.getType() == XMaterial.LAVA.parseMaterial()) item.setType(XMaterial.LAVA_BUCKET.parseMaterial());
         item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString(key + ".name")));
@@ -41,7 +46,7 @@ public class ItemUtils {
         itemMeta.setLore(lore);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         item.setItemMeta(itemMeta);
-        item = setKeyString(item, "MATERIAL", item.getType().name());
+        item = setKeyString(item, "MATERIAL", itemType.name());
         return setKeyString(item, "GENBUCKET", type.toUpperCase());
     }
 

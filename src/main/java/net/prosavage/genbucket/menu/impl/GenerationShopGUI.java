@@ -23,6 +23,7 @@ public class GenerationShopGUI extends MenuBuilder {
         ConfigurationSection vertical = getPlugin().getConfig().getConfigurationSection("VERTICAL");
         for (String key : vertical.getKeys(false)) {
             ItemStack item = new ItemStack(Material.valueOf(key));
+
             item = ItemUtils.createItem(item, getPlugin().getConfig(), "VERTICAL." + key, "Vertical");
             getInventory().setItem(getPlugin().getConfig().getInt("VERTICAL." + key + ".slot"), item);
         }

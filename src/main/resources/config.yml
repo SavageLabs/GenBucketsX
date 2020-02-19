@@ -20,6 +20,10 @@ generation-shop:
 # This makes it so gen buckets will ignore blocks of their own type. So it makes repairing walls etc easier.
 psuedo: true
 
+# Allows liquid buckets
+# WILL CAUSE LAG IF YOU HAVE WATER/LAVA FLOW ENABLED
+liquid-blocks: false
+
 # Source Block
 sourceblock:
   # If this option is true, the source block will just be same type as the genbucket's block.
@@ -69,6 +73,9 @@ replace-blocks:
   - TALL_GRASS
   - LARGE_FERN
 
+# Buckets ignore liquid blocks, helpful for repairing waterlogged bases.
+replace-liquids: false
+
 VERTICAL:
   GRAVEL:
     direction: up
@@ -81,7 +88,7 @@ VERTICAL:
     price: 5000
     slot: 13
   COBBLESTONE:
-    direction: down
+    direction: automatic
     name: '&aCobblestone Vertical'
     price: 10
     slot: 16

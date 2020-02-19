@@ -3,12 +3,14 @@ package net.prosavage.genbucket.hooks.impl;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.hooks.PluginHook;
 import net.prosavage.genbucket.hooks.impl.factions.FactionMCHook;
-import net.prosavage.genbucket.hooks.impl.factions.FactionUUIDHook;
+import net.prosavage.genbucket.hooks.impl.factions.FactionsUUIDHook;
+import net.prosavage.genbucket.hooks.impl.factions.SavageFactionsHook;
 import net.prosavage.genbucket.utils.Logger;
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class FactionHook implements PluginHook<FactionHook> {
@@ -19,13 +21,21 @@ public class FactionHook implements PluginHook<FactionHook> {
         if (!authors.contains("drtshock") && !authors.contains("Benzimmer")) {
             Logger.print("Server Factions type has been set to (MassiveCore)", Logger.PrefixType.DEFAULT);
             return new FactionMCHook();
+        } else if (authors.contains("ProSavage") || authors.contains("LockedThread")) {
+            Logger.print("Server Factions type has been set to (SavageFactions/FactionsUltimate/StellarFactions/SaberFactions)", Logger.PrefixType.DEFAULT);
+            return new SavageFactionsHook();
         } else {
-            Logger.print("Server Factions type has been set to (FactionsUUID/SavageFactions/FactionsUltimate)", Logger.PrefixType.DEFAULT);
-            return new FactionUUIDHook();
+           Logger.print("Server Factions type has been set to FactionsUUID", Logger.PrefixType.DEFAULT);
+            try {
+                return new FactionsUUIDHook();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
         }
+        return new SavageFactionsHook();
     }
 
-    public boolean canBuild(Block block, Player player) {
+    public boolean canBuild(Block block, Player player) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         throw new NotImplementedException("Factions does not exist!");
     }
 

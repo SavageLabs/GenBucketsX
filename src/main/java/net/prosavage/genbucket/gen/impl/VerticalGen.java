@@ -7,6 +7,7 @@ import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.XMaterial;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 
@@ -14,9 +15,12 @@ public class VerticalGen extends Generator {
 
 	protected String direction = "up";
 
-	public VerticalGen(GenBucket plugin, Player player, Material material, Block block) {
+	public VerticalGen(GenBucket plugin, Player player, Material material, Block block, BlockFace face) {
 		super(plugin, player, material, block, GenType.VERTICAL);
 		direction = GenBucket.get().getConfig().getString("VERTICAL." + getMaterial().toString() + ".direction", getMaterial().hasGravity() ? "up" : "down");
+		if (direction.endsWith("automatic")) {
+			direction = face == BlockFace.UP ? "up" : "down";
+		}
 		setIndex(getIndex() + (direction.equalsIgnoreCase("up") ? 1 : -1));
 		if (isValidLocation(block)) {
 			if (GenBucket.get().getConfig().getBoolean("sourceblock.no-source")) {
@@ -56,6 +60,8 @@ public class VerticalGen extends Generator {
 		if (GenBucket.get().getConfig().getBoolean("psuedo") && !getMaterial().hasGravity() && getMaterial().equals(block.getType())) {
 			return true;
 		}
+
+		if (GenBucket.get().replaceLiquids && block.isLiquid()) return true;
 
 		return GenBucket.get().getReplacements().contains(block.getType());
 
