@@ -45,6 +45,7 @@ public class GenListener implements Listener, Runnable {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEmptyBucket(PlayerBucketEmptyEvent event) {
+        if (!plugin.getConfig().getBoolean("use-bucket")) return;
         ItemStack item = getTool(event.getPlayer());
         if ((item.getType() == Material.LAVA_BUCKET || item.getType() == Material.WATER_BUCKET) && ItemUtils.hasKey(item, "GENBUCKET")) {
             event.setCancelled(true);
