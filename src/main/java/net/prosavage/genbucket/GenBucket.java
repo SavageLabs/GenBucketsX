@@ -1,12 +1,12 @@
 package net.prosavage.genbucket;
 
+import com.cryptomorin.xseries.XMaterial;
 import net.milkbowl.vault.economy.Economy;
 import net.prosavage.genbucket.command.GenBucketCommand;
 import net.prosavage.genbucket.file.FileManager;
 import net.prosavage.genbucket.file.impl.DataFile;
 import net.prosavage.genbucket.hooks.HookManager;
 import net.prosavage.genbucket.menu.impl.GenerationShopGUI;
-import net.prosavage.genbucket.utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,6 +33,7 @@ public class GenBucket extends JavaPlugin {
         return instance;
     }
 
+    @Override
     public void onEnable() {
         (GenBucket.instance = this).saveDefaultConfig();
         checkServerVersion();

@@ -6,32 +6,34 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.PermissibleAction;
-import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
+import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.VanishUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
+
 
 public class FactionsUUIDHook extends FactionHook {
 
     private Method playerCanBuildDestroyBlock = FactionsBlockListener.class.getMethod("playerCanBuildDestroyBlock", Player.class, Location.class, PermissibleAction.class, String.class, boolean.class);
 
     public FactionsUUIDHook() throws NoSuchMethodException {
+        //Empty
     }
 
     @Override
     public boolean canBuild(Block block, Player player) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        if (!(boolean) playerCanBuildDestroyBlock.invoke(FactionsBlockListener.class, player, block.getLocation(), PermissibleAction.BUILD, "build", true)){
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANT_PLACE.getMessage()));
+        if (!(boolean) playerCanBuildDestroyBlock.invoke(FactionsBlockListener.class, player, block.getLocation(), PermissibleAction.BUILD, "build", true)) {
+            player.sendMessage(ChatUtils.color(Message.GEN_CANT_PLACE.getMessage()));
             return false;
         }
         return true;
@@ -42,25 +44,23 @@ public class FactionsUUIDHook extends FactionHook {
         if (!GenBucket.get().getConfig().getBoolean("nearby-check")) {
             return false;
         }
-        Location loc = player.getLocation();
-        for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
-            Location otherLoc = otherPlayer.getLocation();
-            if (player == otherPlayer || otherPlayer.isOp() || !player.canSee(otherPlayer) || VanishUtils.isVanished(otherPlayer) || loc.getWorld() != otherLoc.getWorld()) {
-                continue;
+        int radius = GenBucket.get().getConfig().getInt("radius");
+        List<Entity> nearbyEntities = player.getNearbyEntities(radius, radius, radius);
+        try {
+            for (Entity entity : nearbyEntities) {
+                if (entity instanceof Player) {
+                    FPlayer playerNearby = FPlayers.getInstance().getByPlayer((Player) entity);
+                    if (playerNearby.getPlayer().isOp() || playerNearby.isAdminBypassing() || VanishUtils.isVanished(playerNearby.getPlayer())) {
+                        continue;
+                    }
+                    if (playerNearby.getRelationTo(FPlayers.getInstance().getByPlayer(player)).toString().contains("ENEMY")) {
+                        player.sendMessage(ChatUtils.color(Message.GEN_ENEMY_NEARBY.getMessage()));
+                        return true;
+                    }
+                }
             }
-
-            FPlayer other = FPlayers.getInstance().getByPlayer(otherPlayer);
-            Relation relation = other.getRelationTo(FPlayers.getInstance().getByPlayer(player));
-            if (relation.isMember() || relation.isTruce() || relation.isAlly()) {
-                continue;
-            }
-            double distX = Math.abs(loc.getX() - otherLoc.getX());
-            double distZ = Math.abs(loc.getZ() - otherLoc.getZ());
-            int radius = GenBucket.get().getConfig().getInt("radius");
-            if (distX <= radius && distZ <= radius) {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_ENEMY_NEARBY.getMessage()));
-                return true;
-            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return false;
     }

@@ -3,7 +3,7 @@ package net.prosavage.genbucket.command.impl;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.command.AbstractCommand;
 import net.prosavage.genbucket.command.GenBucketCommand;
-import org.bukkit.ChatColor;
+import net.prosavage.genbucket.utils.ChatUtils;
 import org.bukkit.command.CommandSender;
 
 public class CommandHelp extends AbstractCommand {
@@ -19,7 +19,7 @@ public class CommandHelp extends AbstractCommand {
     public boolean execute(CommandSender commandSender, String[] args) {
         for (AbstractCommand commands : command.getCommands()) {
             if (commandSender.isOp() || commandSender.hasPermission(commands.getPermission())) {
-                commandSender.sendMessage(ChatColor.RED + "/genbucket " + commands.getLabel() + ": " + ChatColor.GRAY + commands.getDescription());
+                commandSender.sendMessage(ChatUtils.color("&c/genbucket " + commands.getLabel() + " &8> &7" + commands.getDescription()));
             }
         }
         return false;

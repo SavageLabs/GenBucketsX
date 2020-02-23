@@ -6,10 +6,10 @@ import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.ps.PS;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
+import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.VanishUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -44,7 +44,7 @@ public class FactionMCHook extends FactionHook {
             double distZ = Math.abs(loc.getZ() - otherLoc.getZ());
             int radius = GenBucket.get().getConfig().getInt("radius");
             if (distX <= radius && distZ <= radius) {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_ENEMY_NEARBY.getMessage()));
+                player.sendMessage(ChatUtils.color(Message.GEN_ENEMY_NEARBY.getMessage()));
                 return true;
             }
         }

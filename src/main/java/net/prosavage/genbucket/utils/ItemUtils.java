@@ -1,6 +1,7 @@
 package net.prosavage.genbucket.utils;
 
 
+import com.cryptomorin.xseries.XMaterial;
 import net.prosavage.genbucket.utils.nbt.NBTItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -14,6 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemUtils {
+
+    private ItemUtils() {
+        throw new AssertionError("Instantiating utility class.");
+    }
 
     public static ItemStack setKeyString(ItemStack itemStack, String key, String value) {
         NBTItem nbtItem = new NBTItem(itemStack);

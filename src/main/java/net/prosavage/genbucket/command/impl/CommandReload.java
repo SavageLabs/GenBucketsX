@@ -1,11 +1,11 @@
 package net.prosavage.genbucket.command.impl;
 
+import com.cryptomorin.xseries.XMaterial;
 import net.md_5.bungee.api.ChatColor;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.command.AbstractCommand;
 import net.prosavage.genbucket.menu.impl.GenerationShopGUI;
 import net.prosavage.genbucket.utils.Message;
-import net.prosavage.genbucket.utils.XMaterial;
 import org.bukkit.command.CommandSender;
 
 public class CommandReload extends AbstractCommand {

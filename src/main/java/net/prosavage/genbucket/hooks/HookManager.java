@@ -1,10 +1,7 @@
 package net.prosavage.genbucket.hooks;
 
 import net.prosavage.genbucket.GenBucket;
-import net.prosavage.genbucket.hooks.impl.EssentialsHook;
-import net.prosavage.genbucket.hooks.impl.FactionHook;
-import net.prosavage.genbucket.hooks.impl.VaultHook;
-import net.prosavage.genbucket.hooks.impl.WorldGuardHook;
+import net.prosavage.genbucket.hooks.impl.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,14 +18,23 @@ public class HookManager {
         hookPlugin(new VaultHook());
         hookPlugin(new FactionHook());
         hookPlugin(new EssentialsHook());
+        hookPlugin(new SuperVanishHook());
     }
 
     private void hookPlugin(PluginHook pluginHook) {
-        if (plugin.getServer().getPluginManager().getPlugin(pluginHook.getName()) == null) {
-            plugin.getServer().getLogger().log(Level.WARNING, "Plugin failed to find " + pluginHook.getName()+", disabling hook");
-            return;
+        String[] pName;
+        if (pluginHook.getName().contains(",")) {
+            pName = pluginHook.getName().split(",");
+        } else {
+            pName = new String[] {pluginHook.getName()};
         }
-        pluginMap.put(pluginHook.getName(), (PluginHook<?>) pluginHook.setup(plugin));
+        for (String hookName : pName) {
+            if (plugin.getServer().getPluginManager().getPlugin(hookName) == null) {
+                plugin.getServer().getLogger().log(Level.WARNING, "Plugin failed to find " + hookName + ", disabling hook");
+                return;
+            }
+            pluginMap.put(hookName, (PluginHook<?>) pluginHook.setup(plugin));
+        }
     }
 
     public Map<String, PluginHook> getPluginMap() {

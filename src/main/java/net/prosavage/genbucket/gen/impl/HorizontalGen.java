@@ -1,11 +1,11 @@
 package net.prosavage.genbucket.gen.impl;
 
+import com.cryptomorin.xseries.XMaterial;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.Message;
-import net.prosavage.genbucket.utils.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;

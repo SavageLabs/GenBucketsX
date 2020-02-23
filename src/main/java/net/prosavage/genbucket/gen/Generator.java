@@ -93,7 +93,8 @@ public abstract class Generator {
         WorldBorder border = loc.getWorld().getWorldBorder();
         double size = border.getSize()/2;
         Location center = border.getCenter();
-        double x = loc.getX() - center.getX(), z = loc.getZ() - center.getZ();
+        double x = loc.getX() - center.getX();
+        double z = loc.getZ() - center.getZ();
 
         if (((x+1) > size || (-x) > size) || ((z+1) > size || (-z) > size)) {
             setFinished(true);

@@ -1,9 +1,9 @@
 package net.prosavage.genbucket.menu.impl;
 
+import com.cryptomorin.xseries.XMaterial;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.menu.MenuBuilder;
 import net.prosavage.genbucket.utils.ItemUtils;
-import net.prosavage.genbucket.utils.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -44,7 +44,7 @@ public class GenerationShopGUI extends MenuBuilder {
         FileConfiguration config = getPlugin().getConfig();
         ItemStack item;
         try {
-            item = new ItemStack(XMaterial.matchXMaterial(config.getString("generation-shop.background-item")).parseItem());
+            item = new ItemStack(XMaterial.matchXMaterial(config.getString("generation-shop.background-item")).get().parseItem());
         } catch (NullPointerException npe) {
             // Handle case in which the user uses invalid Material
             item = new ItemStack(Material.AIR);

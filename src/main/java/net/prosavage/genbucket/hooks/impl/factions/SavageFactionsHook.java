@@ -4,13 +4,12 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
+import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.VanishUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -19,8 +18,8 @@ public class SavageFactionsHook extends FactionHook {
 
     @Override
     public boolean canBuild(Block block, Player player) {
-        if (!FactionsBlockListener.playerCanBuildDestroyBlock(player, block.getLocation(),"build", true)) {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANT_PLACE.getMessage()));
+        if (!FactionsBlockListener.playerCanBuildDestroyBlock(player, block.getLocation(), "build", true)) {
+            player.sendMessage(ChatUtils.color(Message.GEN_CANT_PLACE.getMessage()));
             return false;
         }
         return true;
@@ -47,7 +46,7 @@ public class SavageFactionsHook extends FactionHook {
             double distZ = Math.abs(loc.getZ() - otherLoc.getZ());
             int radius = GenBucket.get().getConfig().getInt("radius");
             if (distX <= radius && distZ <= radius) {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_ENEMY_NEARBY.getMessage()));
+                player.sendMessage(ChatUtils.color(Message.GEN_ENEMY_NEARBY.getMessage()));
                 return true;
             }
         }

@@ -1,5 +1,6 @@
 package net.prosavage.genbucket;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.ImmutableList;
 import net.prosavage.genbucket.api.PlayerGenEvent;
 import net.prosavage.genbucket.gen.GenType;
@@ -8,11 +9,10 @@ import net.prosavage.genbucket.gen.impl.HorizontalGen;
 import net.prosavage.genbucket.gen.impl.VerticalGen;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.hooks.impl.WorldGuardHook;
+import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.ItemUtils;
 import net.prosavage.genbucket.utils.Message;
-import net.prosavage.genbucket.utils.XMaterial;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -60,7 +60,7 @@ public class GenListener implements Listener, Runnable {
             if (plugin.getHookManager().getPluginMap().get("WorldGuard") != null) {
                 WorldGuardHook wgHook = ((WorldGuardHook) plugin.getHookManager().getPluginMap().get("WorldGuard"));
                 if (!wgHook.canBuild(player, block)) {
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANCELLED.getMessage()));
+                    player.sendMessage(ChatUtils.color(Message.GEN_CANCELLED.getMessage()));
                     return;
                 }
             }
@@ -85,7 +85,7 @@ public class GenListener implements Listener, Runnable {
     @EventHandler
     public void inventoryClick(InventoryClickEvent event) {
         if (event.getView() == null) return;
-        if (event.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("generation-shop.name"))))
+        if (event.getView().getTitle().equals(ChatUtils.color(plugin.getConfig().getString("generation-shop.name"))))
             return;
         ItemStack item = event.getCursor();
         if (item.getType() == Material.AIR && event.getClick().isShiftClick()) item = event.getCurrentItem();
@@ -101,39 +101,38 @@ public class GenListener implements Listener, Runnable {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlaceBlock(PlayerInteractEvent event) {
         ItemStack item = getTool(event.getPlayer());
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && !plugin.getConfig().getBoolean("use-bucket")) {
-            if (item.hasItemMeta() && ItemUtils.hasKey(item, "GENBUCKET")) {
-                event.setCancelled(true);
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && !plugin.getConfig().getBoolean("use-bucket") && item.hasItemMeta() && ItemUtils.hasKey(item, "GENBUCKET")) {
+            event.setCancelled(true);
 
-                Block block = event.getClickedBlock().getRelative(event.getBlockFace());
-                Player player = event.getPlayer();
-                String name = ItemUtils.getKeyString(item, "GENBUCKET");
-                Material mat = Material.valueOf(ItemUtils.getKeyString(item, "MATERIAL"));
+            Block block = event.getClickedBlock().getRelative(event.getBlockFace());
+            Player player = event.getPlayer();
+            String name = ItemUtils.getKeyString(item, "GENBUCKET");
+            Material mat = Material.valueOf(ItemUtils.getKeyString(item, "MATERIAL"));
 
-                FactionHook facHook = ((FactionHook) plugin.getHookManager().getPluginMap().get("Factions"));
-                if (plugin.getHookManager().getPluginMap().get("WorldGuard") != null) {
-                    WorldGuardHook wgHook = ((WorldGuardHook) plugin.getHookManager().getPluginMap().get("WorldGuard"));
-                    if (!wgHook.canBuild(player, block)) {
-                        event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANCELLED.getMessage()));
-                        return;
-                    }
-                }
-                try {
-                    if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
-                        if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), event.getPlayer())) {
-                            register(new VerticalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace()));
-                            Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.VERTICAL));
-                        } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), event.getPlayer())) {
-                            register(new HorizontalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace()));
-                            Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.HORIZONTAL));
-
-                        }
-                    }
-                } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                    e.printStackTrace();
+            FactionHook facHook = ((FactionHook) plugin.getHookManager().getPluginMap().get("Factions"));
+            if (plugin.getHookManager().getPluginMap().get("WorldGuard") != null) {
+                WorldGuardHook wgHook = ((WorldGuardHook) plugin.getHookManager().getPluginMap().get("WorldGuard"));
+                if (!wgHook.canBuild(player, block)) {
+                    event.getPlayer().sendMessage(ChatUtils.color(Message.GEN_CANCELLED.getMessage()));
+                    return;
                 }
             }
+            try {
+                if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
+                    if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), event.getPlayer())) {
+                        register(new VerticalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace()));
+                        Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.VERTICAL));
+                    } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), event.getPlayer())) {
+                        register(new HorizontalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace()));
+                        Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.HORIZONTAL));
+
+                    }
+                }
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     @EventHandler
@@ -153,7 +152,7 @@ public class GenListener implements Listener, Runnable {
                 ItemStack item = event.getCurrentItem().clone();
                 if ((item.getType() == XMaterial.WATER_BUCKET.parseMaterial() || item.getType() == XMaterial.LAVA_BUCKET.parseMaterial())
                         && !plugin.getConfig().getBoolean("liquid-blocks")) {
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_LIQUID_DISABLED.getMessage()));
+                    player.sendMessage(ChatUtils.color(Message.GEN_LIQUID_DISABLED.getMessage()));
                     return;
                 }
                 if (item != null && item.getType() != Material.LAVA_BUCKET) {
@@ -166,7 +165,7 @@ public class GenListener implements Listener, Runnable {
                 if (!player.getInventory().contains(item)) {
                     player.getInventory().addItem(item);
                 } else {
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_HAS_ALREADY.getMessage()));
+                    player.sendMessage(ChatUtils.color(Message.GEN_HAS_ALREADY.getMessage()));
                 }
             }
 
@@ -199,10 +198,10 @@ public class GenListener implements Listener, Runnable {
     public boolean withdraw(String type, Player player) {
         int price = plugin.getConfig().getInt(type + ".price");
         if (GenBucket.econ.withdrawPlayer(player, price).transactionSuccess()) {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CHARGED.getMessage().replace("{amount}", price + "")));
+            player.sendMessage(ChatUtils.color(Message.GEN_CHARGED.getMessage().replace("{amount}", price + "")));
             return true;
         }
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANT_AFFORD.getMessage()));
+        player.sendMessage(ChatUtils.color(Message.GEN_CANT_AFFORD.getMessage()));
         return false;
     }
 
