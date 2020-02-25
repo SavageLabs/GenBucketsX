@@ -21,11 +21,11 @@ public class FactionHook implements PluginHook<FactionHook> {
         if (!authors.contains("drtshock") && !authors.contains("Benzimmer")) {
             Logger.print("Server Factions type has been set to MassiveCore", Logger.PrefixType.DEFAULT);
             return new FactionMCHook();
-        } else if (authors.contains("ProSavage") || authors.contains("LockedThread")) {
+        } else if (authors.contains("ProSavage") || authors.contains("LockedThread") || authors.contains("ipodtouch0218")) {
             Logger.print("Server Factions type has been set to generic FactionsUUID Fork", Logger.PrefixType.DEFAULT);
             return new SavageFactionsHook();
         } else {
-           Logger.print("Server Factions type has been set to FactionsUUID", Logger.PrefixType.DEFAULT);
+            Logger.print("Server Factions type has been set to FactionsUUID", Logger.PrefixType.DEFAULT);
             try {
                 return new FactionsUUIDHook();
             } catch (NoSuchMethodException e) {
