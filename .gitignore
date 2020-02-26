@@ -1,2 +1,10 @@
-.idea
-SavageFTop.iml
+.gitignore
+.idea/.name
+.idea/workspace.xml
+target/
+.idea/
+SavageFtop.iml
+.settings
+.vscode
+.project
+.classpath
