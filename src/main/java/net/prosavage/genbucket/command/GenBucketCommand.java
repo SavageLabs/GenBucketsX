@@ -5,6 +5,7 @@ import net.prosavage.genbucket.command.impl.CommandGive;
 import net.prosavage.genbucket.command.impl.CommandHelp;
 import net.prosavage.genbucket.command.impl.CommandMain;
 import net.prosavage.genbucket.command.impl.CommandReload;
+import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -34,14 +35,13 @@ public class GenBucketCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String string, String[] args) {
         if (args.length == 0) {
-            AbstractCommand helpCommand = subcommands.get(CommandHelp.class);
-            if (helpCommand.getPermission() != null && commandSender.hasPermission(helpCommand.getPermission())) {
+            if (!(commandSender instanceof Player)) { // If Console, send help instead of GUI
                 subcommands.get(CommandHelp.class).execute(commandSender, args);
-            }
-            if (commandSender.hasPermission(subcommands.get(CommandMain.class).getPermission())) {
+            } else if (commandSender.hasPermission(subcommands.get(CommandMain.class).getPermission())) {
                 subcommands.get(CommandMain.class).execute(commandSender, args);
+            } else {
+                commandSender.sendMessage(ChatUtils.color(Message.NO_PERMISSION.getMessage()));
             }
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.NO_PERMISSION.getMessage()));
             return false;
         }
 
@@ -50,13 +50,13 @@ public class GenBucketCommand implements CommandExecutor {
             if (!args[0].equalsIgnoreCase(abstractCommand.getLabel())) continue;
 
             if (!(commandSender instanceof Player) && abstractCommand.isPlayerRequired()) {
-                commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.PLAYER_REQUIRED.getMessage()));
+                commandSender.sendMessage(ChatUtils.color(Message.PLAYER_REQUIRED.getMessage()));
                 return false;
             }
 
             if (abstractCommand.getPermission() != null && !commandSender.hasPermission(abstractCommand.getPermission())) {
                 if (!commandSender.isOp()) {
-                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.NO_PERMISSION.getMessage()));
+                    commandSender.sendMessage(ChatUtils.color(Message.NO_PERMISSION.getMessage()));
                     return false;
                 }
             }
