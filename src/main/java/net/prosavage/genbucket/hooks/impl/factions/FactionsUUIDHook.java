@@ -19,7 +19,7 @@ import java.lang.reflect.Method;
 
 public class FactionsUUIDHook extends FactionHook {
 
-    private Method playerCanBuildDestroyBlock = FactionsBlockListener.class.getMethod("playerCanBuildDestroyBlock", Player.class, Location.class, PermissibleAction.class, String.class, boolean.class);
+    private Method playerCanBuildDestroyBlock = FactionsBlockListener.class.getMethod("playerCanBuildDestroyBlock", Player.class, Location.class, PermissibleAction.class, boolean.class);
 
     public FactionsUUIDHook() throws NoSuchMethodException {
         //Empty
@@ -27,7 +27,7 @@ public class FactionsUUIDHook extends FactionHook {
 
     @Override
     public boolean canBuild(Block block, Player player) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        if (!(boolean) playerCanBuildDestroyBlock.invoke(FactionsBlockListener.class, player, block.getLocation(), PermissibleAction.BUILD, "build", true)) {
+        if (!(boolean) playerCanBuildDestroyBlock.invoke(FactionsBlockListener.class, player, block.getLocation(), PermissibleAction.BUILD, true)) {
             player.sendMessage(ChatUtils.color(Message.GEN_CANT_PLACE.getMessage()));
             return false;
         }

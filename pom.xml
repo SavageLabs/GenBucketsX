@@ -130,7 +130,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.15-R0.1-SNAPSHOT</version>
+            <version>1.15.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -173,7 +173,7 @@
             <artifactId>factions</artifactId>
             <scope>system</scope>
             <version>2.14.1-SNAPSHOT</version>
-            <systemPath>${project.basedir}/dependencies/FactionsUUID.jar</systemPath>
+            <systemPath>${project.basedir}/dependencies/FactionsUUID2.jar</systemPath>
         </dependency>
 
         <!-- SuperVanish -->
