@@ -49,7 +49,7 @@ public class GenListener implements Listener, Runnable {
     public void onEmptyBucket(PlayerBucketEmptyEvent event) {
         if (!plugin.getConfig().getBoolean("use-bucket")) return;
         ItemStack item = getTool(event.getPlayer());
-        if ((item.getType() == Material.LAVA_BUCKET || item.getType() == Material.WATER_BUCKET) && ItemUtils.hasKey(item, "GENBUCKET")) {
+        if ((item.getType() == XMaterial.LAVA_BUCKET.parseMaterial() || item.getType() == XMaterial.WATER_BUCKET.parseMaterial()) && ItemUtils.hasKey(item, "GENBUCKET")) {
             event.setCancelled(true);
             Block block = event.getBlockClicked().getRelative(event.getBlockFace());
             Player player = event.getPlayer();
@@ -155,9 +155,9 @@ public class GenListener implements Listener, Runnable {
                     player.sendMessage(ChatUtils.color(Message.GEN_LIQUID_DISABLED.getMessage()));
                     return;
                 }
-                if (item != null && item.getType() != Material.LAVA_BUCKET) {
+                if (item.getType() != XMaterial.LAVA_BUCKET.parseMaterial()) {
                     if (plugin.getConfig().getBoolean("use-bucket")) {
-                        item.setType(Material.LAVA_BUCKET);
+                        item.setType(XMaterial.LAVA_BUCKET.parseMaterial());
                     } else {
                         item.setAmount(64);
                     }
