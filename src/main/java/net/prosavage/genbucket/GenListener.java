@@ -54,8 +54,12 @@ public class GenListener implements Listener, Runnable {
             Block block = event.getBlockClicked().getRelative(event.getBlockFace());
             Player player = event.getPlayer();
             String name = ItemUtils.getKeyString(item, "GENBUCKET");
-            Material mat = Material.valueOf(ItemUtils.getKeyString(item, "MATERIAL"));
-
+            Material mat;
+            try {
+                mat = Material.valueOf(ItemUtils.getKeyString(item, "MATERIAL"));
+            } catch (Exception ex) {
+                mat = XMaterial.matchXMaterial(ItemUtils.getKeyString(item, "MATERIAL")).get().parseMaterial();
+            }
             FactionHook facHook = ((FactionHook) plugin.getHookManager().getPluginMap().get("Factions"));
             if (plugin.getHookManager().getPluginMap().get("WorldGuard") != null) {
                 WorldGuardHook wgHook = ((WorldGuardHook) plugin.getHookManager().getPluginMap().get("WorldGuard"));
@@ -107,8 +111,12 @@ public class GenListener implements Listener, Runnable {
             Block block = event.getClickedBlock().getRelative(event.getBlockFace());
             Player player = event.getPlayer();
             String name = ItemUtils.getKeyString(item, "GENBUCKET");
-            Material mat = Material.valueOf(ItemUtils.getKeyString(item, "MATERIAL"));
-
+            Material mat;
+            try {
+                mat = Material.valueOf(ItemUtils.getKeyString(item, "MATERIAL"));
+            } catch (Exception ex) {
+                mat = XMaterial.matchXMaterial(ItemUtils.getKeyString(item, "MATERIAL")).get().parseMaterial();
+            }
             FactionHook facHook = ((FactionHook) plugin.getHookManager().getPluginMap().get("Factions"));
             if (plugin.getHookManager().getPluginMap().get("WorldGuard") != null) {
                 WorldGuardHook wgHook = ((WorldGuardHook) plugin.getHookManager().getPluginMap().get("WorldGuard"));
