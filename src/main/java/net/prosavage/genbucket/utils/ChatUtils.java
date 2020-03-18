@@ -1,5 +1,6 @@
 package net.prosavage.genbucket.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 public class ChatUtils {
@@ -9,6 +10,9 @@ public class ChatUtils {
     }
 
     // Color messages
+    public static void sendConsole(String str) {
+        Bukkit.getConsoleSender().sendMessage(color(str));
+    }
 
     public static String color(String str) {
         return ChatColor.translateAlternateColorCodes('&', str);
