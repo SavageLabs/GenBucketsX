@@ -3,7 +3,6 @@ package net.prosavage.genbucket.utils;
 
 import com.cryptomorin.xseries.XMaterial;
 import net.prosavage.genbucket.utils.nbt.NBTItem;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -39,14 +38,17 @@ public class ItemUtils {
     public static ItemStack createItem(ItemStack item, FileConfiguration config, String key, String type) {
         Material itemType = item.getType();
         // Need to change water and lava to buckets.
-        if (item.getType() == XMaterial.WATER.parseMaterial()) item.setType(XMaterial.WATER_BUCKET.parseMaterial());
-        if (item.getType() == XMaterial.LAVA.parseMaterial()) item.setType(XMaterial.LAVA_BUCKET.parseMaterial());
+        if (itemType == XMaterial.WATER.parseMaterial()) {
+            item.setType(XMaterial.WATER_BUCKET.parseMaterial());
+        } else if (itemType == XMaterial.LAVA.parseMaterial()) {
+            item.setType(XMaterial.LAVA_BUCKET.parseMaterial());
+        }
         item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString(key + ".name")));
+        itemMeta.setDisplayName(ChatUtils.color(config.getString(key + ".name")));
         ArrayList<String> lore = new ArrayList<>();
         for (String s : config.getStringList("genbucket-lore")) {
-            lore.add(ChatColor.translateAlternateColorCodes('&', s.replace("%type%", type).replace("%price%", String.valueOf(config.getInt(key + ".price")))));
+            lore.add(ChatUtils.color(s.replace("%type%", type).replace("%price%", String.valueOf(config.getInt(key + ".price")))));
         }
         itemMeta.setLore(lore);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -57,7 +59,7 @@ public class ItemUtils {
 
     public static ItemStack setDisplayName(ItemStack itemStack, String name) {
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+        itemMeta.setDisplayName(ChatUtils.color(name));
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
@@ -66,7 +68,7 @@ public class ItemUtils {
         ItemMeta itemMeta = itemStack.getItemMeta();
         List<String> coloredLore = new ArrayList<>();
         for (String string : lore) {
-            coloredLore.add(ChatColor.translateAlternateColorCodes('&', string));
+            coloredLore.add(ChatUtils.color(string));
         }
         itemMeta.setLore(coloredLore);
         itemStack.setItemMeta(itemMeta);

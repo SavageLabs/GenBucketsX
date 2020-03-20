@@ -156,7 +156,11 @@ public class GenListener implements Listener, Runnable {
         Player player = (Player) event.getWhoClicked();
         if (event.getView().getTitle().equals(plugin.generationShopGUI.getTitle()) && event.getView().getTopInventory() != player.getInventory()) {
             event.setCancelled(true);
-            if (event.getCurrentItem() != null && event.getView().getTopInventory() != null && event.getCurrentItem().getType() != Material.AIR && ItemUtils.hasKey(event.getCurrentItem(), "GENBUCKET")) {
+            if (event.getCurrentItem() != null
+                    && event.getView().getTopInventory() != null
+                    && event.getCurrentItem().getType() != XMaterial.AIR.parseMaterial()
+                    && ItemUtils.hasKey(event.getCurrentItem(), "GENBUCKET")) {
+
                 ItemStack item = event.getCurrentItem().clone();
                 if ((item.getType() == XMaterial.WATER_BUCKET.parseMaterial() || item.getType() == XMaterial.LAVA_BUCKET.parseMaterial())
                         && !plugin.getConfig().getBoolean("liquid-blocks")) {

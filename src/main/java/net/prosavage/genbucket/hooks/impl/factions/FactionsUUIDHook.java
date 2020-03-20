@@ -1,20 +1,23 @@
 package net.prosavage.genbucket.hooks.impl.factions;
 
 
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.listeners.FactionsBlockListener;
-import com.massivecraft.factions.perms.*;
-import com.massivecraft.factions.util.FlightUtil;
+import com.massivecraft.factions.perms.PermissibleAction;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.Message;
+import net.prosavage.genbucket.utils.VanishUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 
 public class FactionsUUIDHook extends FactionHook {
@@ -36,14 +39,27 @@ public class FactionsUUIDHook extends FactionHook {
 
     @Override
     public boolean hasNearbyPlayer(Player player) {
-        if (!GenBucket.get().getConfig().getBoolean("nearby-check")) {
+        if (player == null || !GenBucket.get().getConfig().getBoolean("nearby-check", true)) {
             return false;
         }
-        int radius = GenBucket.get().getConfig().getInt("radius");
+        int radius = GenBucket.get().getConfig().getInt("radius", 32);
         FPlayer me = FPlayers.getInstance().getByPlayer(player);
-        if (FlightUtil.instance().enemiesNearby(me,radius)) {
+        if (me != null && isEnemyNear(me, radius)) {
             player.sendMessage(ChatUtils.color(Message.GEN_ENEMY_NEARBY.getMessage()));
             return true;
+        }
+        return false;
+    }
+
+
+    public boolean isEnemyNear(FPlayer p, int rad) {
+        List<Entity> nearby = p.getPlayer().getNearbyEntities(rad, rad, rad);
+        for (Entity ent : nearby) {
+            if (ent instanceof Player) {
+                FPlayer nearP = FPlayers.getInstance().getByPlayer((Player) ent);
+                if (nearP.isAdminBypassing() || VanishUtils.isVanished(nearP.getPlayer())) continue;
+                if (nearP.getRelationTo(p).name().equalsIgnoreCase("ENEMY")) return true;
+            }
         }
         return false;
     }

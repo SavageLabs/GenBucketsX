@@ -1,8 +1,8 @@
 package net.prosavage.genbucket.menu;
 
 import net.prosavage.genbucket.GenBucket;
+import net.prosavage.genbucket.utils.ChatUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
@@ -17,11 +17,11 @@ public abstract class MenuBuilder<T> implements InventoryHolder {
         this.plugin = plugin;
         this.title = title;
         this.rows = rows;
-        this.inventory = Bukkit.createInventory(this, 9 * rows, ChatColor.translateAlternateColorCodes('&', title));
+        this.inventory = Bukkit.createInventory(this, 9 * rows, ChatUtils.color(title));
     }
 
     public String getTitle() {
-        return ChatColor.translateAlternateColorCodes('&', title);
+        return ChatUtils.color(title);
     }
 
     public void setTitle(String title) {
