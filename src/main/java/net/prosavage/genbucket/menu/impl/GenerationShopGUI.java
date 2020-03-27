@@ -27,7 +27,7 @@ public class GenerationShopGUI extends MenuBuilder {
             try {
                 item = new ItemStack(Material.valueOf(key));
             } catch (Exception ex) {
-                item = XMaterial.matchXMaterial(key).get().parseItem().clone();
+                item = XMaterial.matchXMaterial(key).get().parseItem();
             }
             if (item == null) {
                 ChatUtils.sendConsole("[SavageGenBuckets] Error while parsing Material for key= " + key + " ... Skipping...");
@@ -42,7 +42,7 @@ public class GenerationShopGUI extends MenuBuilder {
             try {
                 item = new ItemStack(Material.valueOf(key));
             } catch (Exception ex) {
-                item = XMaterial.matchXMaterial(key).get().parseItem().clone();
+                item = XMaterial.matchXMaterial(key).get().parseItem();
             }
             if (item == null) {
                 ChatUtils.sendConsole("[SavageGenBuckets] Error while parsing Material for key= " + key + " ... Skipping...");
@@ -62,7 +62,7 @@ public class GenerationShopGUI extends MenuBuilder {
         FileConfiguration config = getPlugin().getConfig();
         ItemStack item;
         try {
-            item = XMaterial.matchXMaterial(config.getString("generation-shop.background-item")).get().parseItem().clone();
+            item = XMaterial.matchXMaterial(config.getString("generation-shop.background-item")).get().parseItem();
         } catch (NullPointerException npe) {
             // Handle case in which the user uses invalid Material
             item = new ItemStack(Material.AIR);

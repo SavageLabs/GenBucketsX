@@ -39,9 +39,9 @@ public class ItemUtils {
         Material itemType = item.getType();
         // Need to change water and lava to buckets.
         if (itemType == XMaterial.WATER.parseMaterial()) {
-            item.setType(XMaterial.WATER_BUCKET.parseMaterial());
+            item = XMaterial.WATER_BUCKET.parseItem();
         } else if (itemType == XMaterial.LAVA.parseMaterial()) {
-            item.setType(XMaterial.LAVA_BUCKET.parseMaterial());
+            item = XMaterial.LAVA_BUCKET.parseItem();
         }
         item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
         ItemMeta itemMeta = item.getItemMeta();
