@@ -35,7 +35,8 @@ public class GenBucket extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        (GenBucket.instance = this).saveDefaultConfig();
+        GenBucket.instance = this;
+        saveDefaultConfig();
         checkServerVersion();
         this.getCommand("genbucket").setExecutor(new GenBucketCommand(this));
 
@@ -53,8 +54,8 @@ public class GenBucket extends JavaPlugin {
     public void onDisable() {
         DataFile dataFile = (DataFile) this.fileManager.getFileMap().get("data");
         dataFile.saveGenBuckets();
-        instance = null;
         getServer().getScheduler().cancelTasks(this);
+        instance = null;
     }
 
     public void start() {

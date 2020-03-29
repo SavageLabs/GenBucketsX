@@ -7,7 +7,7 @@ import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.gen.impl.HorizontalGen;
 import net.prosavage.genbucket.gen.impl.VerticalGen;
-import net.prosavage.genbucket.utils.Logger;
+import net.prosavage.genbucket.utils.ChatUtils;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ import java.util.Collection;
 
 public class DataFile extends CustomFile {
 
-    private Collection<String> vertical = new ArrayList<String>();
-    private Collection<String> horizontal = new ArrayList<String>();
+    private Collection<String> vertical = new ArrayList<>();
+    private Collection<String> horizontal = new ArrayList<>();
 
     public DataFile(GenBucket plugin) {
         super(plugin, "data");
@@ -43,7 +43,7 @@ public class DataFile extends CustomFile {
             }
             vertical.clear();
             horizontal.clear();
-            Logger.print(GenListener.generations.size() + " Generations have been continued", Logger.PrefixType.DEFAULT);
+            ChatUtils.sendConsole(GenListener.generations.size() + " Generations have been continued");
             getConfigFile().delete();
         }, 100L);
         return this;

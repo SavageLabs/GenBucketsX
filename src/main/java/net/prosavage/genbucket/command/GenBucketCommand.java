@@ -7,8 +7,6 @@ import net.prosavage.genbucket.command.impl.CommandMain;
 import net.prosavage.genbucket.command.impl.CommandReload;
 import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.Message;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -54,11 +52,9 @@ public class GenBucketCommand implements CommandExecutor {
                 return false;
             }
 
-            if (abstractCommand.getPermission() != null && !commandSender.hasPermission(abstractCommand.getPermission())) {
-                if (!commandSender.isOp()) {
-                    commandSender.sendMessage(ChatUtils.color(Message.NO_PERMISSION.getMessage()));
-                    return false;
-                }
+            if (!commandSender.isOp() && abstractCommand.getPermission() != null && !commandSender.hasPermission(abstractCommand.getPermission())) {
+                commandSender.sendMessage(ChatUtils.color(Message.NO_PERMISSION.getMessage()));
+                return false;
             }
             if (args[0].equalsIgnoreCase(abstractCommand.getLabel()) || abstractCommand.alias.contains(args[0])) {
                 return abstractCommand.execute(commandSender, args);

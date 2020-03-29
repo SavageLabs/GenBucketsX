@@ -145,10 +145,8 @@ public class GenListener implements Listener, Runnable {
 
     @EventHandler
     public void onDropItem(PlayerDropItemEvent event) {
-        ItemStack item = event.getItemDrop().getItemStack();
-        if (ItemUtils.hasKey(item, "GENBUCKET")) {
+        if (ItemUtils.hasKey(event.getItemDrop().getItemStack(), "GENBUCKET"))
             event.getItemDrop().remove();
-        }
     }
 
     @EventHandler

@@ -4,6 +4,7 @@ import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.command.AbstractCommand;
 import net.prosavage.genbucket.command.GenBucketCommand;
 import net.prosavage.genbucket.utils.ChatUtils;
+import net.prosavage.genbucket.utils.Message;
 import org.bukkit.command.CommandSender;
 
 public class CommandHelp extends AbstractCommand {
@@ -27,7 +28,7 @@ public class CommandHelp extends AbstractCommand {
 
     @Override
     public String getDescription() {
-        return "Basic help command.";
+        return Message.CMD_HELP_DESC.getMessage();
     }
 
     @Override

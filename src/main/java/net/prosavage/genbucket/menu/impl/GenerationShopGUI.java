@@ -19,35 +19,32 @@ public class GenerationShopGUI extends MenuBuilder {
         super(plugin, plugin.getConfig().getString("generation-shop.name"), plugin.getConfig().getInt("generation-shop.rows"));
     }
 
+    private ItemStack initItem(String key) {
+        ItemStack item;
+        try {
+            item = new ItemStack(Material.valueOf(key));
+        } catch (Exception ex) {
+            item = XMaterial.matchXMaterial(key).get().parseItem();
+        }
+        if (item == null) {
+            ChatUtils.sendConsole("[SavageGenBuckets] Error while parsing Material for key= " + key + " ... Skipping...");
+        }
+        return item;
+    }
+
     @Override
     public GenerationShopGUI init() {
         ConfigurationSection vertical = getPlugin().getConfig().getConfigurationSection("VERTICAL");
         for (String key : vertical.getKeys(false)) {
-            ItemStack item;
-            try {
-                item = new ItemStack(Material.valueOf(key));
-            } catch (Exception ex) {
-                item = XMaterial.matchXMaterial(key).get().parseItem();
-            }
-            if (item == null) {
-                ChatUtils.sendConsole("[SavageGenBuckets] Error while parsing Material for key= " + key + " ... Skipping...");
-                continue;
-            }
+            ItemStack item = initItem(key);
+            if (item == null) continue;
             item = ItemUtils.createItem(item, getPlugin().getConfig(), "VERTICAL." + key, "Vertical");
             getInventory().setItem(getPlugin().getConfig().getInt("VERTICAL." + key + ".slot"), item);
         }
         ConfigurationSection horizontal = getPlugin().getConfig().getConfigurationSection("HORIZONTAL");
         for (String key : horizontal.getKeys(false)) {
-            ItemStack item;
-            try {
-                item = new ItemStack(Material.valueOf(key));
-            } catch (Exception ex) {
-                item = XMaterial.matchXMaterial(key).get().parseItem();
-            }
-            if (item == null) {
-                ChatUtils.sendConsole("[SavageGenBuckets] Error while parsing Material for key= " + key + " ... Skipping...");
-                continue;
-            }
+            ItemStack item = initItem(key);
+            if (item == null) continue;
             item = ItemUtils.createItem(item, getPlugin().getConfig(), "HORIZONTAL." + key, "Horizontal");
             getInventory().setItem(getPlugin().getConfig().getInt("HORIZONTAL." + key + ".slot"), item);
         }
@@ -74,11 +71,11 @@ public class GenerationShopGUI extends MenuBuilder {
         if (item.containsEnchantment(Enchantment.DAMAGE_ALL)) {
             itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
-        item.setItemMeta(itemMeta);
-        item = ItemUtils.setDisplayName(item, config.getString("generation-shop.blank-item.name"));
+        itemMeta.setDisplayName(ChatUtils.color(config.getString("generation-shop.blank-item.name")));
         if (!config.getBoolean("generation-shop.no-lore")) {
-            item = ItemUtils.setLore(item, config.getStringList("generation-shop.blank-item.lore"));
+            itemMeta.setLore(ChatUtils.color(config.getStringList("generation-shop.blank-item.lore")));
         }
+        item.setItemMeta(itemMeta);
         return item;
     }
 

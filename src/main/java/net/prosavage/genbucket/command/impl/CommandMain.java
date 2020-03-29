@@ -2,6 +2,7 @@ package net.prosavage.genbucket.command.impl;
 
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.command.AbstractCommand;
+import net.prosavage.genbucket.utils.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -21,7 +22,7 @@ public class CommandMain extends AbstractCommand {
 
     @Override
     public String getDescription() {
-        return "Displays GenBucket menu.";
+        return Message.CMD_MAIN_DESC.getMessage();
     }
 
     @Override

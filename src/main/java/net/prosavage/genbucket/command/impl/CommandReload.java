@@ -28,7 +28,7 @@ public class CommandReload extends AbstractCommand {
 
     @Override
     public String getDescription() {
-        return "Reloads the plugin's configs.";
+        return Message.CMD_RELOAD_DESC.getMessage();
     }
 
     @Override

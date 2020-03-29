@@ -16,7 +16,14 @@ public enum Message {
     GEN_CANT_AFFORD("gen-cant-afford", "&cYou do not have sufficient funds."),
     GEN_CHARGED("gen-charged", "&cYou have been charged ${amount}"),
     GEN_ENEMY_NEARBY("gen-enemy-nearby", "&cYou cannot place gen buckets with enemies nearby!"),
-    GEN_LIQUID_DISABLED("gen-liquid-disabled", "&cLiquid buckets are disabled, as the water flow causes lag. This can be bypassed in config.yml, option \"liquid-blocks\".");
+    GEN_LIQUID_DISABLED("gen-liquid-disabled", "&cLiquid buckets are disabled, as the water flow causes lag. This can be bypassed in config.yml, option \"liquid-blocks\"."),
+
+    ERROR_HOOK_NOTFOUND("Error.hook-not-found", "&cCould not hook to %plugin%, skipping..."),
+
+    CMD_HELP_DESC("Command.help-description", "Basic help command."),
+    CMD_GIVE_DESC("Command.give-description", "Gives the player a GenBucket."),
+    CMD_MAIN_DESC("Command.main-description", "Displays GenBucket menu."),
+    CMD_RELOAD_DESC("Command.reload-description", "Reloads Config and Messages.");
 
     String config, message;
     String[] messages;

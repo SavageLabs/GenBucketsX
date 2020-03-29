@@ -3,6 +3,7 @@ package net.prosavage.genbucket.command.impl;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.command.AbstractCommand;
 import net.prosavage.genbucket.utils.ItemUtils;
+import net.prosavage.genbucket.utils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -56,7 +57,7 @@ public class CommandGive extends AbstractCommand {
 
     @Override
     public String getDescription() {
-        return "Gives the player a GenBucket.";
+        return Message.CMD_GIVE_DESC.getMessage();
     }
 
     @Override

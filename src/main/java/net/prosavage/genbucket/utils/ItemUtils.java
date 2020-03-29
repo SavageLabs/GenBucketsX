@@ -2,7 +2,6 @@ package net.prosavage.genbucket.utils;
 
 
 import com.cryptomorin.xseries.XMaterial;
-import net.prosavage.genbucket.utils.nbt.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -19,20 +18,17 @@ public class ItemUtils {
         throw new AssertionError("Instantiating utility class.");
     }
 
-    public static ItemStack setKeyString(ItemStack itemStack, String key, String value) {
-        NBTItem nbtItem = new NBTItem(itemStack);
-        nbtItem.setString(key, value);
-        return nbtItem.getItem();
+    public static ItemStack setKeyString(ItemStack item, String key, String value) {
+        return NBTEditor.set(item, value, key);
     }
 
-    public static String getKeyString(ItemStack itemStack, String key) {
-        NBTItem nbtItem = new NBTItem(itemStack);
-        return nbtItem.getString(key);
+    public static String getKeyString(ItemStack item, String key) {
+        return NBTEditor.getString(item, key);
     }
 
-    public static boolean hasKey(ItemStack itemStack, String key) {
-        if (itemStack == null) return false;
-        return new NBTItem(itemStack).hasKey(key);
+    public static boolean hasKey(ItemStack item, String key) {
+        if (item == null) return false;
+        return NBTEditor.contains(item, key);
     }
 
     public static ItemStack createItem(ItemStack item, FileConfiguration config, String key, String type) {
@@ -48,7 +44,9 @@ public class ItemUtils {
         itemMeta.setDisplayName(ChatUtils.color(config.getString(key + ".name")));
         ArrayList<String> lore = new ArrayList<>();
         for (String s : config.getStringList("genbucket-lore")) {
-            lore.add(ChatUtils.color(s.replace("%type%", type).replace("%price%", String.valueOf(config.getInt(key + ".price")))));
+            lore.add(ChatUtils.color(s
+                    .replace("%type%", type)
+                    .replace("%price%", "" + config.getInt(key + ".price"))));
         }
         itemMeta.setLore(lore);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
