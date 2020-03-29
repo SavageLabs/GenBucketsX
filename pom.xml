@@ -126,23 +126,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.milkbowl.vault</groupId>
+            <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
-            <version>1.6</version>
+            <version>1.7</version>
             <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>bukkit</artifactId>
-                    <groupId>org.bukkit</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.massivecraft</groupId>
-            <artifactId>massivecore</artifactId>
-            <scope>system</scope>
-            <version>2.14.1-SNAPSHOT</version>
-            <systemPath>${project.basedir}/dependencies/MassiveCore.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.massivecraft</groupId>
@@ -150,18 +137,9 @@
             <version>1.6.9.5-U0.2.1-RC-1.6.2-RC-2.5-RC-9</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/dependencies/SavageFactions-2.5-RC-9.jar</systemPath>
-
         </dependency>
         <dependency>
             <groupId>com.massivecraft.</groupId>
-            <artifactId>factions</artifactId>
-            <scope>system</scope>
-            <version>2.14.1-SNAPSHOT</version>
-            <systemPath>${project.basedir}/dependencies/Factions.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>com.massivecraft..</groupId>
             <artifactId>factions</artifactId>
             <scope>system</scope>
             <version>2.14.1-SNAPSHOT</version>
