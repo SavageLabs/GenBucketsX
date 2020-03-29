@@ -17,13 +17,15 @@ public abstract class Generator {
     private boolean finished, data = false;
     private GenType type;
     private Material sourceMaterial;
+    private boolean psudeo;
 
-    public Generator(GenBucket plugin, Player player, Material material, Block block, GenType genType) {
+    public Generator(GenBucket plugin, Player player, Material material, Block block, GenType genType, boolean psudeo) {
         this.plugin = plugin;
         this.player = player;
         this.material = material;
         this.block = block;
         this.type = genType;
+        this.psudeo = psudeo;
     }
 
     public static Block getBlockFromString(String s) {
@@ -109,7 +111,7 @@ public abstract class Generator {
 
         if (GenBucket.get().replaceLiquids && block.isLiquid()) return true;
 
-        return GenBucket.get().getReplacements().contains(block.getType());
+        return GenBucket.get().getReplacements().contains(block.getType()) || (isPsudeo() && getMaterial() == block.getType());
     }
 
     public Material getSourceMaterial() {
@@ -118,5 +120,13 @@ public abstract class Generator {
 
     public void setSourceMaterial(Material sourceMaterial) {
         this.sourceMaterial = sourceMaterial;
+    }
+
+    public boolean isPsudeo() {
+        return psudeo;
+    }
+
+    public void setPsudeo(boolean psudeo) {
+        this.psudeo = psudeo;
     }
 }

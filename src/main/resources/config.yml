@@ -17,9 +17,6 @@ generation-shop:
   name: "&9Genbucket Shop"
   rows: 5
 
-# This makes it so gen buckets will ignore blocks of their own type. So it makes repairing walls etc easier.
-psuedo: true
-
 # Allows liquid buckets
 # WILL CAUSE LAG IF YOU HAVE WATER/LAVA FLOW ENABLED
 liquid-blocks: false
@@ -81,37 +78,45 @@ VERTICAL:
     direction: up
     name: '&aGravel Scaffold'
     price: 200
+    psudeo: true
     slot: 10
   SAND:
     direction: up
     name: '&aSand Scaffold'
     price: 5000
+    psudeo: true
     slot: 13
   COBBLESTONE:
     direction: automatic
     name: '&aCobblestone Vertical'
     price: 10
+    psudeo: true
     slot: 16
   OBSIDIAN:
     direction: down
     name: '&aObsidian Vertical'
     price: 1000
+    psudeo: true
     slot: 19
 
 HORIZONTAL:
   COBBLESTONE:
     name: '&aCobblestone Horizontal'
     price: 30
+    psudeo: true
     slot: 22
   OBSIDIAN:
     name: '&aObsidian Horizontal'
     price: 500
+    psudeo: true
     slot: 25
   NETHERRACK:
     name: '&aNetherrack Horizontal'
     price: 20
+    psudeo: true
     slot: 30
   DIRT:
     name: '&aDirt Horizontal'
     price: 20
+    psudeo: true
     slot: 32

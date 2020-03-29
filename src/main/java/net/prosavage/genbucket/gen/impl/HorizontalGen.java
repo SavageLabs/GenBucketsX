@@ -19,8 +19,8 @@ public class HorizontalGen extends Generator {
 
     private BlockFace blockFace;
 
-    public HorizontalGen(GenBucket plugin, Player player, Material material, Block block, BlockFace blockFace) {
-        super(plugin, player, material, block, GenType.HORIZONTAL);
+    public HorizontalGen(GenBucket plugin, Player player, Material material, Block block, BlockFace blockFace, boolean psudeo) {
+        super(plugin, player, material, block, GenType.HORIZONTAL, psudeo);
         this.blockFace = blockFace;
         if (isValidLocation(block)) {
             if (GenBucket.get().getConfig().getBoolean("sourceblock.no-source")) {
@@ -37,9 +37,10 @@ public class HorizontalGen extends Generator {
     }
 
     public HorizontalGen(String data) {
-        super(GenBucket.get(), null, Material.valueOf(data.split(",")[0]), getBlockFromString(data.split(",")[1]), GenType.VERTICAL);
-        setIndex(Integer.parseInt(data.split(",")[2]));
-        blockFace = BlockFace.valueOf(data.split(",")[3]);
+        super(GenBucket.get(), null, Material.valueOf(data.split(",")[0]), getBlockFromString(data.split(",")[1]), GenType.VERTICAL, Boolean.parseBoolean(data.split(",")[4]));
+        String[] parsedData = data.split(",");
+        setIndex(Integer.parseInt(parsedData[2]));
+        blockFace = BlockFace.valueOf(parsedData[3]);
         setData(true);
     }
 
@@ -82,7 +83,7 @@ public class HorizontalGen extends Generator {
 
     @Override
     public String toString() {
-        return this.getMaterial() + "," + getLocation(this.getBlock().getLocation()) + "," + getIndex() + "," + blockFace.name();
+        return this.getMaterial() + "," + getLocation(this.getBlock().getLocation()) + "," + getIndex() + "," + blockFace.name() + "," + isPsudeo();
     }
 
     public String getLocation(Location loc) {

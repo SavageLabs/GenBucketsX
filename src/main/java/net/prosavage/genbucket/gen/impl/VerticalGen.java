@@ -5,10 +5,7 @@ import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.utils.Message;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.WorldBorder;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -18,8 +15,8 @@ public class VerticalGen extends Generator {
 
     protected String direction = "up";
 
-    public VerticalGen(GenBucket plugin, Player player, Material material, Block block, BlockFace face) {
-        super(plugin, player, material, block, GenType.VERTICAL);
+    public VerticalGen(GenBucket plugin, Player player, Material material, Block block, BlockFace face, boolean psudeo) {
+        super(plugin, player, material, block, GenType.VERTICAL, psudeo);
         direction = GenBucket.get().getConfig().getString("VERTICAL." + getMaterial().toString() + ".direction", getMaterial().hasGravity() ? "up" : "down");
         if (direction.endsWith("automatic")) {
             direction = face == BlockFace.UP ? "up" : "down";
@@ -39,7 +36,7 @@ public class VerticalGen extends Generator {
     }
 
     public VerticalGen(String data) {
-        super(GenBucket.get(), null, Material.valueOf(data.split(",")[0]), getBlockFromString(data.split(",")[1]), GenType.VERTICAL);
+        super(GenBucket.get(), null, Material.valueOf(data.split(",")[0]), getBlockFromString(data.split(",")[1]), GenType.VERTICAL, Boolean.parseBoolean(data.split(",")[4]));
         setIndex(Integer.parseInt(data.split(",")[2]));
         this.direction = data.split(",")[3];
         setData(true);
@@ -66,8 +63,7 @@ public class VerticalGen extends Generator {
         }
 
         if (GenBucket.get().replaceLiquids && block.isLiquid()) return true;
-
-        return GenBucket.get().getReplacements().contains(block.getType());
+        return GenBucket.get().getReplacements().contains(block.getType()) || (isPsudeo() && getMaterial() == block.getType());
 
     }
 
@@ -120,7 +116,7 @@ public class VerticalGen extends Generator {
 
     @Override
     public String toString() {
-        return this.getMaterial() + "," + getLocation(this.getBlock().getLocation()) + "," + getIndex() + "," + direction;
+        return this.getMaterial() + "," + getLocation(this.getBlock().getLocation()) + "," + getIndex() + "," + direction + "," + isPsudeo();
     }
 
     public String getLocation(Location loc) {

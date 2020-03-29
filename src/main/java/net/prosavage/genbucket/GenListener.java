@@ -72,10 +72,10 @@ public class GenListener implements Listener, Runnable {
             try {
                 if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
                     if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), player)) {
-                        register(new VerticalGen(plugin, player, mat, block, event.getBlockFace()));
+                        register(new VerticalGen(plugin, player, mat, block, event.getBlockFace(), plugin.getConfig().getBoolean("VERTICAL." + mat.name() + ".psudeo", false)));
                         Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.VERTICAL));
                     } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), player)) {
-                        register(new HorizontalGen(plugin, player, mat, block, event.getBlockFace()));
+                        register(new HorizontalGen(plugin, player, mat, block, event.getBlockFace(), plugin.getConfig().getBoolean("HORIZONTAL." + mat.name() + ".psudeo", false)));
                         Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.HORIZONTAL));
                     }
                 }
@@ -128,10 +128,10 @@ public class GenListener implements Listener, Runnable {
             try {
                 if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
                     if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), event.getPlayer())) {
-                        register(new VerticalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace()));
+                        register(new VerticalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace(), plugin.getConfig().getBoolean("VERTICAL." + mat.name() + ".psudeo", false)));
                         Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.VERTICAL));
                     } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), event.getPlayer())) {
-                        register(new HorizontalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace()));
+                        register(new HorizontalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace(), plugin.getConfig().getBoolean("HORIZONTAL." + mat.name() + ".psudeo", false)));
                         Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.HORIZONTAL));
 
                     }
