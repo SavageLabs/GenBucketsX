@@ -18,6 +18,7 @@ public class ChatUtils {
     }
 
     public static String[] color(String[] str) {
+        if (str == null) return new String[0];
         if (str.length <= 0) return str;
         List<String> colored = new ArrayList<>();
         for (String string : str) {
@@ -29,6 +30,7 @@ public class ChatUtils {
 
     public static List<String> color(List<String> string) {
         List<String> colored = new ArrayList<>();
+        if (string == null || string.isEmpty()) return colored;
         for (String line : string) {
             colored.add(color(line));
         }

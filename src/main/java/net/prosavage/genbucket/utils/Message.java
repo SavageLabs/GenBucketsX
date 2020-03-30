@@ -41,19 +41,19 @@ public enum Message {
     }
 
     public String getMessage() {
-        return ChatUtils.color(message);
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+        return message;
     }
 
     public String[] getMessages() {
-        return ChatUtils.color(this.messages);
+        return this.messages;
     }
 
     public void setMessages(List<String> list) {
-        this.messages = list.toArray(new String[0]);
+        this.messages = list.toArray(ChatUtils.color(new String[0]));
+    }
+
+    public void setMessage(String message) {
+        this.message = ChatUtils.color(message);
     }
 
 }
