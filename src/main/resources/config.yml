@@ -78,45 +78,45 @@ VERTICAL:
     direction: up
     name: '&aGravel Scaffold'
     price: 200
-    psudeo: true
+    pseudo: true
     slot: 10
   SAND:
     direction: up
     name: '&aSand Scaffold'
     price: 5000
-    psudeo: true
+    pseudo: true
     slot: 13
   COBBLESTONE:
     direction: automatic
     name: '&aCobblestone Vertical'
     price: 10
-    psudeo: true
+    pseudo: true
     slot: 16
   OBSIDIAN:
     direction: down
     name: '&aObsidian Vertical'
     price: 1000
-    psudeo: true
+    pseudo: true
     slot: 19
 
 HORIZONTAL:
   COBBLESTONE:
     name: '&aCobblestone Horizontal'
     price: 30
-    psudeo: true
+    pseudo: true
     slot: 22
   OBSIDIAN:
     name: '&aObsidian Horizontal'
     price: 500
-    psudeo: true
+    pseudo: true
     slot: 25
   NETHERRACK:
     name: '&aNetherrack Horizontal'
     price: 20
-    psudeo: true
+    pseudo: true
     slot: 30
   DIRT:
     name: '&aDirt Horizontal'
     price: 20
-    psudeo: true
+    pseudo: true
     slot: 32

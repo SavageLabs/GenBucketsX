@@ -6,7 +6,6 @@ import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.Message;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -19,8 +18,8 @@ public class HorizontalGen extends Generator {
 
     private BlockFace blockFace;
 
-    public HorizontalGen(GenBucket plugin, Player player, Material material, Block block, BlockFace blockFace, boolean psudeo) {
-        super(plugin, player, material, block, GenType.HORIZONTAL, psudeo);
+    public HorizontalGen(GenBucket plugin, Player player, Material material, Block block, BlockFace blockFace, boolean pseudo) {
+        super(plugin, player, material, block, GenType.HORIZONTAL, pseudo);
         this.blockFace = blockFace;
         if (isValidLocation(block)) {
             if (GenBucket.get().getConfig().getBoolean("sourceblock.no-source")) {
@@ -31,7 +30,7 @@ public class HorizontalGen extends Generator {
                 block.setType(getSourceMaterial());
             }
         } else {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANT_PLACE.getMessage()));
+            player.sendMessage(Message.GEN_CANT_PLACE.getMessage());
         }
 
     }
@@ -63,7 +62,7 @@ public class HorizontalGen extends Generator {
                 }
 
                 if (getBlock().getType() != getSourceMaterial() && getPlayer() != null) {
-                    getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANCELLED.getMessage()));
+                    getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
                     getBlock().setType(getMaterial(), false);
                     setFinished(true);
                     return;
@@ -83,7 +82,7 @@ public class HorizontalGen extends Generator {
 
     @Override
     public String toString() {
-        return this.getMaterial() + "," + getLocation(this.getBlock().getLocation()) + "," + getIndex() + "," + blockFace.name() + "," + isPsudeo();
+        return this.getMaterial() + "," + getLocation(this.getBlock().getLocation()) + "," + getIndex() + "," + blockFace.name() + "," + isPseudo();
     }
 
     public String getLocation(Location loc) {

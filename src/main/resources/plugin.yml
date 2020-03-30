@@ -2,7 +2,7 @@ name: SavageGenBuckets
 main: net.prosavage.genbucket.GenBucket
 version: ${project.version}
 api-version: '1.13'
-authors: [ProSavage, Rages]
+authors: [ProSavage, Valentina_pro, Rages]
 depend: [Factions, Vault]
 softdepend: [WorldGuard, SuperVanish, PremiumVanish, Essentials, FastAsyncWorldedit]
 commands:

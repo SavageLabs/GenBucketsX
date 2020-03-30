@@ -55,7 +55,7 @@ public enum Message {
     }
 
     public void setMessages(List<String> list) {
-        this.messages = list.stream().toArray(String[]::new);
+        this.messages = list.toArray(new String[0]);
     }
 
 }

@@ -5,18 +5,19 @@ import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.utils.Message;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.WorldBorder;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
-
 
 public class VerticalGen extends Generator {
 
     protected String direction = "up";
 
-    public VerticalGen(GenBucket plugin, Player player, Material material, Block block, BlockFace face, boolean psudeo) {
-        super(plugin, player, material, block, GenType.VERTICAL, psudeo);
+    public VerticalGen(GenBucket plugin, Player player, Material material, Block block, BlockFace face, boolean pseudo) {
+        super(plugin, player, material, block, GenType.VERTICAL, pseudo);
         direction = GenBucket.get().getConfig().getString("VERTICAL." + getMaterial().toString() + ".direction", getMaterial().hasGravity() ? "up" : "down");
         if (direction.endsWith("automatic")) {
             direction = face == BlockFace.UP ? "up" : "down";
@@ -31,7 +32,7 @@ public class VerticalGen extends Generator {
                 block.setType(getSourceMaterial(), false);
             }
         } else {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANT_PLACE.getMessage()));
+            player.sendMessage(Message.GEN_CANT_PLACE.getMessage());
         }
     }
 
@@ -63,7 +64,7 @@ public class VerticalGen extends Generator {
         }
 
         if (GenBucket.get().replaceLiquids && block.isLiquid()) return true;
-        return GenBucket.get().getReplacements().contains(block.getType()) || (isPsudeo() && getMaterial() == block.getType());
+        return GenBucket.get().getReplacements().contains(block.getType()) || (isPseudo() && getMaterial() == block.getType());
 
     }
 
@@ -82,7 +83,7 @@ public class VerticalGen extends Generator {
         }
 
         if (getBlock().getType() != getSourceMaterial() && getPlayer() != null) {
-            getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', Message.GEN_CANCELLED.getMessage()));
+            getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
             getBlock().setType(getMaterial(), false);
             setFinished(true);
             return;
@@ -108,7 +109,7 @@ public class VerticalGen extends Generator {
         }
         return false;
     }
-    
+
     @Override
     public boolean isFinished() {
         return super.isFinished();
@@ -116,7 +117,7 @@ public class VerticalGen extends Generator {
 
     @Override
     public String toString() {
-        return this.getMaterial() + "," + getLocation(this.getBlock().getLocation()) + "," + getIndex() + "," + direction + "," + isPsudeo();
+        return this.getMaterial() + "," + getLocation(this.getBlock().getLocation()) + "," + getIndex() + "," + direction + "," + isPseudo();
     }
 
     public String getLocation(Location loc) {

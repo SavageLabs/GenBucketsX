@@ -1,11 +1,12 @@
 package net.prosavage.genbucket.command.impl;
 
+import com.cryptomorin.xseries.XMaterial;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.command.AbstractCommand;
+import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.ItemUtils;
 import net.prosavage.genbucket.utils.Message;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +24,7 @@ public class CommandGive extends AbstractCommand {
         if (args.length == 5) {
             //gen give [player] [gentype] [material] [amount]
             if (args[2].equalsIgnoreCase("HORIZONTAL") || args[2].equalsIgnoreCase("VERTICAL")) {
-                if (Bukkit.getPlayer(args[1]) != null && Material.valueOf(args[3].toUpperCase()) != null) {
+                if (Bukkit.getPlayer(args[1]) != null && XMaterial.matchXMaterial(args[3].toUpperCase()).isPresent()) {
                     int amount;
                     if (args[4].matches("-?\\d+(\\.\\d+)?")) {
                         try {
@@ -34,7 +35,7 @@ public class CommandGive extends AbstractCommand {
                     } else {
                         amount = 1;
                     }
-                    ItemStack item = new ItemStack(Material.valueOf(args[3].toUpperCase()));
+                    ItemStack item = XMaterial.matchXMaterial(args[3].toUpperCase()).get().parseItem();
                     String type = args[2].substring(0, 1).toUpperCase() + args[2].substring(1).toLowerCase();
                     item = ItemUtils.createItem(item, getPlugin().getConfig(), args[2].toUpperCase() + "." + args[3].toUpperCase(), type);
 
@@ -50,7 +51,7 @@ public class CommandGive extends AbstractCommand {
             }
 
         }
-        sender.sendMessage(ChatColor.RED + "Usage: /gen give [Player] [GenType] [Material] [Amount]");
+        sender.sendMessage(ChatUtils.color("&cUsage: &e/gen give &6[Player] [GenType] [Material] [Amount]"));
         return false;
     }
 
