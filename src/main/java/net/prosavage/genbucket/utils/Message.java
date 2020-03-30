@@ -1,7 +1,5 @@
 package net.prosavage.genbucket.utils;
 
-import org.bukkit.ChatColor;
-
 import java.util.List;
 
 public enum Message {
@@ -43,15 +41,15 @@ public enum Message {
     }
 
     public String getMessage() {
-        return ChatColor.translateAlternateColorCodes('&', message);
+        return ChatUtils.color(message);
     }
 
     public void setMessage(String message) {
-        this.message = ChatColor.translateAlternateColorCodes('&', message);
+        this.message = message;
     }
 
     public String[] getMessages() {
-        return this.messages;
+        return ChatUtils.color(this.messages);
     }
 
     public void setMessages(List<String> list) {
