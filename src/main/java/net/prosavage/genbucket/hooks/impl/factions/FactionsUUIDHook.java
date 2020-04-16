@@ -3,8 +3,11 @@ package net.prosavage.genbucket.hooks.impl.factions;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.perms.PermissibleAction;
+import com.massivecraft.factions.perms.Relation;
+import com.massivecraft.factions.util.RelationUtil;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.ChatUtils;
@@ -23,13 +26,15 @@ import java.util.List;
 public class FactionsUUIDHook extends FactionHook {
 
     private Method playerCanBuildDestroyBlock = FactionsBlockListener.class.getMethod("playerCanBuildDestroyBlock", Player.class, Location.class, PermissibleAction.class, boolean.class);
+    private Method getRelationTo = RelationUtil.class.getMethod("getRelationTo", RelationParticipator.class, RelationParticipator.class);
+
 
     public FactionsUUIDHook() throws NoSuchMethodException {
         //Empty
     }
 
     @Override
-    public boolean canBuild(Block block, Player player) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public boolean canBuild(Block block, Player player) throws InvocationTargetException, IllegalAccessException {
         if (!(boolean) playerCanBuildDestroyBlock.invoke(FactionsBlockListener.class, player, block.getLocation(), PermissibleAction.BUILD, true)) {
             player.sendMessage(ChatUtils.color(Message.GEN_CANT_PLACE.getMessage()));
             return false;
@@ -53,12 +58,19 @@ public class FactionsUUIDHook extends FactionHook {
 
 
     public boolean isEnemyNear(FPlayer p, int rad) {
+
         List<Entity> nearby = p.getPlayer().getNearbyEntities(rad, rad, rad);
         for (Entity ent : nearby) {
             if (ent instanceof Player) {
                 FPlayer nearP = FPlayers.getInstance().getByPlayer((Player) ent);
                 if (nearP.isAdminBypassing() || VanishUtils.isVanished(nearP.getPlayer())) continue;
-                if (nearP.getRelationTo(p).name().equalsIgnoreCase("ENEMY")) return true;
+                try {
+                    Relation rel = (Relation) getRelationTo.invoke(nearP, p);
+                    if (rel.isEnemy()) return true;
+                } catch (InvocationTargetException|IllegalAccessException exception) {
+                    ChatUtils.sendConsole("&c[SavageGenBuckets] &eError while trying to get Relation! Contact the author! (FactionsUUIDHook)");
+                    return false;
+                }
             }
         }
         return false;

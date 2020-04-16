@@ -4,7 +4,7 @@ version: ${project.version}
 api-version: '1.13'
 authors: [ProSavage, Valentina_pro, Rages]
 depend: [Factions, Vault]
-softdepend: [WorldGuard, SuperVanish, PremiumVanish, Essentials, FastAsyncWorldedit]
+softdepend: [Essentials, FastAsyncWorldedit, MassiveCore, PremiumVanish, SuperVanish, WorldGuard]
 commands:
   genbucket:
     aliases: [genbucket, gb, genshop, gen, savagegenbucket]

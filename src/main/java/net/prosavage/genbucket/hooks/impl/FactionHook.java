@@ -2,6 +2,7 @@ package net.prosavage.genbucket.hooks.impl;
 
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.hooks.PluginHook;
+import net.prosavage.genbucket.hooks.impl.factions.FactionsMCHook;
 import net.prosavage.genbucket.hooks.impl.factions.FactionsUUIDHook;
 import net.prosavage.genbucket.hooks.impl.factions.SavageFactionsHook;
 import net.prosavage.genbucket.utils.ChatUtils;
@@ -18,8 +19,8 @@ public class FactionHook implements PluginHook<FactionHook> {
     public FactionHook setup(GenBucket plugin) {
         List<String> authors = GenBucket.get().getServer().getPluginManager().getPlugin(getName()).getDescription().getAuthors();
         if (!authors.contains("drtshock") && !authors.contains("Benzimmer")) {
-            ChatUtils.sendConsole("Your Factions plugin is unsupported! Use FactionsUUID or one of its forks which shares the same API.");
-            //return new FactionMCHook();
+            ChatUtils.sendConsole("Server Factions type has been set to MassiveCore");
+            return new FactionsMCHook();
         } else if (authors.contains("ProSavage") || authors.contains("LockedThread") || authors.contains("ipodtouch0218")) {
             ChatUtils.sendConsole("Server Factions type has been set to generic FactionsUUID Fork");
             return new SavageFactionsHook();
@@ -38,7 +39,7 @@ public class FactionHook implements PluginHook<FactionHook> {
         throw new NotImplementedException("Factions does not exist!");
     }
 
-    public boolean hasNearbyPlayer(Player player) {
+    public boolean hasNearbyPlayer(Player player) throws InvocationTargetException, IllegalAccessException {
         throw new NotImplementedException("Factions does not exist!");
     }
 
