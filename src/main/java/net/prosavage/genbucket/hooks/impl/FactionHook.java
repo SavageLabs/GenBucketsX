@@ -19,13 +19,13 @@ public class FactionHook implements PluginHook<FactionHook> {
     public FactionHook setup(GenBucket plugin) {
         List<String> authors = GenBucket.get().getServer().getPluginManager().getPlugin(getName()).getDescription().getAuthors();
         if (!authors.contains("drtshock") && !authors.contains("Benzimmer")) {
-            ChatUtils.sendConsole("Server Factions type has been set to MassiveCore");
+            ChatUtils.sendConsole("[SavageGenBuckets] Server Factions type has been set to MassiveCore");
             return new FactionsMCHook();
         } else if (authors.contains("ProSavage") || authors.contains("LockedThread") || authors.contains("ipodtouch0218")) {
-            ChatUtils.sendConsole("Server Factions type has been set to generic FactionsUUID Fork");
+            ChatUtils.sendConsole("[SavageGenBuckets] Server Factions type has been set to generic FactionsUUID Fork");
             return new SavageFactionsHook();
         } else {
-            ChatUtils.sendConsole("Server Factions type has been set to FactionsUUID");
+            ChatUtils.sendConsole("[SavageGenBuckets] Server Factions type has been set to FactionsUUID");
             try {
                 return new FactionsUUIDHook();
             } catch (NoSuchMethodException e) {
@@ -39,7 +39,7 @@ public class FactionHook implements PluginHook<FactionHook> {
         throw new NotImplementedException("Factions does not exist!");
     }
 
-    public boolean hasNearbyPlayer(Player player) throws InvocationTargetException, IllegalAccessException {
+    public boolean hasNearbyPlayer(Player player) {
         throw new NotImplementedException("Factions does not exist!");
     }
 
