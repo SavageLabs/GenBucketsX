@@ -26,7 +26,7 @@ import java.util.List;
 public class FactionsUUIDHook extends FactionHook {
 
     private Method playerCanBuildDestroyBlock = FactionsBlockListener.class.getMethod("playerCanBuildDestroyBlock", Player.class, Location.class, PermissibleAction.class, boolean.class);
-    private Method getRelationTo = RelationUtil.class.getMethod("getRelationTo", RelationParticipator.class, RelationParticipator.class);
+    private Method getRelationTo = RelationUtil.class.getMethod("getRelationTo", RelationParticipator.class, RelationParticipator.class, boolean.class);
 
 
     public FactionsUUIDHook() throws NoSuchMethodException {
@@ -65,7 +65,7 @@ public class FactionsUUIDHook extends FactionHook {
                 FPlayer nearP = FPlayers.getInstance().getByPlayer((Player) ent);
                 if (nearP.isAdminBypassing() || VanishUtils.isVanished(nearP.getPlayer())) continue;
                 try {
-                    Relation rel = (Relation) getRelationTo.invoke(nearP, p);
+                    Relation rel = (Relation) getRelationTo.invoke(nearP, p, false);
                     if (rel.isEnemy()) return true;
                 } catch (InvocationTargetException|IllegalAccessException exception) {
                     ChatUtils.sendConsole("&c[SavageGenBuckets] &eError while trying to get Relation! Contact the author! (FactionsUUIDHook)");
