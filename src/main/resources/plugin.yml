@@ -3,8 +3,8 @@ main: net.prosavage.genbucket.GenBucket
 version: ${project.version}
 api-version: '1.13'
 authors: [ProSavage, Valentina_pro, Rages]
-depend: [Factions, Vault]
-softdepend: [Essentials, FastAsyncWorldedit, MassiveCore, PremiumVanish, SuperVanish, WorldGuard]
+depend: [Vault]
+softdepend: [CoreProtect, Essentials, FastAsyncWorldedit, Factions, FactionsX, MassiveCore, PremiumVanish, SuperVanish, WorldGuard]
 commands:
   genbucket:
     aliases: [genbucket, gb, genshop, gen, savagegenbucket]

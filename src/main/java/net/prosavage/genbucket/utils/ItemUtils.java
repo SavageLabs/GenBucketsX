@@ -1,10 +1,10 @@
 package net.prosavage.genbucket.utils;
 
 
+import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -39,7 +39,7 @@ public class ItemUtils {
         } else if (itemType == XMaterial.LAVA.parseMaterial()) {
             item = XMaterial.LAVA_BUCKET.parseItem();
         }
-        item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
+        item = setGlowing(item);
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setDisplayName(ChatUtils.color(config.getString(key + ".name")));
         ArrayList<String> lore = new ArrayList<>();
@@ -71,6 +71,26 @@ public class ItemUtils {
         itemMeta.setLore(coloredLore);
         itemStack.setItemMeta(itemMeta);
         return itemStack;
+    }
+
+    public static ItemStack setGlowing(ItemStack item) {
+        if (item == null) return null;
+        try {
+            if (item.getType() == XMaterial.FISHING_ROD.parseMaterial()) {
+                item.addUnsafeEnchantment(XEnchantment.ARROW_KNOCKBACK.parseEnchantment(), 1);
+            } else {
+                item.addUnsafeEnchantment(XEnchantment.LURE.parseEnchantment(), 1);
+            }
+            ItemMeta metadata = item.getItemMeta();
+            if (metadata != null) {
+                metadata.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                item.setItemMeta(metadata);
+            }
+            return item;
+        } catch (Exception e) {
+            ChatUtils.sendConsole("&cError while making item glow! Contact the developer!");
+            return item;
+        }
     }
 
 }

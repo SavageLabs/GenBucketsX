@@ -20,6 +20,7 @@ public class HookManager {
         hookPlugin(new FactionHook());
         hookPlugin(new EssentialsHook());
         hookPlugin(new SuperVanishHook());
+        hookPlugin(new CoreProtectHook());
     }
 
     private void hookPlugin(PluginHook pluginHook) {

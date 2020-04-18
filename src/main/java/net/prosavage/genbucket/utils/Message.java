@@ -4,7 +4,7 @@ import java.util.List;
 
 public enum Message {
 
-    PLUGIN_RELOAD("plugin-reload", "&aYou have reloaded the config."),
+    PLUGIN_RELOAD("plugin-reload", "&aConfiguration files reloaded!"),
     PLAYER_REQUIRED("player-required", "&cYou need to be a player to run this command!"),
     NO_PERMISSION("no-permission", "&cYou do not have permission."),
     GEN_BLOCKED_ACTION("blocked-action", "&cYou may not shift click or place the bucket in this slot!"),

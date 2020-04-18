@@ -4,10 +4,10 @@ import com.cryptomorin.xseries.XMaterial;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
+import net.prosavage.genbucket.hooks.impl.CoreProtectHook;
 import net.prosavage.genbucket.utils.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.WorldBorder;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -43,32 +43,6 @@ public class VerticalGen extends Generator {
         setData(true);
     }
 
-    @Override
-    public boolean isValidLocation(Block block) {
-
-        Location loc = block.getLocation();
-
-        WorldBorder border = loc.getWorld().getWorldBorder();
-        double size = border.getSize() / 2;
-        Location center = border.getCenter();
-        double x = loc.getX() - center.getX();
-        double z = loc.getZ() - center.getZ();
-
-        if (((x + 1) > size || (-x) > size) || ((z + 1) > size || (-z) > size)) {
-            setFinished(true);
-            return false;
-        }
-
-        if (GenBucket.get().getConfig().getBoolean("psuedo") && !getMaterial().hasGravity() && getMaterial().equals(block.getType())) {
-            return true;
-        }
-
-        if (GenBucket.get().replaceLiquids && block.isLiquid()) return true;
-        return GenBucket.get().getReplacements().contains(block.getType()) || (isPseudo() && getMaterial() == block.getType());
-
-    }
-
-
     public void run() {
 
         Block gen = getBlock().getWorld().getBlockAt(getBlock().getX(), getBlock().getY() + getIndex(), getBlock().getZ());
@@ -91,6 +65,7 @@ public class VerticalGen extends Generator {
 
         if (!isNearSponge(gen, 3) && (getBlock().getY() + getIndex()) >= 0 && (getBlock().getY() + getIndex()) < 256) {
             gen.setType(getMaterial(), false);
+            CoreProtectHook.logPlacement(getPlayer().getName(), gen);
         } else {
             getBlock().setType(getMaterial(), false);
             setFinished(true);

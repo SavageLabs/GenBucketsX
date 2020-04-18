@@ -4,9 +4,11 @@ import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.hooks.PluginHook;
 import net.prosavage.genbucket.hooks.impl.factions.FactionsMCHook;
 import net.prosavage.genbucket.hooks.impl.factions.FactionsUUIDHook;
+import net.prosavage.genbucket.hooks.impl.factions.FactionsXHook;
 import net.prosavage.genbucket.hooks.impl.factions.SavageFactionsHook;
 import net.prosavage.genbucket.utils.ChatUtils;
 import org.apache.commons.lang.NotImplementedException;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -17,22 +19,28 @@ public class FactionHook implements PluginHook<FactionHook> {
 
     @Override
     public FactionHook setup(GenBucket plugin) {
-        List<String> authors = GenBucket.get().getServer().getPluginManager().getPlugin(getName()).getDescription().getAuthors();
-        if (!authors.contains("drtshock") && !authors.contains("Benzimmer")) {
-            ChatUtils.sendConsole("[SavageGenBuckets] Server Factions type has been set to MassiveCore");
-            return new FactionsMCHook();
-        } else if (authors.contains("ProSavage") || authors.contains("LockedThread") || authors.contains("ipodtouch0218")) {
-            ChatUtils.sendConsole("[SavageGenBuckets] Server Factions type has been set to generic FactionsUUID Fork");
-            return new SavageFactionsHook();
-        } else {
-            ChatUtils.sendConsole("[SavageGenBuckets] Server Factions type has been set to FactionsUUID");
-            try {
-                return new FactionsUUIDHook();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
+        if (Bukkit.getPluginManager().isPluginEnabled("FactionsX")) {
+            ChatUtils.sendConsole("[SavageGenBuckets] Server Factions type has been set to FactionsX");
+            return new FactionsXHook();
+        } else if (Bukkit.getPluginManager().isPluginEnabled("Factions")) {
+            List<String> authors = GenBucket.get().getServer().getPluginManager().getPlugin(getName()).getDescription().getAuthors();
+            if (!authors.contains("drtshock") && !authors.contains("Benzimmer")) {
+                ChatUtils.sendConsole("[SavageGenBuckets] Server Factions type has been set to MassiveCore");
+                return new FactionsMCHook();
+            } else if (authors.contains("ProSavage") || authors.contains("LockedThread") || authors.contains("ipodtouch0218")) {
+                ChatUtils.sendConsole("[SavageGenBuckets] Server Factions type has been set to generic FactionsUUID Fork");
+                return new SavageFactionsHook();
+            } else {
+                ChatUtils.sendConsole("[SavageGenBuckets] Server Factions type has been set to FactionsUUID");
+                try {
+                    return new FactionsUUIDHook();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
             }
+            return new SavageFactionsHook();
         }
-        return new SavageFactionsHook();
+        return null;
     }
 
     public boolean canBuild(Block block, Player player) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {

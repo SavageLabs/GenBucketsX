@@ -7,7 +7,7 @@
     <groupId>net.prosavage</groupId>
     <artifactId>SavageGenbuckets</artifactId>
     <name>SavageGenbuckets</name>
-    <version>1.10.3</version>
+    <version>1.10.4</version>
     <url>https://savagelabs.net/</url>
 
     <description>Best GenBuckets plugin in the world!</description>
@@ -65,6 +65,10 @@
                                     <pattern>com.cryptomorin.xseries</pattern>
                                     <shadedPattern>net.prosavage.genbucket.shade.xseries</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>org.bstats</pattern>
+                                    <shadedPattern>net.prosavage.genbucket.shade.bstats</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -104,9 +108,30 @@
             <id>nms-repo</id>
             <url>https://repo.codemc.org/repository/nms/</url>
         </repository>
+        <!-- CoreProtect repository -->
+        <repository>
+            <id>coreprotect</id>
+            <url>https://maven.playpro.com</url>
+        </repository>
+        <repository>
+            <id>savagelabs</id>
+            <url>https://nexus.savagelabs.net/repository/maven-public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
+        <!-- bStats -->
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>1.7</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.prosavage.factionsx</groupId>
+            <artifactId>FactionsX</artifactId>
+            <version>0.2.1-PATREON</version>
+        </dependency>
         <dependency>
             <groupId>com.sk89q.worldguard.</groupId>
             <artifactId>worldguard-legacy</artifactId>
@@ -158,6 +183,12 @@
             <scope>system</scope>
             <version>2.14.1-SNAPSHOT</version>
             <systemPath>${project.basedir}/dependencies/FactionsUUID2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.coreprotect</groupId>
+            <artifactId>coreprotect</artifactId>
+            <version>2.15.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- SuperVanish -->

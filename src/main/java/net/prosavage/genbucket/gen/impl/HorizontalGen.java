@@ -4,6 +4,7 @@ import com.cryptomorin.xseries.XMaterial;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
+import net.prosavage.genbucket.hooks.impl.CoreProtectHook;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.Message;
 import org.bukkit.Location;
@@ -70,6 +71,7 @@ public class HorizontalGen extends Generator {
 
                 if (getIndex() < getPlugin().getConfig().getInt("distance")) {
                     gen.setType(getMaterial(), false);
+                    CoreProtectHook.logPlacement(getPlayer().getName(), gen);
                 } else {
                     getBlock().setType(getMaterial(), false);
                     setFinished(true);

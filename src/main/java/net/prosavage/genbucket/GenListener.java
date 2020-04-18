@@ -27,6 +27,7 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -167,7 +168,21 @@ public class GenListener implements Listener, Runnable {
                 }
                 if (item.getType() != XMaterial.LAVA_BUCKET.parseMaterial()) {
                     if (plugin.getConfig().getBoolean("use-bucket")) {
-                        item.setType(XMaterial.LAVA_BUCKET.parseMaterial());
+                        String name = item.getItemMeta().getDisplayName();
+                        List<String> lore = item.getItemMeta().getLore();
+                        String keyMATERIAL = ItemUtils.getKeyString(item, "MATERIAL");
+                        String keyGENBUCKET = ItemUtils.getKeyString(item, "GENBUCKET");
+                        item = XMaterial.LAVA_BUCKET.parseItem();
+                        if (item != null && item.getItemMeta() != null) {
+                            ItemMeta itmMeta = item.getItemMeta();
+                            if (name != null)
+                                itmMeta.setDisplayName(name);
+                            if (lore != null && !lore.isEmpty())
+                                itmMeta.setLore(lore);
+                            item.setItemMeta(itmMeta);
+                        }
+                        item = ItemUtils.setKeyString(item, "MATERIAL", keyMATERIAL);
+                        item = ItemUtils.setKeyString(item, "GENBUCKET", keyGENBUCKET);
                     } else {
                         item.setAmount(64);
                     }

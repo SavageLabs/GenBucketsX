@@ -1,8 +1,8 @@
-#general command message/permissions
-general:
-  reload-permission: 'savagegen.reload'
-  reloaded-message: '&c(!) &aConfiguation files successfully reloaded!'
-
+# Permissions:
+#   help command -> genbucket.command.help
+#   reload command -> genbucket.command.admin
+#   give command -> genbucket.command.give
+#   menu command -> genbucket.command.menu
 
 # generation shop style
 generation-shop:

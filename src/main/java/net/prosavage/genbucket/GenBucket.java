@@ -7,12 +7,14 @@ import net.prosavage.genbucket.file.FileManager;
 import net.prosavage.genbucket.file.impl.DataFile;
 import net.prosavage.genbucket.hooks.HookManager;
 import net.prosavage.genbucket.menu.impl.GenerationShopGUI;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 
 public class GenBucket extends JavaPlugin {
 
@@ -35,6 +37,12 @@ public class GenBucket extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        try {
+            int pluginId = 7225;
+            new Metrics(this, pluginId);
+        } catch (Exception ex) {
+            getServer().getLogger().log(Level.SEVERE, "Error while trying to register Metrics (bStats)");
+        }
         GenBucket.instance = this;
         saveDefaultConfig();
         checkServerVersion();

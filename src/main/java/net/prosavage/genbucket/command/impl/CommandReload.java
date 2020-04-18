@@ -1,10 +1,10 @@
 package net.prosavage.genbucket.command.impl;
 
 import com.cryptomorin.xseries.XMaterial;
-import net.md_5.bungee.api.ChatColor;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.command.AbstractCommand;
 import net.prosavage.genbucket.menu.impl.GenerationShopGUI;
+import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.Message;
 import org.bukkit.command.CommandSender;
 
@@ -23,7 +23,7 @@ public class CommandReload extends AbstractCommand {
         getPlugin().getConfig().getStringList("replace-blocks").forEach(s -> getPlugin().replaceBlocksWhiteList.add(XMaterial.valueOf(s).parseMaterial()));
         getPlugin().replaceLiquids = getPlugin().getConfig().getBoolean("replace-liquids", false);
         getPlugin().getFileManager().getFileMap().get("messages").init();
-        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Message.PLUGIN_RELOAD.getMessage()));
+        commandSender.sendMessage(ChatUtils.color(Message.PLUGIN_RELOAD.getMessage()));
         return false;
     }
 

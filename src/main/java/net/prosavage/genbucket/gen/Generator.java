@@ -90,15 +90,7 @@ public abstract class Generator {
     public abstract void run();
 
     public boolean isValidLocation(Block block) {
-        Location loc = block.getLocation();
-
-        WorldBorder border = loc.getWorld().getWorldBorder();
-        double size = border.getSize() / 2;
-        Location center = border.getCenter();
-        double x = loc.getX() - center.getX();
-        double z = loc.getZ() - center.getZ();
-
-        if (((x + 1) > size || (-x) > size) || ((z + 1) > size || (-z) > size)) {
+        if (!isInBorder(block.getWorld().getWorldBorder(), block.getX(), block.getZ())) {
             setFinished(true);
             return false;
         }
@@ -128,5 +120,12 @@ public abstract class Generator {
 
     public void setPseudo(boolean pseudo) {
         this.pseudo = pseudo;
+    }
+
+    private boolean isInBorder(WorldBorder worldBorder, int xCoord, int zCoord) {
+        double dX = Math.abs(worldBorder.getCenter().getX() - xCoord);
+        double dZ = Math.abs(worldBorder.getCenter().getZ() - zCoord);
+        double length = worldBorder.getSize();
+        return (dX < length && dZ < length);
     }
 }
