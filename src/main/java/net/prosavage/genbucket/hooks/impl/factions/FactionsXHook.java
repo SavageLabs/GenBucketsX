@@ -34,7 +34,6 @@ public class FactionsXHook extends FactionHook {
         }
         int radius = GenBucket.get().getConfig().getInt("radius", 32);
         FPlayer me = PlayerManager.INSTANCE.getFPlayer(player);
-
         if (isEnemyNear(me, radius)) {
             player.sendMessage(ChatUtils.color(Message.GEN_ENEMY_NEARBY.getMessage()));
             return true;

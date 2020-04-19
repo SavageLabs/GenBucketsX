@@ -9,10 +9,11 @@ import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.VanishUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class FactionsMCHook extends FactionHook {
 
@@ -23,29 +24,26 @@ public class FactionsMCHook extends FactionHook {
 
     @Override
     public boolean hasNearbyPlayer(Player player) {
-        if (!GenBucket.get().getConfig().getBoolean("nearby-check")) {
+        if (player == null || !GenBucket.get().getConfig().getBoolean("nearby-check", true)) {
             return false;
         }
-        Location loc = player.getLocation();
-        for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
-            Location otherLoc = otherPlayer.getLocation();
-            if (player == otherPlayer || otherPlayer.isOp() || !player.canSee(otherPlayer) || VanishUtils.isVanished(otherPlayer) || loc.getWorld() != otherLoc.getWorld()) {
-                continue;
-            }
+        int radius = GenBucket.get().getConfig().getInt("radius", 32);
+        MPlayer me = MPlayer.get(player);
+        if (me != null && isEnemyNear(me, radius)) {
+            player.sendMessage(ChatUtils.color(Message.GEN_ENEMY_NEARBY.getMessage()));
+            return true;
+        }
+        return false;
+    }
 
-            MPlayer other = MPlayer.get(otherPlayer);
-            MPlayer local = MPlayer.get(player);
-            Rel rel = other.getFaction().getRelationTo(local.getFaction());
-            if (rel != Rel.ENEMY || rel != Rel.NEUTRAL) {
-                continue;
-            }
-
-            double distX = Math.abs(loc.getX() - otherLoc.getX());
-            double distZ = Math.abs(loc.getZ() - otherLoc.getZ());
-            int radius = GenBucket.get().getConfig().getInt("radius");
-            if (distX <= radius && distZ <= radius) {
-                player.sendMessage(ChatUtils.color(Message.GEN_ENEMY_NEARBY.getMessage()));
-                return true;
+    public boolean isEnemyNear(MPlayer p, int rad) {
+        List<Entity> nearby = p.getPlayer().getNearbyEntities(rad, rad, rad);
+        for (Entity ent : nearby) {
+            if (ent instanceof Player) {
+                MPlayer nearP = MPlayer.get((Player) ent);
+                if (nearP.isOverriding() || VanishUtils.isVanished(nearP.getPlayer())) continue;
+                Rel rel = nearP.getFaction().getRelationTo(p.getFaction());
+                if (rel == Rel.ENEMY) return true;
             }
         }
         return false;
