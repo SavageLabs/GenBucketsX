@@ -47,15 +47,16 @@ public class GenBucket extends JavaPlugin {
         saveDefaultConfig();
         checkServerVersion();
         this.getCommand("genbucket").setExecutor(new GenBucketCommand(this));
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            this.hookManager = new HookManager(this);
+            this.fileManager = new FileManager(this);
 
-        this.hookManager = new HookManager(this);
-        this.fileManager = new FileManager(this);
+            getServer().getPluginManager().registerEvents(new GenListener(this), this);
+            getConfig().getStringList("replace-blocks").forEach(s -> replaceBlocksWhiteList.add(XMaterial.matchXMaterial(s).get().parseMaterial()));
+            replaceLiquids = getConfig().getBoolean("replace-liquids", false);
 
-        getServer().getPluginManager().registerEvents(new GenListener(this), this);
-        getConfig().getStringList("replace-blocks").forEach(s -> replaceBlocksWhiteList.add(XMaterial.matchXMaterial(s).get().parseMaterial()));
-        replaceLiquids = getConfig().getBoolean("replace-liquids", false);
-
-        this.generationShopGUI = new GenerationShopGUI(this);
+            this.generationShopGUI = new GenerationShopGUI(this);
+        }, 2);
     }
 
     @Override

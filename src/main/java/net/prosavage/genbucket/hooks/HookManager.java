@@ -2,11 +2,11 @@ package net.prosavage.genbucket.hooks;
 
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.hooks.impl.*;
+import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.Message;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 public class HookManager {
 
@@ -32,7 +32,7 @@ public class HookManager {
         }
         for (String hookName : pName) {
             if (plugin.getServer().getPluginManager().getPlugin(hookName) == null) {
-                plugin.getServer().getLogger().log(Level.WARNING, Message.ERROR_HOOK_NOTFOUND.getMessage().replace("%plugin%", hookName));
+                ChatUtils.sendConsole(Message.ERROR_HOOK_NOTFOUND.getMessage().replace("%plugin%", hookName));
                 return;
             }
             pluginMap.put(hookName, (PluginHook<?>) pluginHook.setup(plugin));

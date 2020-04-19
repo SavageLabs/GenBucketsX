@@ -7,6 +7,7 @@ import net.prosavage.genbucket.hooks.impl.factions.FactionsUUIDHook;
 import net.prosavage.genbucket.hooks.impl.factions.FactionsXHook;
 import net.prosavage.genbucket.hooks.impl.factions.SavageFactionsHook;
 import net.prosavage.genbucket.utils.ChatUtils;
+import net.prosavage.genbucket.utils.Message;
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -20,18 +21,18 @@ public class FactionHook implements PluginHook<FactionHook> {
     @Override
     public FactionHook setup(GenBucket plugin) {
         if (Bukkit.getPluginManager().isPluginEnabled("FactionsX")) {
-            ChatUtils.sendConsole("[SavageGenBuckets] Server Factions type has been set to FactionsX");
+            ChatUtils.sendConsole(Message.PREFIX.getMessage() + "Server Factions type has been set to FactionsX");
             return new FactionsXHook();
         } else if (Bukkit.getPluginManager().isPluginEnabled("Factions")) {
             List<String> authors = GenBucket.get().getServer().getPluginManager().getPlugin(getName()).getDescription().getAuthors();
             if (!authors.contains("drtshock") && !authors.contains("Benzimmer")) {
-                ChatUtils.sendConsole("[SavageGenBuckets] Server Factions type has been set to MassiveCore");
+                ChatUtils.sendConsole(Message.PREFIX.getMessage() + "Server Factions type has been set to MCore Factions");
                 return new FactionsMCHook();
             } else if (authors.contains("ProSavage") || authors.contains("LockedThread") || authors.contains("ipodtouch0218")) {
-                ChatUtils.sendConsole("[SavageGenBuckets] Server Factions type has been set to generic FactionsUUID Fork");
+                ChatUtils.sendConsole(Message.PREFIX.getMessage() + "Server Factions type has been set to generic FactionsUUID Fork");
                 return new SavageFactionsHook();
             } else {
-                ChatUtils.sendConsole("[SavageGenBuckets] Server Factions type has been set to FactionsUUID");
+                ChatUtils.sendConsole(Message.PREFIX.getMessage() + "Server Factions type has been set to FactionsUUID");
                 try {
                     return new FactionsUUIDHook();
                 } catch (NoSuchMethodException e) {
