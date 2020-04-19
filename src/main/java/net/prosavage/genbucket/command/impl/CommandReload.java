@@ -34,7 +34,7 @@ public class CommandReload extends AbstractCommand {
 
     @Override
     public String getPermission() {
-        return "genbucket.command.admin";
+        return "genbucket.command.reload";
     }
 
 }

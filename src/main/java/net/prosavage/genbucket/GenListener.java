@@ -33,6 +33,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 
 import static org.bukkit.block.BlockFace.*;
 
@@ -81,7 +82,7 @@ public class GenListener implements Listener, Runnable {
                     }
                 }
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                e.printStackTrace();
+                Bukkit.getServer().getLogger().log(Level.SEVERE, "Error while checking for canBuild/hasNearbyPlayer: " + e);
             }
 
         }
@@ -138,7 +139,7 @@ public class GenListener implements Listener, Runnable {
                     }
                 }
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                e.printStackTrace();
+                Bukkit.getServer().getLogger().log(Level.SEVERE, "Error while checking for canBuild/hasNearbyPlayer: " + e);
             }
         }
 

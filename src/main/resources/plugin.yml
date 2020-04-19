@@ -7,4 +7,32 @@ depend: [Vault]
 softdepend: [CoreProtect, Essentials, FastAsyncWorldedit, Factions, FactionsX, MassiveCore, PremiumVanish, SuperVanish, WorldGuard]
 commands:
   genbucket:
+    description: Main Command
     aliases: [genbucket, gb, genshop, gen, savagegenbucket]
+permissions:
+  genbucket.command.help:
+    description: Allows help subcommand
+    default: true
+  genbucket.command.give:
+    description: Allows give subcommand
+    default: op
+  genbucket.command.menu:
+    description: Allows menu subcommand
+    default: op
+  genbucket.command.reload:
+    description: Allows reload subcommand
+    default: op
+  genbucket.command.user:
+    description: Wildcard permission for common users
+    default: op
+    children:
+      genbucket.command.help: true
+      genbucket.command.menu: true
+  genbucket.command.admin:
+    description: Wildcard permission for admins
+    default: op
+    children:
+      genbucket.command.reload: true
+      genbucket.command.help: true
+      genbucket.command.give: true
+      genbucket.command.menu: true

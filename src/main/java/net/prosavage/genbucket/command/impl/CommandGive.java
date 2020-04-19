@@ -7,8 +7,8 @@ import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.ItemUtils;
 import net.prosavage.genbucket.utils.Message;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class CommandGive extends AbstractCommand {
@@ -24,7 +24,12 @@ public class CommandGive extends AbstractCommand {
         if (args.length == 5) {
             //gen give [player] [gentype] [material] [amount]
             if (args[2].equalsIgnoreCase("HORIZONTAL") || args[2].equalsIgnoreCase("VERTICAL")) {
-                if (Bukkit.getPlayer(args[1]) != null && XMaterial.matchXMaterial(args[3].toUpperCase()).isPresent()) {
+                Player target = Bukkit.getPlayer(args[1]);
+                if (target == null) {
+                    sender.sendMessage(Message.PREFIX.getMessage() + Message.ERROR_INVALID_PLAYER.getMessage().replace("%player%", args[1]));
+                    return false;
+                }
+                if (XMaterial.matchXMaterial(args[3].toUpperCase()).isPresent()) {
                     int amount;
                     if (args[4].matches("-?\\d+(\\.\\d+)?")) {
                         try {
@@ -35,23 +40,35 @@ public class CommandGive extends AbstractCommand {
                     } else {
                         amount = 1;
                     }
-                    ItemStack item = XMaterial.matchXMaterial(args[3].toUpperCase()).get().parseItem();
+                    amount = Math.max(1, amount); // Ensure amount > 0
+                    amount = Math.min(127, amount); // Ensure amount <= 127
+                    ItemStack item;
+                    if (getPlugin().getConfig().getBoolean("use-bucket")) {
+                        item = XMaterial.LAVA_BUCKET.parseItem();
+                    } else {
+                        item = XMaterial.matchXMaterial(args[3].toUpperCase()).get().parseItem();
+                    }
+                    if (item == null) {
+                        sender.sendMessage(Message.PREFIX.getMessage() + Message.ERROR_ITEM_PARSE_FAILED.getMessage().replace("%material%", args[3].toUpperCase()));
+                        return false;
+                    }
                     String type = args[2].substring(0, 1).toUpperCase() + args[2].substring(1).toLowerCase();
                     item = ItemUtils.createItem(item, getPlugin().getConfig(), args[2].toUpperCase() + "." + args[3].toUpperCase(), type);
 
-                    if (getPlugin().getConfig().getBoolean("use-bucket")) {
-                        item.setType(Material.LAVA_BUCKET);
-                    } else {
+                    if (!getPlugin().getConfig().getBoolean("use-bucket")) {
                         item.setAmount(amount);
                     }
-
-                    Bukkit.getPlayer(args[1]).getInventory().addItem(item);
+                    target.getInventory().addItem(item);
+                    return false;
+                } else {
+                    sender.sendMessage(Message.PREFIX.getMessage() + Message.ERROR_ITEM_PARSE_FAILED.getMessage().replace("%material%", args[3].toUpperCase()));
                     return false;
                 }
             }
-
         }
-        sender.sendMessage(ChatUtils.color("&cUsage: &e/gen give &6[Player] [GenType] [Material] [Amount]"));
+        sender.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + Message.CMD_USAGE.getMessage()
+                .replace("%command%", "/gen give")
+                .replace("%args%", "[Player] [GenType] [Material] [Amount]")));
         return false;
     }
 

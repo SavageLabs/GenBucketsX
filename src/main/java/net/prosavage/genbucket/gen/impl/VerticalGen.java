@@ -86,11 +86,6 @@ public class VerticalGen extends Generator {
     }
 
     @Override
-    public boolean isFinished() {
-        return super.isFinished();
-    }
-
-    @Override
     public String toString() {
         return this.getMaterial() + "," + getLocation(this.getBlock().getLocation()) + "," + getIndex() + "," + direction + "," + isPseudo();
     }

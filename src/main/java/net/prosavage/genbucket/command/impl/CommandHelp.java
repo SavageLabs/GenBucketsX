@@ -18,9 +18,14 @@ public class CommandHelp extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender, String[] args) {
+        commandSender.sendMessage(Message.CMD_HELP_HEADER.getMessage().replace("%version%", GenBucket.get().getDescription().getVersion()));
         for (AbstractCommand commands : command.getCommands()) {
             if (commandSender.isOp() || commandSender.hasPermission(commands.getPermission())) {
-                commandSender.sendMessage(ChatUtils.color("&c/genbucket " + commands.getLabel() + " &8> &7" + commands.getDescription()));
+                commandSender.sendMessage(ChatUtils.color(
+                        Message.CMD_HELP_FORMAT.getMessage()
+                                .replace("%command%", "/genbucket")
+                                .replace("%args%", commands.getLabel())
+                                .replace("%description%", commands.getDescription())));
             }
         }
         return false;

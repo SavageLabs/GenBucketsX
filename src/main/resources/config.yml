@@ -46,7 +46,7 @@ distance: 10
 # WARNING: ANY DELAY LESS THAN 5 IS NOT RECOMMENDED #
 #####################################################
 
-delay: 15
+delay: 10
 
 # should genbuckets use buckets or blocks
 use-bucket: true
@@ -57,7 +57,7 @@ sponge-check: false
 
 genbucket-lore:
   - '&7Type:&4 %type%'
-  - '&7Placement:&4 $%price%'
+  - '&7Placement Price:&4 $%price%'
 
 # blocks you want the genbuckets to override.
 
@@ -69,6 +69,9 @@ replace-blocks:
   - AIR
   - TALL_GRASS
   - LARGE_FERN
+  - FERN
+  - GRASS
+  - POPPY
 
 # Buckets ignore liquid blocks, helpful for repairing waterlogged bases.
 replace-liquids: false

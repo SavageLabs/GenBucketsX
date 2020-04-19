@@ -5,13 +5,14 @@ import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.menu.MenuBuilder;
 import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.ItemUtils;
+import net.prosavage.genbucket.utils.Message;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.List;
 
 public class GenerationShopGUI extends MenuBuilder {
 
@@ -27,7 +28,7 @@ public class GenerationShopGUI extends MenuBuilder {
             item = XMaterial.matchXMaterial(key).get().parseItem();
         }
         if (item == null) {
-            ChatUtils.sendConsole("[SavageGenBuckets] Error while parsing Material for key= " + key + " ... Skipping...");
+            ChatUtils.sendConsole(Message.PREFIX.getMessage() + Message.ERROR_ITEM_PARSE_FAILED.getMessage().replace("%material%", key));
         }
         return item;
     }
@@ -65,15 +66,15 @@ public class GenerationShopGUI extends MenuBuilder {
             item = new ItemStack(Material.AIR);
         }
         if (config.getBoolean("generation-shop.background-glow")) {
-            item.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 1);
+            item = ItemUtils.setGlowing(item);
         }
         ItemMeta itemMeta = item.getItemMeta();
-        if (item.containsEnchantment(Enchantment.DAMAGE_ALL)) {
-            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        }
-        itemMeta.setDisplayName(ChatUtils.color(config.getString("generation-shop.blank-item.name")));
-        if (!config.getBoolean("generation-shop.no-lore")) {
-            itemMeta.setLore(ChatUtils.color(config.getStringList("generation-shop.blank-item.lore")));
+        String displayName = config.getString("generation-shop.blank-item.name");
+        List<String> lore = config.getStringList("generation-shop.blank-item.lore");
+        if (displayName != null)
+            itemMeta.setDisplayName(ChatUtils.color(displayName));
+        if (lore != null && !lore.isEmpty() && !config.getBoolean("generation-shop.no-lore")) {
+            itemMeta.setLore(ChatUtils.color(lore));
         }
         item.setItemMeta(itemMeta);
         return item;

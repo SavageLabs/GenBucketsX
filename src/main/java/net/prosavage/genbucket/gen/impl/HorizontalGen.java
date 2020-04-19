@@ -7,6 +7,7 @@ import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.hooks.impl.CoreProtectHook;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.Message;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -14,6 +15,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
 
 public class HorizontalGen extends Generator {
 
@@ -78,7 +80,7 @@ public class HorizontalGen extends Generator {
                 }
             }
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-            e.printStackTrace();
+            Bukkit.getServer().getLogger().log(Level.SEVERE, "Contact the author and send this error: " + e);
         }
     }
 
