@@ -113,10 +113,6 @@
             <id>coreprotect</id>
             <url>https://maven.playpro.com</url>
         </repository>
-        <repository>
-            <id>savagelabs</id>
-            <url>https://nexus.savagelabs.net/repository/maven-public/</url>
-        </repository>
     </repositories>
 
     <dependencies>
