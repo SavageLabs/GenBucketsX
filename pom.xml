@@ -127,6 +127,7 @@
             <groupId>net.prosavage.factionsx</groupId>
             <artifactId>FactionsX</artifactId>
             <version>0.2.1-PATREON</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldguard.</groupId>
