@@ -7,13 +7,13 @@ import net.prosavage.genbucket.hooks.PluginHook;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.Plugin;
 
-public class CoreProtectHook implements PluginHook {
+public class CoreProtectHook implements PluginHook<CoreProtectHook> {
 
     private static CoreProtectAPI cpAPI;
     private static boolean isSetup = false;
 
     @Override
-    public Object setup(GenBucket genBucket) {
+    public CoreProtectHook setup(GenBucket genBucket) {
         try {
             cpAPI = getCoreProtect();
         } catch (Exception ex) {
@@ -31,22 +31,22 @@ public class CoreProtectHook implements PluginHook {
         Plugin plugin = GenBucket.get().getServer().getPluginManager().getPlugin("CoreProtect");
 
         // Check that CoreProtect is loaded
-        if (plugin == null || !(plugin instanceof CoreProtect)) {
+        if (!(plugin instanceof CoreProtect)) {
             return null;
         }
 
         // Check that the API is enabled
-        CoreProtectAPI CoreProtect = ((CoreProtect) plugin).getAPI();
-        if (!CoreProtect.isEnabled()) {
+        CoreProtectAPI cProtect = ((CoreProtect) plugin).getAPI();
+        if (!cProtect.isEnabled()) {
             return null;
         }
 
         // Check that a compatible version of the API is loaded
-        if (CoreProtect.APIVersion() < 6) {
+        if (cProtect.APIVersion() < 6) {
             return null;
         }
 
-        return CoreProtect;
+        return cProtect;
     }
 
     public static void logPlacement(String playerName, Block block) {

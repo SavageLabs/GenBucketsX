@@ -44,6 +44,7 @@ public class FactionsXHook extends FactionHook {
 
     public boolean isEnemyNear(FPlayer p, int rad) {
         List<Entity> nearby = p.getPlayer().getNearbyEntities(rad, rad, rad);
+        if (nearby.isEmpty()) return false;
         for (Entity ent : nearby) {
             if (ent instanceof Player) {
                 FPlayer nearP = PlayerManager.INSTANCE.getFPlayer((Player) ent);

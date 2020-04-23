@@ -24,19 +24,11 @@ public class HookManager {
     }
 
     private void hookPlugin(PluginHook pluginHook) {
-        String[] pName;
-        if (pluginHook.getName().contains(",")) {
-            pName = pluginHook.getName().split(",");
-        } else {
-            pName = new String[]{pluginHook.getName()};
+        if (!pluginHook.getName().equalsIgnoreCase("Factions") && plugin.getServer().getPluginManager().getPlugin(pluginHook.getName()) == null) {
+            ChatUtils.sendConsole(Message.ERROR_HOOK_NOTFOUND.getMessage().replace("%plugin%", pluginHook.getName()));
+            return;
         }
-        for (String hookName : pName) {
-            if (plugin.getServer().getPluginManager().getPlugin(hookName) == null) {
-                ChatUtils.sendConsole(Message.ERROR_HOOK_NOTFOUND.getMessage().replace("%plugin%", hookName));
-                return;
-            }
-            pluginMap.put(hookName, (PluginHook<?>) pluginHook.setup(plugin));
-        }
+        pluginMap.put(pluginHook.getName(), (PluginHook<?>) pluginHook.setup(plugin));
     }
 
     public Map<String, PluginHook> getPluginMap() {

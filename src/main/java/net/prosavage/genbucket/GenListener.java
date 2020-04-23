@@ -72,7 +72,7 @@ public class GenListener implements Listener, Runnable {
             }
 
             try {
-                if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
+                if (facHook != null && facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
                     if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), player)) {
                         register(new VerticalGen(plugin, player, mat, block, event.getBlockFace(), plugin.getConfig().getBoolean("VERTICAL." + mat.name() + ".pseudo", false)));
                         Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.VERTICAL));
