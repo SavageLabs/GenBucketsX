@@ -19,6 +19,9 @@ public class FactionsXHook extends FactionHook {
 
     @Override
     public boolean canBuild(Block block, Player player) {
+        if (player == null || !GenBucket.get().getConfig().getBoolean("canbuild-check", true)) {
+            return false;
+        }
         FPlayer me = PlayerManager.INSTANCE.getFPlayer(player);
         if (!me.canBuildAt(block.getLocation())) {
             player.sendMessage(ChatUtils.color(Message.GEN_CANT_PLACE.getMessage()));

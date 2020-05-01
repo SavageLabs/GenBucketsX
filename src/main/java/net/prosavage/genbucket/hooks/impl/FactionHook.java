@@ -41,15 +41,21 @@ public class FactionHook implements PluginHook<FactionHook> {
             }
             return new SavageFactionsHook();
         }
-        return null;
+        return this;
     }
 
     public boolean canBuild(Block block, Player player) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        throw new NotImplementedException("Factions does not exist!");
+        if (player == null || !GenBucket.get().getConfig().getBoolean("canbuild-check", true)) {
+            return false;
+        }
+        throw new NotImplementedException("No supported Claim Plugin found!");
     }
 
     public boolean hasNearbyPlayer(Player player) {
-        throw new NotImplementedException("Factions does not exist!");
+        if (player == null || !GenBucket.get().getConfig().getBoolean("nearby-check", true)) {
+            return false;
+        }
+        throw new NotImplementedException("No supported Claim Plugin found!");
     }
 
     @Override

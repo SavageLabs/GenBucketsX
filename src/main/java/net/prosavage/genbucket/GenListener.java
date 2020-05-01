@@ -3,6 +3,7 @@ package net.prosavage.genbucket;
 import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.ImmutableList;
 import net.prosavage.genbucket.api.PlayerGenEvent;
+import net.prosavage.genbucket.api.PlayerPlaceGenEvent;
 import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.gen.impl.HorizontalGen;
@@ -107,11 +108,13 @@ public class GenListener implements Listener, Runnable {
     public void onPlaceBlock(PlayerInteractEvent event) {
         ItemStack item = getTool(event.getPlayer());
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK && !plugin.getConfig().getBoolean("use-bucket") && item.hasItemMeta() && ItemUtils.hasKey(item, "GENBUCKET")) {
-            event.setCancelled(true);
-
-            Block block = event.getClickedBlock().getRelative(event.getBlockFace());
             Player player = event.getPlayer();
             String name = ItemUtils.getKeyString(item, "GENBUCKET");
+            Block block = event.getClickedBlock().getRelative(event.getBlockFace());
+            PlayerPlaceGenEvent placeGenEvent = new PlayerPlaceGenEvent(player, block.getLocation(), name.contains("VERTICAL") ? GenType.VERTICAL : GenType.HORIZONTAL);
+            Bukkit.getServer().getPluginManager().callEvent(placeGenEvent);
+            if (placeGenEvent.isCancelled()) return;
+            event.setCancelled(true);
             Material mat;
             try {
                 mat = Material.valueOf(ItemUtils.getKeyString(item, "MATERIAL"));

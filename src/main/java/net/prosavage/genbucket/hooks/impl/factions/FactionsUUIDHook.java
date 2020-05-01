@@ -34,6 +34,9 @@ public class FactionsUUIDHook extends FactionHook {
 
     @Override
     public boolean canBuild(Block block, Player player) throws InvocationTargetException, IllegalAccessException {
+        if (player == null || !GenBucket.get().getConfig().getBoolean("canbuild-check", true)) {
+            return false;
+        }
         if (!(boolean) playerCanBuildDestroyBlock.invoke(FactionsBlockListener.class, player, block.getLocation(), PermissibleAction.BUILD, true)) {
             player.sendMessage(ChatUtils.color(Message.GEN_CANT_PLACE.getMessage()));
             return false;
