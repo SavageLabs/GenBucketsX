@@ -70,7 +70,6 @@ public class GenListener implements Listener, Runnable {
                     return;
                 }
             }
-
             try {
                 if (facHook != null && facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
                     if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), player)) {
