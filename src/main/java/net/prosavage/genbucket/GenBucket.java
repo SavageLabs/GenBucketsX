@@ -1,6 +1,7 @@
 package net.prosavage.genbucket;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.tchristofferson.configupdater.ConfigUpdater;
 import net.milkbowl.vault.economy.Economy;
 import net.prosavage.genbucket.command.GenBucketCommand;
 import net.prosavage.genbucket.file.FileManager;
@@ -12,6 +13,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -45,6 +49,12 @@ public class GenBucket extends JavaPlugin {
         }
         GenBucket.instance = this;
         saveDefaultConfig();
+        File configFile = new File(getDataFolder(), "config.yml");
+        try {
+            ConfigUpdater.update(instance, "config.yml", configFile, Arrays.asList("VERTICAL", "HORIZONTAL", "generation-shop"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         checkServerVersion();
         this.getCommand("genbucket").setExecutor(new GenBucketCommand(this));
         Bukkit.getScheduler().runTaskLater(this, () -> {

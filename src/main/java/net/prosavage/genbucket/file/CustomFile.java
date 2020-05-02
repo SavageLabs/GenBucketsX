@@ -1,7 +1,7 @@
 package net.prosavage.genbucket.file;
 
-import net.prosavage.genbucket.GenBucket;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ public abstract class CustomFile implements ICustomFile {
     private File file;
     private File configFile;
 
-    public CustomFile(GenBucket instance, String parent) {
+    public CustomFile(JavaPlugin instance, String parent) {
         if (!instance.getDataFolder().exists()) {
             instance.getDataFolder().mkdir();
         }

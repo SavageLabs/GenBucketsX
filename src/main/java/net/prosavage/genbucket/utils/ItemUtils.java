@@ -27,8 +27,12 @@ public class ItemUtils {
     }
 
     public static boolean hasKey(ItemStack item, String key) {
-        if (item == null) return false;
-        return NBTEditor.contains(item, key);
+        try {
+            if (item == null) return false;
+            return NBTEditor.contains(item, key);
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     public static ItemStack createItem(ItemStack item, FileConfiguration config, String key, String type) {

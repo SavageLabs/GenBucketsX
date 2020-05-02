@@ -69,6 +69,10 @@
                                     <pattern>org.bstats</pattern>
                                     <shadedPattern>net.prosavage.genbucket.shade.bstats</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>com.tchristofferson.configupdater</pattern>
+                                    <shadedPattern>net.prosavage.genbucket.shade.configupdater</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -124,6 +128,14 @@
             <version>1.7</version>
             <scope>compile</scope>
         </dependency>
+        <!-- Config-Updater -->
+        <dependency>
+            <groupId>com.tchristofferson</groupId>
+            <artifactId>ConfigUpdater</artifactId>
+            <version>1.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
         <dependency>
             <groupId>net.prosavage.factionsx</groupId>
             <artifactId>FactionsX</artifactId>

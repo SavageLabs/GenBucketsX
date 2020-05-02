@@ -19,8 +19,8 @@ public class SavageFactionsHook extends FactionHook {
 
     @Override
     public boolean canBuild(Block block, Player player) {
-        if (player == null || !GenBucket.get().getConfig().getBoolean("canbuild-check", true)) {
-            return false;
+        if (!GenBucket.get().getConfig().getBoolean("canbuild-check", true)) {
+            return true;
         }
         if (!FactionsBlockListener.playerCanBuildDestroyBlock(player, block.getLocation(), "build", true)) {
             player.sendMessage(ChatUtils.color(Message.GEN_CANT_PLACE.getMessage()));

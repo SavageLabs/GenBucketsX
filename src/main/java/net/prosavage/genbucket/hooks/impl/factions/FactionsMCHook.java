@@ -19,8 +19,8 @@ public class FactionsMCHook extends FactionHook {
 
     @Override
     public boolean canBuild(Block block, Player player) {
-        if (player == null || !GenBucket.get().getConfig().getBoolean("canbuild-check", true)) {
-            return false;
+        if (!GenBucket.get().getConfig().getBoolean("canbuild-check", true)) {
+            return true;
         }
         return EnginePermBuild.canPlayerBuildAt(player, PS.valueOf(block), true);
     }

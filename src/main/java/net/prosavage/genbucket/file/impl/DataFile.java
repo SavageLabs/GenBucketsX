@@ -9,6 +9,7 @@ import net.prosavage.genbucket.gen.impl.HorizontalGen;
 import net.prosavage.genbucket.gen.impl.VerticalGen;
 import net.prosavage.genbucket.utils.ChatUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,7 +19,7 @@ public class DataFile extends CustomFile {
     private Collection<String> vertical = new ArrayList<>();
     private Collection<String> horizontal = new ArrayList<>();
 
-    public DataFile(GenBucket plugin) {
+    public DataFile(JavaPlugin plugin) {
         super(plugin, "data");
         getConfig().addDefault("gen-vertical", vertical);
         getConfig().addDefault("gen-horizontal", horizontal);

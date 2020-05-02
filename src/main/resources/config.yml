@@ -52,6 +52,9 @@ delay: 10
 
 # should genbuckets use buckets or blocks
 use-bucket: true
+# should genbuckets be removed from player's inventory after use,
+# forcing players to buy a new one for each operation?
+remove-after-use: false
 
 # should sponge check be enabled
 # cancels generation if sponge is within 3 blocks

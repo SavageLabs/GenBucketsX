@@ -76,9 +76,13 @@ public class GenListener implements Listener, Runnable {
                     if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), player)) {
                         register(new VerticalGen(plugin, player, mat, block, event.getBlockFace(), plugin.getConfig().getBoolean("VERTICAL." + mat.name() + ".pseudo", false)));
                         Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.VERTICAL));
+                        if (plugin.getConfig().getBoolean("remove-after-use"))
+                            setTool(player, XMaterial.AIR.parseItem());
                     } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), player)) {
                         register(new HorizontalGen(plugin, player, mat, block, event.getBlockFace(), plugin.getConfig().getBoolean("HORIZONTAL." + mat.name() + ".pseudo", false)));
                         Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.HORIZONTAL));
+                        if (plugin.getConfig().getBoolean("remove-after-use"))
+                            setTool(player, XMaterial.AIR.parseItem());
                     }
                 }
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
@@ -97,7 +101,10 @@ public class GenListener implements Listener, Runnable {
         if (item.getType() == Material.AIR && event.getClick().isShiftClick()) item = event.getCurrentItem();
         Player player = (Player) event.getWhoClicked();
 
-        if (item.hasItemMeta() && player.getOpenInventory().getType().equals(InventoryType.FURNACE) && ItemUtils.hasKey(item, "GENBUCKET") && event.getClick().isShiftClick()) {
+        if (item.hasItemMeta()
+                && player.getOpenInventory().getType().equals(InventoryType.FURNACE)
+                && ItemUtils.hasKey(item, "GENBUCKET")
+                && event.getClick().isShiftClick()) {
             event.setCancelled(true);
             player.sendMessage(Message.GEN_BLOCKED_ACTION.getMessage());
             player.closeInventory();
@@ -134,10 +141,13 @@ public class GenListener implements Listener, Runnable {
                     if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), event.getPlayer())) {
                         register(new VerticalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace(), plugin.getConfig().getBoolean("VERTICAL." + mat.name() + ".pseudo", false)));
                         Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.VERTICAL));
+                        if (plugin.getConfig().getBoolean("remove-after-use"))
+                            setTool(player, XMaterial.AIR.parseItem());
                     } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), event.getPlayer())) {
                         register(new HorizontalGen(plugin, event.getPlayer(), mat, block, event.getBlockFace(), plugin.getConfig().getBoolean("HORIZONTAL." + mat.name() + ".pseudo", false)));
                         Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.HORIZONTAL));
-
+                        if (plugin.getConfig().getBoolean("remove-after-use"))
+                            setTool(player, XMaterial.AIR.parseItem());
                     }
                 }
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
@@ -239,6 +249,15 @@ public class GenListener implements Listener, Runnable {
             return player.getInventory().getItemInHand();
         } else {
             return player.getInventory().getItemInMainHand();
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    public static void setTool(Player player, ItemStack item) {
+        if (GenBucket.getServerVersion() <= 8) {
+            player.getInventory().setItemInHand(item);
+        } else {
+            player.getInventory().setItemInMainHand(item);
         }
     }
 
