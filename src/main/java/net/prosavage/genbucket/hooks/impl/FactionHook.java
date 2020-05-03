@@ -8,7 +8,6 @@ import net.prosavage.genbucket.hooks.impl.factions.FactionsXHook;
 import net.prosavage.genbucket.hooks.impl.factions.SavageFactionsHook;
 import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.Message;
-import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -41,21 +40,16 @@ public class FactionHook implements PluginHook<FactionHook> {
             }
             return new SavageFactionsHook();
         }
+        ChatUtils.sendConsole(Message.PREFIX.getMessage() + "No Compatible Claim Plugin found!");
         return this;
     }
 
     public boolean canBuild(Block block, Player player) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        if (player == null || !GenBucket.get().getConfig().getBoolean("canbuild-check", true)) {
-            return false;
-        }
-        throw new NotImplementedException("No supported Claim Plugin found!");
+        return true;
     }
 
     public boolean hasNearbyPlayer(Player player) {
-        if (player == null || !GenBucket.get().getConfig().getBoolean("nearby-check", true)) {
-            return false;
-        }
-        throw new NotImplementedException("No supported Claim Plugin found!");
+        return false;
     }
 
     @Override

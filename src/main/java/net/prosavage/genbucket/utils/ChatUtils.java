@@ -1,5 +1,6 @@
 package net.prosavage.genbucket.utils;
 
+import net.prosavage.genbucket.GenBucket;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -10,6 +11,11 @@ public class ChatUtils {
 
     private ChatUtils() {
         throw new AssertionError("Instantiating utility class.");
+    }
+
+    public static void debug(String str) {
+        if (GenBucket.get().getConfig().getBoolean("debug"))
+            Bukkit.getConsoleSender().sendMessage(color("&e<DEBUG> &f" + str));
     }
 
     // Color messages

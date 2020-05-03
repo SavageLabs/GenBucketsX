@@ -4,6 +4,9 @@
 #   give command -> genbucket.command.give
 #   menu command -> genbucket.command.menu
 
+# Enables debug messages
+debug: false
+
 # generation shop style
 generation-shop:
   background-glow: false

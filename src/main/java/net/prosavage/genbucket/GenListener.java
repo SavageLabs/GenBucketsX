@@ -51,8 +51,10 @@ public class GenListener implements Listener, Runnable {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEmptyBucket(PlayerBucketEmptyEvent event) {
         if (!plugin.getConfig().getBoolean("use-bucket")) return;
+        ChatUtils.debug("bucket event triggered");
         ItemStack item = getTool(event.getPlayer());
         if ((item.getType() == XMaterial.LAVA_BUCKET.parseMaterial() || item.getType() == XMaterial.WATER_BUCKET.parseMaterial()) && ItemUtils.hasKey(item, "GENBUCKET")) {
+            ChatUtils.debug("key check passed");
             event.setCancelled(true);
             Block block = event.getBlockClicked().getRelative(event.getBlockFace());
             Player player = event.getPlayer();
@@ -63,6 +65,7 @@ public class GenListener implements Listener, Runnable {
             } catch (Exception ex) {
                 mat = XMaterial.matchXMaterial(ItemUtils.getKeyString(item, "MATERIAL")).get().parseMaterial();
             }
+            ChatUtils.debug("pre wg check");
             FactionHook facHook = ((FactionHook) plugin.getHookManager().getPluginMap().get("Factions"));
             if (plugin.getHookManager().getPluginMap().get("WorldGuard") != null) {
                 WorldGuardHook wgHook = ((WorldGuardHook) plugin.getHookManager().getPluginMap().get("WorldGuard"));
@@ -71,14 +74,18 @@ public class GenListener implements Listener, Runnable {
                     return;
                 }
             }
+            ChatUtils.debug("post wg check");
             try {
-                if (facHook != null && facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
+                if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
+                    ChatUtils.debug("claim checks passed");
                     if (name.contains("VERTICAL") && withdraw(name + "." + mat.name(), player)) {
+                        ChatUtils.debug("check VERTICAL");
                         register(new VerticalGen(plugin, player, mat, block, event.getBlockFace(), plugin.getConfig().getBoolean("VERTICAL." + mat.name() + ".pseudo", false)));
                         Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.VERTICAL));
                         if (plugin.getConfig().getBoolean("remove-after-use"))
                             setTool(player, XMaterial.AIR.parseItem());
                     } else if (name.contains("HORIZONTAL") && DIRECTIONS.contains(event.getBlockFace()) && withdraw(name + "." + mat.name(), player)) {
+                        ChatUtils.debug("check HORIZONTAL");
                         register(new HorizontalGen(plugin, player, mat, block, event.getBlockFace(), plugin.getConfig().getBoolean("HORIZONTAL." + mat.name() + ".pseudo", false)));
                         Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, mat, block.getLocation(), GenType.HORIZONTAL));
                         if (plugin.getConfig().getBoolean("remove-after-use"))
