@@ -7,7 +7,9 @@ import net.prosavage.genbucket.command.GenBucketCommand;
 import net.prosavage.genbucket.file.FileManager;
 import net.prosavage.genbucket.file.impl.DataFile;
 import net.prosavage.genbucket.hooks.HookManager;
+import net.prosavage.genbucket.hooks.impl.WorldGuard;
 import net.prosavage.genbucket.menu.impl.GenerationShopGUI;
+import net.prosavage.genbucket.utils.ChatUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -59,6 +61,11 @@ public class GenBucket extends JavaPlugin {
         this.getCommand("genbucket").setExecutor(new GenBucketCommand(this));
         Bukkit.getScheduler().runTaskLater(this, () -> {
             this.hookManager = new HookManager(this);
+            if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
+                hook_WG = true;
+                ChatUtils.debug("WorldGuard found, enabling hook...");
+                wg = new WorldGuard();
+            }
             this.fileManager = new FileManager(this);
 
             getServer().getPluginManager().registerEvents(new GenListener(this), this);
@@ -105,6 +112,17 @@ public class GenBucket extends JavaPlugin {
 
     public static int getServerVersion() {
         return ver;
+    }
+
+    public WorldGuard getWorldGuard() {
+        return this.wg;
+    }
+
+    private static boolean hook_WG = false;
+    private WorldGuard wg;
+
+    public boolean hasWorldGuard() {
+        return getConfig().getBoolean("worldguard-check") && hook_WG;
     }
 
 }

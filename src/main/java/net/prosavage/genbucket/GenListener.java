@@ -9,7 +9,6 @@ import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.gen.impl.HorizontalGen;
 import net.prosavage.genbucket.gen.impl.VerticalGen;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
-import net.prosavage.genbucket.hooks.impl.WorldGuardHook;
 import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.ItemUtils;
 import net.prosavage.genbucket.utils.Message;
@@ -67,12 +66,9 @@ public class GenListener implements Listener, Runnable {
             }
             ChatUtils.debug("pre wg check");
             FactionHook facHook = ((FactionHook) plugin.getHookManager().getPluginMap().get("Factions"));
-            if (plugin.getHookManager().getPluginMap().get("WorldGuard") != null) {
-                WorldGuardHook wgHook = ((WorldGuardHook) plugin.getHookManager().getPluginMap().get("WorldGuard"));
-                if (!wgHook.canBuild(player, block)) {
-                    player.sendMessage(ChatUtils.color(Message.GEN_CANCELLED.getMessage()));
-                    return;
-                }
+            if (plugin.hasWorldGuard() && !plugin.getWorldGuard().hasBuildPermission(player, block)) {
+                player.sendMessage(ChatUtils.color(Message.GEN_CANCELLED.getMessage()));
+                return;
             }
             ChatUtils.debug("post wg check");
             try {
@@ -99,25 +95,6 @@ public class GenListener implements Listener, Runnable {
         }
     }
 
-    @EventHandler
-    public void inventoryClick(InventoryClickEvent event) {
-        if (event.getView() == null) return;
-        if (event.getView().getTitle().equals(ChatUtils.color(plugin.getConfig().getString("generation-shop.name"))))
-            return;
-        ItemStack item = event.getCursor();
-        if (item.getType() == Material.AIR && event.getClick().isShiftClick()) item = event.getCurrentItem();
-        Player player = (Player) event.getWhoClicked();
-
-        if (item.hasItemMeta()
-                && player.getOpenInventory().getType().equals(InventoryType.FURNACE)
-                && ItemUtils.hasKey(item, "GENBUCKET")
-                && event.getClick().isShiftClick()) {
-            event.setCancelled(true);
-            player.sendMessage(Message.GEN_BLOCKED_ACTION.getMessage());
-            player.closeInventory();
-        }
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlaceBlock(PlayerInteractEvent event) {
         ItemStack item = getTool(event.getPlayer());
@@ -136,12 +113,9 @@ public class GenListener implements Listener, Runnable {
                 mat = XMaterial.matchXMaterial(ItemUtils.getKeyString(item, "MATERIAL")).get().parseMaterial();
             }
             FactionHook facHook = ((FactionHook) plugin.getHookManager().getPluginMap().get("Factions"));
-            if (plugin.getHookManager().getPluginMap().get("WorldGuard") != null) {
-                WorldGuardHook wgHook = ((WorldGuardHook) plugin.getHookManager().getPluginMap().get("WorldGuard"));
-                if (!wgHook.canBuild(player, block)) {
-                    event.getPlayer().sendMessage(ChatUtils.color(Message.GEN_CANCELLED.getMessage()));
-                    return;
-                }
+            if (plugin.hasWorldGuard() && !plugin.getWorldGuard().hasBuildPermission(player, block)) {
+                player.sendMessage(ChatUtils.color(Message.GEN_CANCELLED.getMessage()));
+                return;
             }
             try {
                 if (facHook.canBuild(block, player) && !facHook.hasNearbyPlayer(player)) {
@@ -161,7 +135,6 @@ public class GenListener implements Listener, Runnable {
                 Bukkit.getServer().getLogger().log(Level.SEVERE, "Error while checking for canBuild/hasNearbyPlayer: " + e);
             }
         }
-
     }
 
     @EventHandler
@@ -174,6 +147,7 @@ public class GenListener implements Listener, Runnable {
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         try {
+            if (event.getView() == null) return;
             if (event.getView().getTitle().equals(plugin.generationShopGUI.getTitle()) && event.getView().getTopInventory() != player.getInventory()) {
                 event.setCancelled(true);
                 if (event.getCurrentItem() != null
@@ -211,13 +185,25 @@ public class GenListener implements Listener, Runnable {
                     if (!player.getInventory().contains(item)) {
                         player.getInventory().addItem(item);
                     } else {
-                        player.sendMessage(ChatUtils.color(Message.GEN_HAS_ALREADY.getMessage()));
+                        player.sendMessage(Message.GEN_HAS_ALREADY.getMessage());
                     }
                 }
             }
+            if (event.getView().getTitle().equals(ChatUtils.color(plugin.getConfig().getString("generation-shop.name"))))
+                return;
+            ItemStack item = event.getCursor();
+            if (item.getType() == Material.AIR && event.getClick().isShiftClick()) item = event.getCurrentItem();
+            if (item.hasItemMeta()
+                    && player.getOpenInventory().getType().equals(InventoryType.FURNACE)
+                    && ItemUtils.hasKey(item, "GENBUCKET")
+                    && event.getClick().isShiftClick()) {
+                event.setCancelled(true);
+                player.sendMessage(Message.GEN_BLOCKED_ACTION.getMessage());
+                player.closeInventory();
+            }
         } catch (NullPointerException npe) {
             //ignored
-            ChatUtils.debug("NPE on InventoryClick TITLE="+plugin.generationShopGUI.getTitle());
+            ChatUtils.debug("NPE on InventoryClick TITLE=" + plugin.generationShopGUI.getTitle());
         }
     }
 

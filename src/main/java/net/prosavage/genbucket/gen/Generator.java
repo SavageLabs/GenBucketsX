@@ -1,7 +1,6 @@
 package net.prosavage.genbucket.gen;
 
 import net.prosavage.genbucket.GenBucket;
-import net.prosavage.genbucket.hooks.impl.WorldGuardHook;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -95,9 +94,7 @@ public abstract class Generator {
             return false;
         }
 
-        WorldGuardHook wgHook = ((WorldGuardHook) plugin.getHookManager().getPluginMap().get("WorldGuard"));
-
-        if (wgHook != null && !wgHook.canBuild(player, block)) {
+        if (GenBucket.get().hasWorldGuard() && !GenBucket.get().getWorldGuard().hasBuildPermission(player, block)) {
             return false;
         }
 

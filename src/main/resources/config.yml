@@ -37,6 +37,8 @@ sourceblock:
 canbuild-check: true
 # disable gen buckets with enemies nearby
 nearby-check: true
+# disable placing gen buckets in protected regions
+worldguard-check: true
 
 # radius distance for nearby player check
 radius: 50

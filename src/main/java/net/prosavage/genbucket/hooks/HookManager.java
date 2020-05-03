@@ -15,7 +15,6 @@ public class HookManager {
 
     public HookManager(GenBucket plugin) {
         this.plugin = plugin;
-        hookPlugin(new WorldGuardHook());
         hookPlugin(new VaultHook());
         hookPlugin(new FactionHook());
         hookPlugin(new EssentialsHook());

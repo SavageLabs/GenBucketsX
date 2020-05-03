@@ -15,7 +15,11 @@ public class ChatUtils {
 
     public static void debug(String str) {
         if (GenBucket.get().getConfig().getBoolean("debug"))
-            Bukkit.getConsoleSender().sendMessage(color("&e<DEBUG> &f" + str));
+            Bukkit.getConsoleSender().sendMessage(color(Message.PREFIX.getMessage() + " &e<DEBUG> &f" + str));
+    }
+
+    public static void error(String str) {
+        Bukkit.getConsoleSender().sendMessage(color(Message.PREFIX.getMessage() + " &c<ERROR> &e" + str));
     }
 
     // Color messages
