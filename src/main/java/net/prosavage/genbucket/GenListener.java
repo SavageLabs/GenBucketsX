@@ -173,47 +173,51 @@ public class GenListener implements Listener, Runnable {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        if (event.getView().getTitle().equals(plugin.generationShopGUI.getTitle()) && event.getView().getTopInventory() != player.getInventory()) {
-            event.setCancelled(true);
-            if (event.getCurrentItem() != null
-                    && event.getView().getTopInventory() != null
-                    && event.getCurrentItem().getType() != XMaterial.AIR.parseMaterial()
-                    && ItemUtils.hasKey(event.getCurrentItem(), "GENBUCKET")) {
+        try {
+            if (event.getView().getTitle().equals(plugin.generationShopGUI.getTitle()) && event.getView().getTopInventory() != player.getInventory()) {
+                event.setCancelled(true);
+                if (event.getCurrentItem() != null
+                        && event.getView().getTopInventory() != null
+                        && event.getCurrentItem().getType() != XMaterial.AIR.parseMaterial()
+                        && ItemUtils.hasKey(event.getCurrentItem(), "GENBUCKET")) {
 
-                ItemStack item = event.getCurrentItem().clone();
-                if ((item.getType() == XMaterial.WATER_BUCKET.parseMaterial() || item.getType() == XMaterial.LAVA_BUCKET.parseMaterial())
-                        && !plugin.getConfig().getBoolean("liquid-blocks")) {
-                    player.sendMessage(ChatUtils.color(Message.GEN_LIQUID_DISABLED.getMessage()));
-                    return;
-                }
-                if (item.getType() != XMaterial.LAVA_BUCKET.parseMaterial()) {
-                    if (plugin.getConfig().getBoolean("use-bucket")) {
-                        String name = item.getItemMeta().getDisplayName();
-                        List<String> lore = item.getItemMeta().getLore();
-                        String keyMATERIAL = ItemUtils.getKeyString(item, "MATERIAL");
-                        String keyGENBUCKET = ItemUtils.getKeyString(item, "GENBUCKET");
-                        item = XMaterial.LAVA_BUCKET.parseItem();
-                        if (item != null && item.getItemMeta() != null) {
-                            ItemMeta itmMeta = item.getItemMeta();
-                            if (name != null)
-                                itmMeta.setDisplayName(name);
-                            if (lore != null && !lore.isEmpty())
-                                itmMeta.setLore(lore);
-                            item.setItemMeta(itmMeta);
+                    ItemStack item = event.getCurrentItem().clone();
+                    if ((item.getType() == XMaterial.WATER_BUCKET.parseMaterial() || item.getType() == XMaterial.LAVA_BUCKET.parseMaterial())
+                            && !plugin.getConfig().getBoolean("liquid-blocks")) {
+                        player.sendMessage(ChatUtils.color(Message.GEN_LIQUID_DISABLED.getMessage()));
+                        return;
+                    }
+                    if (item.getType() != XMaterial.LAVA_BUCKET.parseMaterial()) {
+                        if (plugin.getConfig().getBoolean("use-bucket")) {
+                            String name = item.getItemMeta().getDisplayName();
+                            List<String> lore = item.getItemMeta().getLore();
+                            String keyMATERIAL = ItemUtils.getKeyString(item, "MATERIAL");
+                            String keyGENBUCKET = ItemUtils.getKeyString(item, "GENBUCKET");
+                            item = XMaterial.LAVA_BUCKET.parseItem();
+                            if (item != null && item.getItemMeta() != null) {
+                                ItemMeta itmMeta = item.getItemMeta();
+                                if (name != null)
+                                    itmMeta.setDisplayName(name);
+                                if (lore != null && !lore.isEmpty())
+                                    itmMeta.setLore(lore);
+                                item.setItemMeta(itmMeta);
+                            }
+                            item = ItemUtils.setKeyString(item, "MATERIAL", keyMATERIAL);
+                            item = ItemUtils.setKeyString(item, "GENBUCKET", keyGENBUCKET);
+                        } else {
+                            item.setAmount(64);
                         }
-                        item = ItemUtils.setKeyString(item, "MATERIAL", keyMATERIAL);
-                        item = ItemUtils.setKeyString(item, "GENBUCKET", keyGENBUCKET);
+                    }
+                    if (!player.getInventory().contains(item)) {
+                        player.getInventory().addItem(item);
                     } else {
-                        item.setAmount(64);
+                        player.sendMessage(ChatUtils.color(Message.GEN_HAS_ALREADY.getMessage()));
                     }
                 }
-                if (!player.getInventory().contains(item)) {
-                    player.getInventory().addItem(item);
-                } else {
-                    player.sendMessage(ChatUtils.color(Message.GEN_HAS_ALREADY.getMessage()));
-                }
             }
-
+        } catch (NullPointerException npe) {
+            //ignored
+            ChatUtils.debug("NPE on InventoryClick TITLE="+plugin.generationShopGUI.getTitle());
         }
     }
 
