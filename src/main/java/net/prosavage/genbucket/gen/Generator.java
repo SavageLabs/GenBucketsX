@@ -89,7 +89,7 @@ public abstract class Generator {
     public abstract void run();
 
     public boolean isValidLocation(Block block) {
-        if (!isInBorder(block.getWorld().getWorldBorder(), block.getX(), block.getZ())) {
+        if (isOutsideBorder(block.getLocation())) {
             setFinished(true);
             return false;
         }
@@ -119,10 +119,11 @@ public abstract class Generator {
         this.pseudo = pseudo;
     }
 
-    private boolean isInBorder(WorldBorder worldBorder, int xCoord, int zCoord) {
-        double dX = Math.abs(worldBorder.getCenter().getX() - xCoord);
-        double dZ = Math.abs(worldBorder.getCenter().getZ() - zCoord);
-        double length = worldBorder.getSize();
-        return (dX < length && dZ < length);
+    public boolean isOutsideBorder(Location location) {
+        WorldBorder border = location.getWorld().getWorldBorder();
+        double radius = border.getSize() / 2;
+        Location center = border.getCenter();
+        return center.distanceSquared(location) >= (radius * radius);
     }
+
 }
