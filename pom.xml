@@ -94,15 +94,15 @@
             <id>savagelabs</id>
             <url>https://nexus.savagelabs.net/repository/maven-public/</url>
         </repository>
-        <!-- JitPack repository -->
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
         <!-- CodeMC repository -->
         <repository>
             <id>CodeMC</id>
             <url>https://repo.codemc.org/repository/nms/</url>
+        </repository>
+        <!-- JitPack repository -->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
         <!-- CoreProtect repository -->
         <repository>
