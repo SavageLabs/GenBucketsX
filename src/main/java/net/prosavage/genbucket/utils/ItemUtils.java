@@ -3,12 +3,19 @@ package net.prosavage.genbucket.utils;
 
 import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.XMaterial;
+import net.prosavage.genbucket.GenBucket;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.Dispenser;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,6 +101,32 @@ public class ItemUtils {
         } catch (Exception e) {
             ChatUtils.sendConsole("&cError while making item glow! Contact the developer!");
             return item;
+        }
+    }
+
+    private static Method setFacingDirectionMethod = null;
+
+    public static void setFacing(Block block, BlockFace blockFace) {
+        // unsupported on < 1.13 because Directional does not exist
+        if (GenBucket.getServerVersion() >= 13) {
+            BlockData blockData = block.getBlockData();
+            if (blockData instanceof Directional) {
+                ((Directional) blockData).setFacing(blockFace);
+                block.setBlockData(blockData,false);
+            }
+        } else {
+            // specific check for some directional blocks, because 1.8 kids are annoying me
+            if (block.getState() instanceof Dispenser) {
+                Dispenser dispenser = (Dispenser) block.getState();
+                try {
+                    if (setFacingDirectionMethod == null) {
+                        setFacingDirectionMethod = dispenser.getClass().getMethod("setFacingDirection", BlockFace.class);
+                    }
+                    setFacingDirectionMethod.invoke(dispenser, blockFace);
+                } catch (Exception e) {
+                    ChatUtils.error("Error while getting setFacingDirectionMethod with Reflection", e);
+                }
+            }
         }
     }
 

@@ -6,6 +6,7 @@ import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.hooks.impl.CoreProtectHook;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
+import net.prosavage.genbucket.utils.ItemUtils;
 import net.prosavage.genbucket.utils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -73,6 +74,7 @@ public class HorizontalGen extends Generator {
 
                 if (getIndex() < getPlugin().getConfig().getInt("distance")) {
                     gen.setType(getMaterial(), false);
+                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(gen, blockFace);
                     CoreProtectHook.logPlacement(getPlayer().getName(), gen);
                 } else {
                     getBlock().setType(getMaterial(), false);

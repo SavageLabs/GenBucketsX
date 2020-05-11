@@ -46,6 +46,9 @@ radius: 50
 # horizontal generation distance
 distance: 10
 
+# set block facing to placing direction (1.13+ only)
+use-facing: false
+
 # delay between each block being generated
 # 20 equals 1 second (counting with ticks)
 

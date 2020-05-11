@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class ChatUtils {
 
@@ -20,6 +21,10 @@ public class ChatUtils {
 
     public static void error(String str) {
         Bukkit.getConsoleSender().sendMessage(color(Message.PREFIX.getMessage() + " &c<ERROR> &e" + str));
+    }
+
+    public static void error(String str, Exception ex) {
+        Bukkit.getLogger().log(Level.SEVERE, color(Message.PREFIX.getMessage() + " &c<ERROR> &e" + str), ex);
     }
 
     // Color messages

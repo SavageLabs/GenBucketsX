@@ -1,6 +1,5 @@
 package net.prosavage.genbucket.hooks.impl.factions;
 
-
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.iface.RelationParticipator;

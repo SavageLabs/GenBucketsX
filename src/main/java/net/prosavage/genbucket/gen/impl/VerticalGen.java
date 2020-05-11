@@ -5,6 +5,7 @@ import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.hooks.impl.CoreProtectHook;
+import net.prosavage.genbucket.utils.ItemUtils;
 import net.prosavage.genbucket.utils.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -65,6 +66,7 @@ public class VerticalGen extends Generator {
 
         if (!isNearSponge(gen, 3) && (getBlock().getY() + getIndex()) >= 0 && (getBlock().getY() + getIndex()) < 256) {
             gen.setType(getMaterial(), false);
+            if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(gen,direction.equalsIgnoreCase("up") ? BlockFace.UP : BlockFace.DOWN);
             CoreProtectHook.logPlacement(getPlayer().getName(), gen);
         } else {
             getBlock().setType(getMaterial(), false);
