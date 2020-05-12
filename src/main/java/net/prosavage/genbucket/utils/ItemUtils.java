@@ -1,13 +1,12 @@
 package net.prosavage.genbucket.utils;
 
-
 import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.XMaterial;
 import net.prosavage.genbucket.GenBucket;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Dispenser;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -15,7 +14,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,28 +102,20 @@ public class ItemUtils {
         }
     }
 
-    private static Method setFacingDirectionMethod = null;
-
     public static void setFacing(Block block, BlockFace blockFace) {
-        // unsupported on < 1.13 because Directional does not exist
+        // 1.13+
         if (GenBucket.getServerVersion() >= 13) {
             BlockData blockData = block.getBlockData();
             if (blockData instanceof Directional) {
                 ((Directional) blockData).setFacing(blockFace);
-                block.setBlockData(blockData,false);
+                block.setBlockData(blockData, false);
             }
         } else {
-            // specific check for some directional blocks, because 1.8 kids are annoying me
-            if (block.getState() instanceof Dispenser) {
-                Dispenser dispenser = (Dispenser) block.getState();
-                try {
-                    if (setFacingDirectionMethod == null) {
-                        setFacingDirectionMethod = dispenser.getClass().getMethod("setFacingDirection", BlockFace.class);
-                    }
-                    setFacingDirectionMethod.invoke(dispenser, blockFace);
-                } catch (Exception e) {
-                    ChatUtils.error("Error while getting setFacingDirectionMethod with Reflection", e);
-                }
+            // 1.8-1.12
+            BlockState blockState = block.getState();
+            if (blockState instanceof org.bukkit.material.Directional) {
+                ((org.bukkit.material.Directional) blockState).setFacingDirection(blockFace);
+                blockState.update(false, false);
             }
         }
     }

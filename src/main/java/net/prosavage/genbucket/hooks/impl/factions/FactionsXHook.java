@@ -14,7 +14,6 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-
 public class FactionsXHook extends FactionHook {
 
     @Override
