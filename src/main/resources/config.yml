@@ -49,6 +49,7 @@ distance: 10
 # set block facing to player's direction
 # fully supported on 1.13+, may also work on older versions
 use-facing: false
+use-opposite-facing: false
 
 # delay between each block being generated
 # 20 equals 1 second (counting with ticks)

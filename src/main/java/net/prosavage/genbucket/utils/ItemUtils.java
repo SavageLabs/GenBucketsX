@@ -104,6 +104,7 @@ public class ItemUtils {
     }
 
     public static void setFacing(Block block, BlockFace blockFace) {
+        if (GenBucket.get().getConfig().getBoolean("use-opposite-facing")) blockFace = blockFace.getOppositeFace();
         // 1.13+
         if (GenBucket.getServerVersion() >= 13) {
             BlockData blockData = block.getBlockData();
