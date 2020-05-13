@@ -121,9 +121,13 @@ public abstract class Generator {
 
     public boolean isOutsideBorder(Location location) {
         WorldBorder border = location.getWorld().getWorldBorder();
-        double radius = border.getSize() / 2;
-        Location center = border.getCenter();
-        return center.distanceSquared(location) >= (radius * radius);
+        if (GenBucket.getServerVersion() >= 11) {
+            return !border.isInside(location);
+        } else {
+            double borderSize = border.getSize() / 2 - border.getWarningDistance();
+            Location offset = location.clone().subtract(border.getCenter());
+            return offset.getX() < -borderSize || offset.getX() > borderSize || offset.getZ() < -borderSize || offset.getZ() > borderSize;
+        }
     }
 
 }
