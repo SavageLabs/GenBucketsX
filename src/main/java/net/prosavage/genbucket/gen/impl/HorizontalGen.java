@@ -35,6 +35,7 @@ public class HorizontalGen extends Generator {
             if (GenBucket.get().getConfig().getBoolean("sourceblock.no-source")) {
                 this.setSourceMaterial(getMaterial());
                 block.setType(getMaterial());
+                if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(block, pDir);
             } else {
                 this.setSourceMaterial(XMaterial.valueOf(GenBucket.get().getConfig().getString("sourceblock.item-name")).parseMaterial());
                 block.setType(getSourceMaterial());
@@ -61,12 +62,14 @@ public class HorizontalGen extends Generator {
 
                 if (!isDataGen() && !isValidLocation(gen)) {
                     getBlock().setType(getMaterial(), false);
+                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(),pDir);
                     setFinished(true);
                     return;
                 }
 
                 if (getPlayer() == null || !((FactionHook) getPlugin().getHookManager().getPluginMap().get("Factions")).canBuild(gen, getPlayer())) {
                     getBlock().setType(getMaterial(), false);
+                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(),pDir);
                     setFinished(true);
                     return;
                 }
@@ -74,6 +77,7 @@ public class HorizontalGen extends Generator {
                 if (getBlock().getType() != getSourceMaterial() && getPlayer() != null) {
                     getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
                     getBlock().setType(getMaterial(), false);
+                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(),pDir);
                     setFinished(true);
                     return;
                 }
@@ -84,6 +88,7 @@ public class HorizontalGen extends Generator {
                     CoreProtectHook.logPlacement(getPlayer().getName(), gen);
                 } else {
                     getBlock().setType(getMaterial(), false);
+                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(),pDir);
                     setFinished(true);
                 }
             }

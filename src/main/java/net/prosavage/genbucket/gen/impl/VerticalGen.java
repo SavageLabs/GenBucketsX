@@ -28,15 +28,14 @@ public class VerticalGen extends Generator {
         if (GenBucket.getServerVersion() > 13) {
             this.pDir = player.getFacing();
         } else {
-
             this.pDir = ItemUtils.yawToFace(player.getLocation().getYaw(),false);
-            Bukkit.broadcastMessage(pDir.name());
         }
         setIndex(getIndex() + (direction.equalsIgnoreCase("up") ? 1 : -1));
         if (isValidLocation(block)) {
             if (GenBucket.get().getConfig().getBoolean("sourceblock.no-source")) {
                 this.setSourceMaterial(getMaterial());
                 block.setType(getMaterial(), false);
+                if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(block, pDir);
             } else {
                 this.setSourceMaterial(XMaterial.valueOf(GenBucket.get().getConfig().getString("sourceblock.item-name")).parseMaterial());
                 block.setType(getSourceMaterial(), false);
@@ -62,6 +61,7 @@ public class VerticalGen extends Generator {
 
         if (!isValidLocation(gen)) {
             getBlock().setType(getMaterial(), false);
+            if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(),pDir);
             setFinished(true);
             return;
         }
@@ -69,6 +69,7 @@ public class VerticalGen extends Generator {
         if (getBlock().getType() != getSourceMaterial() && getPlayer() != null) {
             getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
             getBlock().setType(getMaterial(), false);
+            if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(),pDir);
             setFinished(true);
             return;
         }
@@ -79,6 +80,7 @@ public class VerticalGen extends Generator {
             CoreProtectHook.logPlacement(getPlayer().getName(), gen);
         } else {
             getBlock().setType(getMaterial(), false);
+            if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(),pDir);
             setFinished(true);
         }
     }
