@@ -7,6 +7,7 @@ import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.hooks.impl.CoreProtectHook;
 import net.prosavage.genbucket.utils.ItemUtils;
 import net.prosavage.genbucket.utils.Message;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -16,12 +17,20 @@ import org.bukkit.entity.Player;
 public class VerticalGen extends Generator {
 
     protected String direction = "up";
+    protected BlockFace pDir = BlockFace.UP;
 
     public VerticalGen(GenBucket plugin, Player player, Material material, Block block, BlockFace face, boolean pseudo) {
         super(plugin, player, material, block, GenType.VERTICAL, pseudo);
         direction = GenBucket.get().getConfig().getString("VERTICAL." + getMaterial().toString() + ".direction", getMaterial().hasGravity() ? "up" : "down");
         if (direction.endsWith("automatic")) {
             direction = face == BlockFace.UP ? "up" : "down";
+        }
+        if (GenBucket.getServerVersion() > 13) {
+            this.pDir = player.getFacing();
+        } else {
+
+            this.pDir = ItemUtils.yawToFace(player.getLocation().getYaw(),false);
+            Bukkit.broadcastMessage(pDir.name());
         }
         setIndex(getIndex() + (direction.equalsIgnoreCase("up") ? 1 : -1));
         if (isValidLocation(block)) {
@@ -66,7 +75,7 @@ public class VerticalGen extends Generator {
 
         if (!isNearSponge(gen, 3) && (getBlock().getY() + getIndex()) >= 0 && (getBlock().getY() + getIndex()) < 256) {
             gen.setType(getMaterial(), false);
-            if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(gen,direction.equalsIgnoreCase("up") ? BlockFace.UP : BlockFace.DOWN);
+            if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(gen,pDir);
             CoreProtectHook.logPlacement(getPlayer().getName(), gen);
         } else {
             getBlock().setType(getMaterial(), false);

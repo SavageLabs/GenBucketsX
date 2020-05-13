@@ -21,10 +21,16 @@ import java.util.logging.Level;
 public class HorizontalGen extends Generator {
 
     private BlockFace blockFace;
+    protected BlockFace pDir = BlockFace.UP;
 
     public HorizontalGen(GenBucket plugin, Player player, Material material, Block block, BlockFace blockFace, boolean pseudo) {
         super(plugin, player, material, block, GenType.HORIZONTAL, pseudo);
         this.blockFace = blockFace;
+        if (GenBucket.getServerVersion() > 13) {
+            this.pDir = player.getFacing();
+        } else {
+            this.pDir = ItemUtils.yawToFace(player.getLocation().getYaw(),false);
+        }
         if (isValidLocation(block)) {
             if (GenBucket.get().getConfig().getBoolean("sourceblock.no-source")) {
                 this.setSourceMaterial(getMaterial());
@@ -74,7 +80,7 @@ public class HorizontalGen extends Generator {
 
                 if (getIndex() < getPlugin().getConfig().getInt("distance")) {
                     gen.setType(getMaterial(), false);
-                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(gen, blockFace);
+                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(gen, pDir);
                     CoreProtectHook.logPlacement(getPlayer().getName(), gen);
                 } else {
                     getBlock().setType(getMaterial(), false);

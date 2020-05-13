@@ -46,7 +46,7 @@ radius: 50
 # horizontal generation distance
 distance: 10
 
-# set block facing to placing direction
+# set block facing to player's direction
 # fully supported on 1.13+, may also work on older versions
 use-facing: false
 
