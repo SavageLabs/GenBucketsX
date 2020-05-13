@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,8 +114,10 @@ public class ItemUtils {
         } else {
             // 1.8-1.12
             BlockState blockState = block.getState();
-            if (blockState instanceof org.bukkit.material.Directional) {
-                ((org.bukkit.material.Directional) blockState).setFacingDirection(blockFace);
+            if (blockState.getData() instanceof org.bukkit.material.Directional) {
+                MaterialData blockData = blockState.getData();
+                ((org.bukkit.material.Directional) blockData).setFacingDirection(blockFace);
+                blockState.setData(blockData);
                 blockState.update(false, false);
             }
         }
