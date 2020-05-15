@@ -124,7 +124,7 @@ public abstract class Generator {
         if (GenBucket.getServerVersion() >= 11) {
             return !border.isInside(location);
         } else {
-            double borderSize = border.getSize() / 2 - border.getWarningDistance();
+            double borderSize = border.getSize() / 2;//- border.getWarningDistance();
             Location offset = location.clone().subtract(border.getCenter());
             return offset.getX() < -borderSize || offset.getX() > borderSize || offset.getZ() < -borderSize || offset.getZ() > borderSize;
         }
