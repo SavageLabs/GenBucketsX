@@ -54,7 +54,7 @@
                 <version>3.2.3</version>
                 <executions>
                     <execution>
-                        <phase>install</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
@@ -147,7 +147,7 @@
         <dependency>
             <groupId>net.prosavage.factionsx</groupId>
             <artifactId>FactionsX</artifactId>
-            <version>0.4-PATREON</version>
+            <version>0.4.2-PATREON</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
