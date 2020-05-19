@@ -7,7 +7,6 @@ import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.hooks.impl.CoreProtectHook;
 import net.prosavage.genbucket.utils.ItemUtils;
 import net.prosavage.genbucket.utils.Message;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -28,7 +27,7 @@ public class VerticalGen extends Generator {
         if (GenBucket.getServerVersion() > 13) {
             this.pDir = player.getFacing();
         } else {
-            this.pDir = ItemUtils.yawToFace(player.getLocation().getYaw(),false);
+            this.pDir = ItemUtils.yawToFace(player.getLocation().getYaw(), false);
         }
         setIndex(getIndex() + (direction.equalsIgnoreCase("up") ? 1 : -1));
         if (isValidLocation(block)) {
@@ -61,7 +60,7 @@ public class VerticalGen extends Generator {
 
         if (!isValidLocation(gen)) {
             getBlock().setType(getMaterial(), false);
-            if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(),pDir);
+            if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(), pDir);
             setFinished(true);
             return;
         }
@@ -69,18 +68,22 @@ public class VerticalGen extends Generator {
         if (getBlock().getType() != getSourceMaterial() && getPlayer() != null) {
             getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
             getBlock().setType(getMaterial(), false);
-            if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(),pDir);
+            if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(), pDir);
             setFinished(true);
             return;
         }
 
         if (!isNearSponge(gen, 3) && (getBlock().getY() + getIndex()) >= 0 && (getBlock().getY() + getIndex()) < 256) {
             gen.setType(getMaterial(), false);
-            if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(gen,pDir);
-            CoreProtectHook.logPlacement(getPlayer().getName(), gen);
+            if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(gen, pDir);
+            try {
+                CoreProtectHook.logPlacement(getPlayer().getName(), gen);
+            } catch (NullPointerException ignored) {
+                // ignored
+            }
         } else {
             getBlock().setType(getMaterial(), false);
-            if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(),pDir);
+            if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(), pDir);
             setFinished(true);
         }
     }

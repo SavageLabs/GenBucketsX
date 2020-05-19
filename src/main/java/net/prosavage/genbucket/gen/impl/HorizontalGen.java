@@ -29,7 +29,7 @@ public class HorizontalGen extends Generator {
         if (GenBucket.getServerVersion() > 13) {
             this.pDir = player.getFacing();
         } else {
-            this.pDir = ItemUtils.yawToFace(player.getLocation().getYaw(),false);
+            this.pDir = ItemUtils.yawToFace(player.getLocation().getYaw(), false);
         }
         if (isValidLocation(block)) {
             if (GenBucket.get().getConfig().getBoolean("sourceblock.no-source")) {
@@ -62,14 +62,14 @@ public class HorizontalGen extends Generator {
 
                 if (!isDataGen() && !isValidLocation(gen)) {
                     getBlock().setType(getMaterial(), false);
-                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(),pDir);
+                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(), pDir);
                     setFinished(true);
                     return;
                 }
 
                 if (getPlayer() == null || !((FactionHook) getPlugin().getHookManager().getPluginMap().get("Factions")).canBuild(gen, getPlayer())) {
                     getBlock().setType(getMaterial(), false);
-                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(),pDir);
+                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(), pDir);
                     setFinished(true);
                     return;
                 }
@@ -77,7 +77,7 @@ public class HorizontalGen extends Generator {
                 if (getBlock().getType() != getSourceMaterial() && getPlayer() != null) {
                     getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
                     getBlock().setType(getMaterial(), false);
-                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(),pDir);
+                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(), pDir);
                     setFinished(true);
                     return;
                 }
@@ -85,10 +85,14 @@ public class HorizontalGen extends Generator {
                 if (getIndex() < getPlugin().getConfig().getInt("distance")) {
                     gen.setType(getMaterial(), false);
                     if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(gen, pDir);
-                    CoreProtectHook.logPlacement(getPlayer().getName(), gen);
+                    try {
+                        CoreProtectHook.logPlacement(getPlayer().getName(), gen);
+                    } catch (NullPointerException ignored) {
+                        // ignored
+                    }
                 } else {
                     getBlock().setType(getMaterial(), false);
-                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(),pDir);
+                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(), pDir);
                     setFinished(true);
                 }
             }
