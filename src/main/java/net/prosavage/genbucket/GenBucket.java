@@ -67,13 +67,25 @@ public class GenBucket extends JavaPlugin {
                 wg = new WorldGuard();
             }
             this.fileManager = new FileManager(this);
-
+            loadConfig();
             getServer().getPluginManager().registerEvents(new GenListener(this), this);
-            getConfig().getStringList("replace-blocks").forEach(s -> replaceBlocksWhiteList.add(XMaterial.matchXMaterial(s).get().parseMaterial()));
-            replaceLiquids = getConfig().getBoolean("replace-liquids", false);
-
-            this.generationShopGUI = new GenerationShopGUI(this);
         }, 2);
+    }
+
+    public void loadConfig() {
+        reloadConfig();
+        getFileManager().getFileMap().get("messages").init();
+        replaceBlocksWhiteList.clear();
+        getConfig().getStringList("replace-blocks").forEach(s -> {
+            try {
+                Material mat = Material.valueOf(s.toUpperCase());
+                replaceBlocksWhiteList.add(mat);
+            } catch (Exception e) {
+                replaceBlocksWhiteList.add(XMaterial.matchXMaterial(s).get().parseMaterial());
+            }
+        });
+        replaceLiquids = getConfig().getBoolean("replace-liquids", false);
+        this.generationShopGUI = new GenerationShopGUI(this);
     }
 
     @Override

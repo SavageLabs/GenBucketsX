@@ -17,12 +17,7 @@ public class CommandReload extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender, String[] args) {
-        getPlugin().reloadConfig();
-        getPlugin().getReplacements().clear();
-        getPlugin().generationShopGUI = new GenerationShopGUI(getPlugin());
-        getPlugin().getConfig().getStringList("replace-blocks").forEach(s -> getPlugin().replaceBlocksWhiteList.add(XMaterial.valueOf(s).parseMaterial()));
-        getPlugin().replaceLiquids = getPlugin().getConfig().getBoolean("replace-liquids", false);
-        getPlugin().getFileManager().getFileMap().get("messages").init();
+        getPlugin().loadConfig();
         commandSender.sendMessage(ChatUtils.color(Message.PLUGIN_RELOAD.getMessage()));
         return false;
     }
