@@ -42,16 +42,22 @@ public class CoreProtectHook implements PluginHook<CoreProtectHook> {
         }
 
         // Check that a compatible version of the API is loaded
-        if (cProtect.APIVersion() < 6) {
-            return null;
-        }
+        //if (cProtect.APIVersion() < 6) {
+        //    return null;
+        //}
 
         return cProtect;
     }
 
     public static void logPlacement(String playerName, Block block) {
         if (!isSetup()) return;
-        cpAPI.logPlacement(playerName, block.getLocation(), block.getType(), block.getBlockData());
+        try {
+            cpAPI.logPlacement(playerName, block.getLocation(), block.getType(), block.getBlockData());
+        } catch (NoSuchMethodError e) {
+            cpAPI.logPlacement(playerName, block.getLocation(), block.getType(), block.getData());
+        } catch (NullPointerException e) {
+            // rip
+        }
     }
 
     @Override
