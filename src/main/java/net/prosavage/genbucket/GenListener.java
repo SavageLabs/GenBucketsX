@@ -62,6 +62,9 @@ public class GenListener implements Listener, Runnable {
                 return;
             }
             String name = ItemUtils.getKeyString(item, "GENBUCKET");
+            PlayerPlaceGenEvent placeGenEvent = new PlayerPlaceGenEvent(player, block.getLocation(), name.contains("VERTICAL") ? GenType.VERTICAL : GenType.HORIZONTAL);
+            Bukkit.getServer().getPluginManager().callEvent(placeGenEvent);
+            if (placeGenEvent.isCancelled()) return;
             int data = 0;
             if (GenBucket.getServerVersion() < 13 && ItemUtils.hasKey(item, "MATERIALDATA")) {
                 data = ItemUtils.getKeyInt(item, "MATERIALDATA");

@@ -164,7 +164,6 @@ public class ItemUtils {
             } catch (Exception ex) {
                 ChatUtils.debug("Exception while getting setDataMethod");
             }
-
     }
 
     private static final BlockFace[] axis = {BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST};
