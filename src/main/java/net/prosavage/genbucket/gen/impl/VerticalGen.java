@@ -5,6 +5,7 @@ import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.gen.GenType;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.hooks.impl.CoreProtectHook;
+import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.ItemUtils;
 import net.prosavage.genbucket.utils.Message;
 import org.bukkit.Location;
@@ -23,6 +24,7 @@ public class VerticalGen extends Generator {
         super(plugin, player, material, block, GenType.VERTICAL, pseudo);
         this.blockDataValue = data;
         direction = GenBucket.get().getConfig().getString("VERTICAL." + getMaterial().toString() + ".direction", getMaterial().hasGravity() ? "up" : "down");
+        ChatUtils.debug("face="+face);
         if (direction.endsWith("automatic")) {
             direction = face == BlockFace.UP ? "up" : "down";
         }

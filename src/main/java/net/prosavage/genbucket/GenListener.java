@@ -172,6 +172,10 @@ public class GenListener implements Listener, Runnable {
                             List<String> lore = item.getItemMeta().getLore();
                             String keyMATERIAL = ItemUtils.getKeyString(item, "MATERIAL");
                             String keyGENBUCKET = ItemUtils.getKeyString(item, "GENBUCKET");
+                            int data = 0;
+                            if (GenBucket.getServerVersion() < 13 && ItemUtils.hasKey(item, "MATERIALDATA")) {
+                                data = ItemUtils.getKeyInt(item, "MATERIALDATA");
+                            }
                             item = XMaterial.LAVA_BUCKET.parseItem();
                             if (item != null && item.getItemMeta() != null) {
                                 ItemMeta itmMeta = item.getItemMeta();
@@ -182,6 +186,8 @@ public class GenListener implements Listener, Runnable {
                             }
                             item = ItemUtils.setKeyString(item, "MATERIAL", keyMATERIAL);
                             item = ItemUtils.setKeyString(item, "GENBUCKET", keyGENBUCKET);
+                            if (data > 0)
+                                item = ItemUtils.setKeyInt(item, "MATERIALDATA", data);
                         } else {
                             item.setAmount(64);
                         }
