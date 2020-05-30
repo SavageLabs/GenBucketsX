@@ -17,9 +17,11 @@ public class VerticalGen extends Generator {
 
     protected String direction = "up";
     protected BlockFace pDir = BlockFace.UP;
+    private int blockDataValue;
 
     public VerticalGen(GenBucket plugin, Player player, Material material, int data, Block block, BlockFace face, boolean pseudo) {
         super(plugin, player, material, block, GenType.VERTICAL, pseudo);
+        this.blockDataValue = data;
         direction = GenBucket.get().getConfig().getString("VERTICAL." + getMaterial().toString() + ".direction", getMaterial().hasGravity() ? "up" : "down");
         if (direction.endsWith("automatic")) {
             direction = face == BlockFace.UP ? "up" : "down";
@@ -75,6 +77,7 @@ public class VerticalGen extends Generator {
 
         if (!isNearSponge(gen, 3) && (getBlock().getY() + getIndex()) >= 0 && (getBlock().getY() + getIndex()) < 256) {
             gen.setType(getMaterial(), false);
+            ItemUtils.setBlockData(gen,blockDataValue);
             if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(gen, pDir);
             try {
                 CoreProtectHook.logPlacement(getPlayer().getName(), gen);

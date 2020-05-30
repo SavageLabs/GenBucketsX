@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -148,6 +149,22 @@ public class ItemUtils {
         if (useSubCardinalDirections)
             return radial[Math.round(yaw / 45f) & 0x7].getOppositeFace();
         return axis[Math.round(yaw / 90f) & 0x3].getOppositeFace();
+    }
+
+    private static Method setDataMethod = null;
+
+    public static void setBlockData(Block block, int data) {
+        if (GenBucket.get().getConfig().getBoolean("use-block-data") && GenBucket.getServerVersion() < 13)
+
+            try {
+                if (setDataMethod == null) {
+                    setDataMethod = Block.class.getMethod("setData", byte.class);
+                }
+                setDataMethod.invoke(block, (byte) data);
+            } catch (Exception ex) {
+                ChatUtils.debug("Exception while getting setDataMethod");
+            }
+
     }
 
     private static final BlockFace[] axis = {BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST};

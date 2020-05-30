@@ -55,6 +55,9 @@ distance: 10
 use-facing: false
 use-opposite-facing: false
 
+# apply block data (only < 1.13)
+use-block-data: false
+
 # delay between each block being generated
 # 20 equals 1 second (counting with ticks)
 
