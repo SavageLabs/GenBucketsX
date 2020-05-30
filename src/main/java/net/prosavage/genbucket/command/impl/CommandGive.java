@@ -52,8 +52,12 @@ public class CommandGive extends AbstractCommand {
                         sender.sendMessage(Message.PREFIX.getMessage() + Message.ERROR_ITEM_PARSE_FAILED.getMessage().replace("%material%", args[3].toUpperCase()));
                         return false;
                     }
+                    int data = 0;
+                    if (ItemUtils.hasKey(item, "MATERIALDATA")) {
+                        data = ItemUtils.getKeyInt(item, "MATERIALDATA");
+                    }
                     String type = args[2].substring(0, 1).toUpperCase() + args[2].substring(1).toLowerCase();
-                    item = ItemUtils.createItem(item, getPlugin().getConfig(), args[2].toUpperCase() + "." + args[3].toUpperCase(), type);
+                    item = ItemUtils.createItem(item, getPlugin().getConfig(), args[2].toUpperCase() + "." + args[3].toUpperCase(), type, data);
 
                     if (!getPlugin().getConfig().getBoolean("use-bucket")) {
                         item.setAmount(amount);
