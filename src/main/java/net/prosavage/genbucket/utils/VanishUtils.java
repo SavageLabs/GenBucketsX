@@ -8,6 +8,7 @@ import org.bukkit.metadata.MetadataValue;
 public class VanishUtils {
 
     public static boolean isVanished(Player player) {
+        if (player == null) return false;
         if (EssentialsHook.hasEssentials && EssentialsHook.isVanished(player)) return true;
         if (SuperVanishHook.isSetup() && SuperVanishHook.isVanished(player)) return true;
         return hasVanishedMetadata(player);
@@ -19,16 +20,22 @@ public class VanishUtils {
     }
 
     private static boolean hasVanishedMetadata(Player player) {
-        if (!player.hasMetadata("vanished")) {
+        if (player == null) return false;
+        try {
+            if (!player.hasMetadata("vanished")) {
+                return false;
+            }
+            for (MetadataValue meta : player.getMetadata("vanished")) {
+                if (meta == null) continue;
+                if (meta.asBoolean()) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (NullPointerException npe) {
+            ChatUtils.debug("NPE while checking for vanished metadata");
             return false;
         }
-        for (MetadataValue meta : player.getMetadata("vanished")) {
-            if (meta == null) continue;
-            if (meta.asBoolean()) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }
