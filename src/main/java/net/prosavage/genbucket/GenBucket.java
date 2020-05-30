@@ -1,6 +1,5 @@
 package net.prosavage.genbucket;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.tchristofferson.configupdater.ConfigUpdater;
 import net.milkbowl.vault.economy.Economy;
 import net.prosavage.genbucket.command.GenBucketCommand;
@@ -10,6 +9,7 @@ import net.prosavage.genbucket.hooks.HookManager;
 import net.prosavage.genbucket.hooks.impl.WorldGuard;
 import net.prosavage.genbucket.menu.impl.GenerationShopGUI;
 import net.prosavage.genbucket.utils.ChatUtils;
+import net.prosavage.genbucket.utils.ItemUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -77,12 +77,7 @@ public class GenBucket extends JavaPlugin {
         getFileManager().getFileMap().get("messages").init();
         replaceBlocksWhiteList.clear();
         getConfig().getStringList("replace-blocks").forEach(s -> {
-            try {
-                Material mat = Material.valueOf(s.toUpperCase());
-                replaceBlocksWhiteList.add(mat);
-            } catch (Exception e) {
-                replaceBlocksWhiteList.add(XMaterial.matchXMaterial(s).get().parseMaterial());
-            }
+            replaceBlocksWhiteList.add(ItemUtils.parseMaterial(s));
         });
         replaceLiquids = getConfig().getBoolean("replace-liquids", false);
         this.generationShopGUI = new GenerationShopGUI(this);

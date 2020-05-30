@@ -18,7 +18,7 @@ public class VerticalGen extends Generator {
     protected String direction = "up";
     protected BlockFace pDir = BlockFace.UP;
 
-    public VerticalGen(GenBucket plugin, Player player, Material material, Block block, BlockFace face, boolean pseudo) {
+    public VerticalGen(GenBucket plugin, Player player, Material material, int data, Block block, BlockFace face, boolean pseudo) {
         super(plugin, player, material, block, GenType.VERTICAL, pseudo);
         direction = GenBucket.get().getConfig().getString("VERTICAL." + getMaterial().toString() + ".direction", getMaterial().hasGravity() ? "up" : "down");
         if (direction.endsWith("automatic")) {

@@ -28,8 +28,16 @@ public class ItemUtils {
         return NBTEditor.set(item, value, key);
     }
 
+    public static ItemStack setKeyInt(ItemStack item, String key, int value) {
+        return NBTEditor.set(item, value, key);
+    }
+
     public static String getKeyString(ItemStack item, String key) {
         return NBTEditor.getString(item, key);
+    }
+
+    public static int getKeyInt(ItemStack item, String key) {
+        return NBTEditor.getInt(item, key);
     }
 
     public static boolean hasKey(ItemStack item, String key) {
@@ -41,7 +49,7 @@ public class ItemUtils {
         }
     }
 
-    public static ItemStack createItem(ItemStack item, FileConfiguration config, String key, String type) {
+    public static ItemStack createItem(ItemStack item, FileConfiguration config, String key, String type, int data) {
         Material itemType = item.getType();
         // Need to change water and lava to buckets.
         if (itemType == XMaterial.WATER.parseMaterial()) {
@@ -61,6 +69,9 @@ public class ItemUtils {
         itemMeta.setLore(lore);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         item.setItemMeta(itemMeta);
+        if (data > 0) {
+            item = setKeyInt(item, "MATERIALDATA", data);
+        }
         item = setKeyString(item, "MATERIAL", itemType.name());
         return setKeyString(item, "GENBUCKET", type.toUpperCase());
     }
@@ -121,6 +132,15 @@ public class ItemUtils {
                 blockState.setData(blockData);
                 blockState.update(false, false);
             }
+        }
+    }
+
+    public static Material parseMaterial(String material) {
+        try {
+            Material mat = Material.valueOf(material.toUpperCase());
+            return mat;
+        } catch (Exception e) {
+            return XMaterial.matchXMaterial(material).get().parseMaterial();
         }
     }
 

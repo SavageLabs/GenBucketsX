@@ -7,6 +7,10 @@
 # Enables debug messages
 debug: false
 
+blacklisted-worlds:
+  - 'blacklisted-world1'
+  - 'blacklisted-world2'
+
 # generation shop style
 generation-shop:
   background-glow: false

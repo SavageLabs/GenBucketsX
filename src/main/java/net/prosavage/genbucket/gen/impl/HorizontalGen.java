@@ -23,7 +23,7 @@ public class HorizontalGen extends Generator {
     private BlockFace blockFace;
     protected BlockFace pDir = BlockFace.UP;
 
-    public HorizontalGen(GenBucket plugin, Player player, Material material, Block block, BlockFace blockFace, boolean pseudo) {
+    public HorizontalGen(GenBucket plugin, Player player, Material material, int data, Block block, BlockFace blockFace, boolean pseudo) {
         super(plugin, player, material, block, GenType.HORIZONTAL, pseudo);
         this.blockFace = blockFace;
         if (GenBucket.getServerVersion() > 13) {
