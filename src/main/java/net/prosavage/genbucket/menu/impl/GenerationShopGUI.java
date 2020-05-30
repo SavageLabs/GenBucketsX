@@ -39,14 +39,22 @@ public class GenerationShopGUI extends MenuBuilder {
         for (String key : vertical.getKeys(false)) {
             ItemStack item = initItem(key);
             if (item == null) continue;
-            item = ItemUtils.createItem(item, getPlugin().getConfig(), "VERTICAL." + key, "Vertical");
+            int data = 0;
+            if (GenBucket.getServerVersion() < 13) {
+                data = item.getDurability();
+            }
+            item = ItemUtils.createItem(item, getPlugin().getConfig(), "VERTICAL." + key, "Vertical", data);
             getInventory().setItem(getPlugin().getConfig().getInt("VERTICAL." + key + ".slot"), item);
         }
         ConfigurationSection horizontal = getPlugin().getConfig().getConfigurationSection("HORIZONTAL");
         for (String key : horizontal.getKeys(false)) {
             ItemStack item = initItem(key);
             if (item == null) continue;
-            item = ItemUtils.createItem(item, getPlugin().getConfig(), "HORIZONTAL." + key, "Horizontal");
+            int data = 0;
+            if (GenBucket.getServerVersion() < 13) {
+                data = item.getDurability();
+            }
+            item = ItemUtils.createItem(item, getPlugin().getConfig(), "HORIZONTAL." + key, "Horizontal", data);
             getInventory().setItem(getPlugin().getConfig().getInt("HORIZONTAL." + key + ".slot"), item);
         }
         for (int i = 0; i < getInventory().getSize(); i++) {
