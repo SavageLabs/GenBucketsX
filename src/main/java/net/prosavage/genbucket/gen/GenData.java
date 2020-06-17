@@ -96,6 +96,7 @@ public class GenData {
     }
 
     public int getHorizontalDistance() {
+        if (horizontalDistance <= 0) return 10;
         return horizontalDistance;
     }
 
