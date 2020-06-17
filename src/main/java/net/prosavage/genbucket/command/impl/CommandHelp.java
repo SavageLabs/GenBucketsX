@@ -3,8 +3,9 @@ package net.prosavage.genbucket.command.impl;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.command.AbstractCommand;
 import net.prosavage.genbucket.command.GenBucketCommand;
+import net.prosavage.genbucket.config.Config;
+import net.prosavage.genbucket.config.Message;
 import net.prosavage.genbucket.utils.ChatUtils;
-import net.prosavage.genbucket.utils.Message;
 import org.bukkit.command.CommandSender;
 
 public class CommandHelp extends AbstractCommand {
@@ -18,7 +19,8 @@ public class CommandHelp extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender, String[] args) {
-        commandSender.sendMessage(Message.CMD_HELP_HEADER.getMessage().replace("%version%", GenBucket.get().getDescription().getVersion()));
+        commandSender.sendMessage(Message.CMD_HELP_HEADER.getMessage()
+                .replace("%version%", GenBucket.get().getDescription().getVersion()));
         for (AbstractCommand commands : command.getCommands()) {
             if (commandSender.isOp() || commandSender.hasPermission(commands.getPermission())) {
                 commandSender.sendMessage(ChatUtils.color(
@@ -38,7 +40,7 @@ public class CommandHelp extends AbstractCommand {
 
     @Override
     public String getPermission() {
-        return "genbucket.command.help";
+        return Config.PERMISSION_HELP.getString();
     }
 
 }

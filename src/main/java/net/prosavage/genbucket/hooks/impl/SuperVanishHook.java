@@ -22,7 +22,7 @@ public class SuperVanishHook implements PluginHook {
 
     @Override
     public String getName() {
-        return "SuperVanish,PremiumVanish";
+        return "PremiumVanish";
     }
 
     public static boolean isSetup() {

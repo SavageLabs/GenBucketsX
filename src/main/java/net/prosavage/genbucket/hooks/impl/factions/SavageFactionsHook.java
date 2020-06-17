@@ -1,14 +1,13 @@
 package net.prosavage.genbucket.hooks.impl.factions;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import net.prosavage.genbucket.GenBucket;
+import net.prosavage.genbucket.config.Config;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.ChatUtils;
-import net.prosavage.genbucket.utils.Message;
+import net.prosavage.genbucket.config.Message;
 import net.prosavage.genbucket.utils.VanishUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -22,11 +21,11 @@ public class SavageFactionsHook extends FactionHook {
 
     @Override
     public boolean canBuild(Block block, Player player) {
-        if (!GenBucket.get().getConfig().getBoolean("canbuild-check", true)) {
+        if (!Config.HOOK_CANBUILD_CHECK.getOption()) {
             return true;
         }
         try {
-            if (!FactionsBlockListener.playerCanBuildDestroyBlock(player, block.getLocation(), "build", true)) {
+            if (!FactionsBlockListener.playerCanBuildDestroyBlock(player, block.getLocation(), "build", true) || Config.HOOK_DISABLE_WILD.getOption() && isWilderness(block.getLocation())) {
                 player.sendMessage(ChatUtils.color(Message.GEN_CANT_PLACE.getMessage()));
                 return false;
             }
@@ -46,12 +45,17 @@ public class SavageFactionsHook extends FactionHook {
         return true;
     }
 
+    public boolean isWilderness(Location location) {
+        FLocation fLoc = new FLocation(location);
+        return Board.getInstance().getFactionAt(fLoc).isWilderness();
+    }
+
     @Override
     public boolean hasNearbyPlayer(Player player) {
-        if (player == null || !GenBucket.get().getConfig().getBoolean("nearby-check", true)) {
+        if (player == null || !Config.HOOK_NEARBY_CHECK.getOption()) {
             return false;
         }
-        int radius = GenBucket.get().getConfig().getInt("radius", 32);
+        int radius = Config.HOOK_NEARBY_RADIUS.getInt();
         FPlayer me = FPlayers.getInstance().getByPlayer(player);
         if (isEnemyNear(me, radius)) {
             player.sendMessage(ChatUtils.color(Message.GEN_ENEMY_NEARBY.getMessage()));

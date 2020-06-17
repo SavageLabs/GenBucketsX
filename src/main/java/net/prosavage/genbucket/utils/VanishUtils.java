@@ -7,6 +7,10 @@ import org.bukkit.metadata.MetadataValue;
 
 public class VanishUtils {
 
+    private VanishUtils() {
+        throw new AssertionError("Instantiating utility class.");
+    }
+
     public static boolean isVanished(Player player) {
         if (player == null) return false;
         if (EssentialsHook.hasEssentials && EssentialsHook.isVanished(player)) return true;

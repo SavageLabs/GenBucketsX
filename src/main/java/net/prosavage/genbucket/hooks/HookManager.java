@@ -3,7 +3,7 @@ package net.prosavage.genbucket.hooks;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.hooks.impl.*;
 import net.prosavage.genbucket.utils.ChatUtils;
-import net.prosavage.genbucket.utils.Message;
+import net.prosavage.genbucket.config.Message;
 
 import java.util.HashMap;
 import java.util.Map;

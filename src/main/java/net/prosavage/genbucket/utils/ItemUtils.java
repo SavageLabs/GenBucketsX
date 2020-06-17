@@ -3,21 +3,19 @@ package net.prosavage.genbucket.utils;
 import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.XMaterial;
 import net.prosavage.genbucket.GenBucket;
+import net.prosavage.genbucket.config.Config;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ItemUtils {
 
@@ -29,16 +27,8 @@ public class ItemUtils {
         return NBTEditor.set(item, value, key);
     }
 
-    public static ItemStack setKeyInt(ItemStack item, String key, int value) {
-        return NBTEditor.set(item, value, key);
-    }
-
     public static String getKeyString(ItemStack item, String key) {
         return NBTEditor.getString(item, key);
-    }
-
-    public static int getKeyInt(ItemStack item, String key) {
-        return NBTEditor.getInt(item, key);
     }
 
     public static boolean hasKey(ItemStack item, String key) {
@@ -48,51 +38,6 @@ public class ItemUtils {
         } catch (Exception ex) {
             return false;
         }
-    }
-
-    public static ItemStack createItem(ItemStack item, FileConfiguration config, String key, String type, int data) {
-        Material itemType = item.getType();
-        // Need to change water and lava to buckets.
-        if (itemType == XMaterial.WATER.parseMaterial()) {
-            item = XMaterial.WATER_BUCKET.parseItem();
-        } else if (itemType == XMaterial.LAVA.parseMaterial()) {
-            item = XMaterial.LAVA_BUCKET.parseItem();
-        }
-        item = setGlowing(item);
-        ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatUtils.color(config.getString(key + ".name")));
-        ArrayList<String> lore = new ArrayList<>();
-        for (String s : config.getStringList("genbucket-lore")) {
-            lore.add(ChatUtils.color(s
-                    .replace("%type%", type)
-                    .replace("%price%", "" + config.getInt(key + ".price"))));
-        }
-        itemMeta.setLore(lore);
-        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        item.setItemMeta(itemMeta);
-        if (data > 0) {
-            item = setKeyInt(item, "MATERIALDATA", data);
-        }
-        item = setKeyString(item, "MATERIAL", itemType.name());
-        return setKeyString(item, "GENBUCKET", type.toUpperCase());
-    }
-
-    public static ItemStack setDisplayName(ItemStack itemStack, String name) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatUtils.color(name));
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
-    }
-
-    public static ItemStack setLore(ItemStack itemStack, List<String> lore) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        List<String> coloredLore = new ArrayList<>();
-        for (String string : lore) {
-            coloredLore.add(ChatUtils.color(string));
-        }
-        itemMeta.setLore(coloredLore);
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
     }
 
     public static ItemStack setGlowing(ItemStack item) {
@@ -116,7 +61,7 @@ public class ItemUtils {
     }
 
     public static void setFacing(Block block, BlockFace blockFace) {
-        if (GenBucket.get().getConfig().getBoolean("use-opposite-facing")) blockFace = blockFace.getOppositeFace();
+        if (Config.USE_OPPOSITE_FACING.getOption()) blockFace = blockFace.getOppositeFace();
         // 1.13+
         if (GenBucket.getServerVersion() >= 13) {
             BlockData blockData = block.getBlockData();
@@ -154,12 +99,10 @@ public class ItemUtils {
     private static Method setDataMethod = null;
 
     public static void setBlockData(Block block, int data) {
-        if (GenBucket.get().getConfig().getBoolean("use-block-data") && GenBucket.getServerVersion() < 13)
-
+        if (Config.USE_BLOCKDATA.getOption() && GenBucket.getServerVersion() < 13)
             try {
-                if (setDataMethod == null) {
+                if (setDataMethod == null)
                     setDataMethod = Block.class.getMethod("setData", byte.class);
-                }
                 setDataMethod.invoke(block, (byte) data);
             } catch (Exception ex) {
                 ChatUtils.debug("Exception while getting setDataMethod");

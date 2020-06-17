@@ -193,7 +193,7 @@ public class WorldGuard {
         }
         return null;
     }
-
+/*
     public boolean isInsideWGRegion(Location location) {
         ApplicableRegionSet rgset = getRegionSet(location);
         if (rgset == null || rgset.size() <= 0) return false;
@@ -208,7 +208,7 @@ public class WorldGuard {
         }
         return false;
     }
-
+*/
     public boolean isPVPAllowed(Player player, Location location) {
         if (worldGuardPlugin == null || location == null) return true;
 

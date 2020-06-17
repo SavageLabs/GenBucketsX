@@ -1,0 +1,70 @@
+GenBuckets:
+  'gravel_scaffold':
+    material: 'GRAVEL'
+    direction: up
+    name: '&aGravel Scaffold'
+    price: 200
+    pseudo: true
+    slot: 10
+  'sand_scaffold':
+    material: 'SAND'
+    direction: up
+    name: '&aSand Scaffold'
+    price: 5000
+    pseudo: true
+    slot: 13
+  'cobble_vertical':
+    material: 'COBBLESTONE'
+    direction: vertical
+    name: '&aCobblestone Vertical'
+    price: 10
+    pseudo: true
+    slot: 16
+  'obsidian_vertical':
+    material: 'OBSIDIAN'
+    direction: down
+    name: '&aObsidian Vertical'
+    price: 1000
+    pseudo: true
+    slot: 19
+  'cobblestone_horizontal':
+    material: 'COBBLESTONE'
+    direction: horizontal
+    name: '&aCobblestone Horizontal'
+    price: 30
+    pseudo: true
+    slot: 22
+    distance: 10
+  'obsidian_horizontal':
+    material: 'OBSIDIAN'
+    direction: horizontal
+    name: '&aObsidian Horizontal'
+    price: 500
+    pseudo: true
+    slot: 25
+    distance: 10
+  'netherrack_horizontal':
+    material: 'NETHERRACK'
+    direction: horizontal
+    name: '&aNetherrack Horizontal'
+    price: 20
+    pseudo: true
+    slot: 30
+    distance: 10
+  'dirt_horizontal':
+    material: 'DIRT'
+    direction: horizontal
+    name: '&aDirt Horizontal'
+    price: 20
+    pseudo: true
+    slot: 32
+    distance: 10
+  'dirt_horizontal_consumable':
+    material: 'DIRT'
+    direction: horizontal
+    name: '&aDirt Horizontal (Consumable)'
+    price: 20
+    pseudo: true
+    slot: 34
+    distance: 10
+    consumable: true

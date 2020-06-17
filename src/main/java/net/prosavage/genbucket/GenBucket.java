@@ -1,10 +1,10 @@
 package net.prosavage.genbucket;
 
-import com.tchristofferson.configupdater.ConfigUpdater;
 import net.milkbowl.vault.economy.Economy;
 import net.prosavage.genbucket.command.GenBucketCommand;
-import net.prosavage.genbucket.file.FileManager;
-import net.prosavage.genbucket.file.impl.DataFile;
+import net.prosavage.genbucket.config.Config;
+import net.prosavage.genbucket.file.ConfigManager;
+import net.prosavage.genbucket.gen.GenData;
 import net.prosavage.genbucket.hooks.HookManager;
 import net.prosavage.genbucket.hooks.impl.WorldGuard;
 import net.prosavage.genbucket.menu.impl.GenerationShopGUI;
@@ -15,10 +15,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -32,10 +31,11 @@ public class GenBucket extends JavaPlugin {
     public GenerationShopGUI generationShopGUI;
 
     public Set<Material> replaceBlocksWhiteList = new HashSet<>();
-    public boolean replaceLiquids = false;
 
     private HookManager hookManager;
-    private FileManager fileManager;
+    private ConfigManager fileManager;
+
+    public static Map<String, GenData> genDataMap = new HashMap<>();
 
     public static GenBucket get() {
         return instance;
@@ -50,13 +50,6 @@ public class GenBucket extends JavaPlugin {
             getServer().getLogger().log(Level.SEVERE, "Error while trying to register Metrics (bStats)");
         }
         GenBucket.instance = this;
-        saveDefaultConfig();
-        File configFile = new File(getDataFolder(), "config.yml");
-        try {
-            ConfigUpdater.update(instance, "config.yml", configFile, Arrays.asList("VERTICAL", "HORIZONTAL", "generation-shop"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         checkServerVersion();
         this.getCommand("genbucket").setExecutor(new GenBucketCommand(this));
         Bukkit.getScheduler().runTaskLater(this, () -> {
@@ -66,40 +59,38 @@ public class GenBucket extends JavaPlugin {
                 ChatUtils.debug("WorldGuard found, enabling hook...");
                 wg = new WorldGuard();
             }
-            this.fileManager = new FileManager(this);
+            this.fileManager = new ConfigManager(this);
             loadConfig();
             getServer().getPluginManager().registerEvents(new GenListener(this), this);
         }, 2);
     }
 
     public void loadConfig() {
-        reloadConfig();
+        getFileManager().getFileMap().get("config").init();
         getFileManager().getFileMap().get("messages").init();
+        getFileManager().getFileMap().get("genbuckets").init();
         replaceBlocksWhiteList.clear();
-        getConfig().getStringList("replace-blocks").forEach(s -> {
+        Config.REPLACE_BLOCKS.getStringList().forEach(s -> {
             replaceBlocksWhiteList.add(ItemUtils.parseMaterial(s));
         });
-        replaceLiquids = getConfig().getBoolean("replace-liquids", false);
         this.generationShopGUI = new GenerationShopGUI(this);
     }
 
     @Override
     public void onDisable() {
-        DataFile dataFile = (DataFile) this.fileManager.getFileMap().get("data");
-        dataFile.saveGenBuckets();
         getServer().getScheduler().cancelTasks(this);
         instance = null;
     }
 
     public void start() {
-        taskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new GenListener(this), 0L, getConfig().getInt("delay"));
+        taskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new GenListener(this), 0L, Config.GENERATION_DELAY.getInt());
     }
 
     public void stop() {
         getServer().getScheduler().cancelTask(taskID);
     }
 
-    public FileManager getFileManager() {
+    public ConfigManager getFileManager() {
         return fileManager;
     }
 
@@ -129,7 +120,7 @@ public class GenBucket extends JavaPlugin {
     private WorldGuard wg;
 
     public boolean hasWorldGuard() {
-        return getConfig().getBoolean("worldguard-check") && hook_WG;
+        return Config.HOOK_WG_CHECK.getOption() && hook_WG;
     }
 
 }

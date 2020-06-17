@@ -7,7 +7,7 @@
     <groupId>net.prosavage</groupId>
     <artifactId>SavageGenbuckets</artifactId>
     <name>SavageGenbuckets</name>
-    <version>1.10.9</version>
+    <version>2.0.0</version>
     <url>https://savagelabs.net/</url>
     <packaging>jar</packaging>
 
@@ -70,10 +70,6 @@
                                     <pattern>org.bstats</pattern>
                                     <shadedPattern>net.prosavage.genbucket.shade.bstats</shadedPattern>
                                 </relocation>
-                                <relocation>
-                                    <pattern>com.tchristofferson.configupdater</pattern>
-                                    <shadedPattern>net.prosavage.genbucket.shade.configupdater</shadedPattern>
-                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -133,13 +129,6 @@
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>1.7</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- Config-Updater -->
-        <dependency>
-            <groupId>com.tchristofferson</groupId>
-            <artifactId>ConfigUpdater</artifactId>
-            <version>1.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 

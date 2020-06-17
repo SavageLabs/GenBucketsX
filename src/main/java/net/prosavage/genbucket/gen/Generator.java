@@ -1,30 +1,26 @@
 package net.prosavage.genbucket.gen;
 
 import net.prosavage.genbucket.GenBucket;
+import net.prosavage.genbucket.config.Config;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-
 
 public abstract class Generator {
 
     private GenBucket plugin;
     private Player player;
-    private Material material;
     private Block block;
     private int index = 0;
     private boolean finished, data = false;
-    private GenType type;
     private Material sourceMaterial;
-    private boolean pseudo;
+    private GenData genData;
 
-    public Generator(GenBucket plugin, Player player, Material material, Block block, GenType genType, boolean pseudo) {
+    public Generator(GenBucket plugin, Player player, Block block, GenData genData) {
         this.plugin = plugin;
         this.player = player;
-        this.material = material;
         this.block = block;
-        this.type = genType;
-        this.pseudo = pseudo;
+        this.genData = genData;
     }
 
     public static Block getBlockFromString(String s) {
@@ -63,7 +59,7 @@ public abstract class Generator {
     }
 
     public Material getMaterial() {
-        return material;
+        return genData.getItem().getType();
     }
 
     public int getIndex() {
@@ -75,15 +71,7 @@ public abstract class Generator {
     }
 
     public GenType getType() {
-        return type;
-    }
-
-    public boolean isDataGen() {
-        return this.data;
-    }
-
-    public void setData(boolean data) {
-        this.data = data;
+        return genData.getType();
     }
 
     public abstract void run();
@@ -98,7 +86,7 @@ public abstract class Generator {
             return false;
         }
 
-        if (GenBucket.get().replaceLiquids && block.isLiquid()) return true;
+        if (Config.REPLACE_LIQUIDS.getOption() && block.isLiquid()) return true;
 
         return GenBucket.get().getReplacements().contains(block.getType()) || (isPseudo() && getMaterial() == block.getType());
     }
@@ -112,11 +100,7 @@ public abstract class Generator {
     }
 
     public boolean isPseudo() {
-        return pseudo;
-    }
-
-    public void setPseudo(boolean pseudo) {
-        this.pseudo = pseudo;
+        return genData.isPseudo();
     }
 
     public boolean isOutsideBorder(Location location) {
@@ -124,7 +108,7 @@ public abstract class Generator {
         if (GenBucket.getServerVersion() >= 11) {
             return !border.isInside(location);
         } else {
-            double borderSize = border.getSize() / 2;//- border.getWarningDistance();
+            double borderSize = border.getSize() / 2;
             Location offset = location.clone().subtract(border.getCenter());
             return offset.getX() < -borderSize || offset.getX() > borderSize || offset.getZ() < -borderSize || offset.getZ() > borderSize;
         }

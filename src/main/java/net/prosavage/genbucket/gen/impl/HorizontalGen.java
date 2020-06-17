@@ -2,105 +2,88 @@ package net.prosavage.genbucket.gen.impl;
 
 import com.cryptomorin.xseries.XMaterial;
 import net.prosavage.genbucket.GenBucket;
-import net.prosavage.genbucket.gen.GenType;
+import net.prosavage.genbucket.config.Config;
+import net.prosavage.genbucket.gen.GenData;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.hooks.impl.CoreProtectHook;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.ItemUtils;
-import net.prosavage.genbucket.utils.Message;
-import org.bukkit.Bukkit;
+import net.prosavage.genbucket.config.Message;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Level;
-
 public class HorizontalGen extends Generator {
 
     private BlockFace blockFace;
-    private int blockDataValue;
-    protected BlockFace pDir = BlockFace.UP;
+    protected BlockFace pDir;
+    private GenData genData;
 
-    public HorizontalGen(GenBucket plugin, Player player, Material material, int data, Block block, BlockFace blockFace, boolean pseudo) {
-        super(plugin, player, material, block, GenType.HORIZONTAL, pseudo);
+    public HorizontalGen(GenBucket plugin, Player player, Block block, BlockFace blockFace, GenData genData) {
+        super(plugin, player, block, genData);
         this.blockFace = blockFace;
-        this.blockDataValue = data;
+        this.genData = genData;
         if (GenBucket.getServerVersion() > 13) {
             this.pDir = player.getFacing();
         } else {
             this.pDir = ItemUtils.yawToFace(player.getLocation().getYaw(), false);
         }
         if (isValidLocation(block)) {
-            if (GenBucket.get().getConfig().getBoolean("sourceblock.no-source")) {
+            if (!Config.USE_SOURCEBLOCK.getOption()) {
                 this.setSourceMaterial(getMaterial());
                 block.setType(getMaterial());
-                if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(block, pDir);
+                if (Config.USE_FACING.getOption()) ItemUtils.setFacing(block, pDir);
             } else {
-                this.setSourceMaterial(XMaterial.valueOf(GenBucket.get().getConfig().getString("sourceblock.item-name")).parseMaterial());
+                this.setSourceMaterial(XMaterial.valueOf(Config.SOURCEBLOCK_MATERIAL.getString()).parseMaterial());
                 block.setType(getSourceMaterial());
             }
         } else {
             player.sendMessage(Message.GEN_CANT_PLACE.getMessage());
         }
-
-    }
-
-    public HorizontalGen(String data) {
-        super(GenBucket.get(), null, Material.valueOf(data.split(",")[0]), getBlockFromString(data.split(",")[1]), GenType.VERTICAL, Boolean.parseBoolean(data.split(",")[4]));
-        String[] parsedData = data.split(",");
-        setIndex(Integer.parseInt(parsedData[2]));
-        blockFace = BlockFace.valueOf(parsedData[3]);
-        setData(true);
     }
 
     public void run() {
-        try {
-            if (isDataGen() || ((FactionHook) getPlugin().getHookManager().getPluginMap().get("Factions")).canBuild(getBlock(), getPlayer())) {
-                setIndex(getIndex() + 1);
-                Block gen = getBlock().getWorld().getBlockAt(getBlock().getX() + getIndex() * blockFace.getModX(), getBlock().getY(), getBlock().getZ() + getIndex() * blockFace.getModZ());
+        if (((FactionHook) getPlugin().getHookManager().getPluginMap().get("Factions")).canBuild(getBlock(), getPlayer())) {
+            setIndex(getIndex() + 1);
+            Block gen = getBlock().getWorld().getBlockAt(getBlock().getX() + getIndex() * blockFace.getModX(), getBlock().getY(), getBlock().getZ() + getIndex() * blockFace.getModZ());
 
-                if (!isDataGen() && !isValidLocation(gen)) {
-                    getBlock().setType(getMaterial(), false);
-                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(), pDir);
-                    setFinished(true);
-                    return;
-                }
-
-                if (getPlayer() == null || !((FactionHook) getPlugin().getHookManager().getPluginMap().get("Factions")).canBuild(gen, getPlayer())) {
-                    getBlock().setType(getMaterial(), false);
-                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(), pDir);
-                    setFinished(true);
-                    return;
-                }
-
-                if (getBlock().getType() != getSourceMaterial() && getPlayer() != null) {
-                    getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
-                    getBlock().setType(getMaterial(), false);
-                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(), pDir);
-                    setFinished(true);
-                    return;
-                }
-
-                if (getIndex() < getPlugin().getConfig().getInt("distance")) {
-                    gen.setType(getMaterial(), false);
-                    ItemUtils.setBlockData(gen,blockDataValue);
-                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(gen, pDir);
-                    try {
-                        CoreProtectHook.logPlacement(getPlayer().getName(), gen);
-                    } catch (NullPointerException ignored) {
-                        // ignored
-                    }
-                } else {
-                    getBlock().setType(getMaterial(), false);
-                    if (GenBucket.get().getConfig().getBoolean("use-facing")) ItemUtils.setFacing(getBlock(), pDir);
-                    setFinished(true);
-                }
+            if (!isValidLocation(gen)) {
+                getBlock().setType(getMaterial(), false);
+                if (Config.USE_FACING.getOption()) ItemUtils.setFacing(getBlock(), pDir);
+                setFinished(true);
+                return;
             }
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-            Bukkit.getServer().getLogger().log(Level.SEVERE, "Contact the author and send this error: " + e);
+
+            if (getPlayer() == null || !((FactionHook) getPlugin().getHookManager().getPluginMap().get("Factions")).canBuild(gen, getPlayer())) {
+                getBlock().setType(getMaterial(), false);
+                if (Config.USE_FACING.getOption()) ItemUtils.setFacing(getBlock(), pDir);
+                setFinished(true);
+                return;
+            }
+
+            if (getBlock().getType() != getSourceMaterial() && getPlayer() != null) {
+                getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
+                getBlock().setType(getMaterial(), false);
+                if (Config.USE_FACING.getOption()) ItemUtils.setFacing(getBlock(), pDir);
+                setFinished(true);
+                return;
+            }
+
+            if (getIndex() < genData.getHorizontalDistance()) {
+                gen.setType(getMaterial(), false);
+                ItemUtils.setBlockData(gen, genData.getItem().getDurability());
+                if (Config.USE_FACING.getOption()) ItemUtils.setFacing(gen, pDir);
+                try {
+                    CoreProtectHook.logPlacement(getPlayer().getName(), gen);
+                } catch (NullPointerException ignored) {
+                    // ignored
+                }
+            } else {
+                getBlock().setType(getMaterial(), false);
+                if (Config.USE_FACING.getOption()) ItemUtils.setFacing(getBlock(), pDir);
+                setFinished(true);
+            }
         }
     }
 

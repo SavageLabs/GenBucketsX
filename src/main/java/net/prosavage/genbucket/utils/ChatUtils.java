@@ -1,6 +1,7 @@
 package net.prosavage.genbucket.utils;
 
-import net.prosavage.genbucket.GenBucket;
+import net.prosavage.genbucket.config.Config;
+import net.prosavage.genbucket.config.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -15,7 +16,7 @@ public class ChatUtils {
     }
 
     public static void debug(String str) {
-        if (GenBucket.get().getConfig().getBoolean("debug"))
+        if (Config.DEBUG.getOption())
             Bukkit.getConsoleSender().sendMessage(color(Message.PREFIX.getMessage() + " &e<DEBUG> &f" + str));
     }
 

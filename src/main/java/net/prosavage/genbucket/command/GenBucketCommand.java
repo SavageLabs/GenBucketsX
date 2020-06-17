@@ -6,7 +6,7 @@ import net.prosavage.genbucket.command.impl.CommandHelp;
 import net.prosavage.genbucket.command.impl.CommandMain;
 import net.prosavage.genbucket.command.impl.CommandReload;
 import net.prosavage.genbucket.utils.ChatUtils;
-import net.prosavage.genbucket.utils.Message;
+import net.prosavage.genbucket.config.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

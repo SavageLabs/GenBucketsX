@@ -2,13 +2,15 @@ package net.prosavage.genbucket.hooks.impl.factions;
 
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.engine.EnginePermBuild;
+import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.ps.PS;
-import net.prosavage.genbucket.GenBucket;
+import net.prosavage.genbucket.config.Config;
+import net.prosavage.genbucket.config.Message;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.ChatUtils;
-import net.prosavage.genbucket.utils.Message;
 import net.prosavage.genbucket.utils.VanishUtils;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -19,24 +21,28 @@ public class FactionsMCHook extends FactionHook {
 
     @Override
     public boolean canBuild(Block block, Player player) {
-        if (!GenBucket.get().getConfig().getBoolean("canbuild-check", true)) {
+        if (!Config.HOOK_CANBUILD_CHECK.getOption()) {
             return true;
         }
-        return EnginePermBuild.canPlayerBuildAt(player, PS.valueOf(block), true);
+        return EnginePermBuild.canPlayerBuildAt(player, PS.valueOf(block), true) || Config.HOOK_DISABLE_WILD.getOption() && isWilderness(block.getLocation());
     }
 
     @Override
     public boolean hasNearbyPlayer(Player player) {
-        if (player == null || !GenBucket.get().getConfig().getBoolean("nearby-check", true)) {
+        if (player == null || !Config.HOOK_NEARBY_CHECK.getOption()) {
             return false;
         }
-        int radius = GenBucket.get().getConfig().getInt("radius", 32);
+        int radius = Config.HOOK_NEARBY_RADIUS.getInt();
         MPlayer me = MPlayer.get(player);
         if (me != null && isEnemyNear(me, radius)) {
             player.sendMessage(ChatUtils.color(Message.GEN_ENEMY_NEARBY.getMessage()));
             return true;
         }
         return false;
+    }
+
+    public boolean isWilderness(Location location) {
+        return !BoardColl.get().getFactionAt(PS.valueOf(location)).isNormal();
     }
 
     public boolean isEnemyNear(MPlayer p, int rad) {

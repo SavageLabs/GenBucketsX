@@ -7,12 +7,11 @@ import net.prosavage.genbucket.hooks.impl.factions.FactionsUUIDHook;
 import net.prosavage.genbucket.hooks.impl.factions.FactionsXHook;
 import net.prosavage.genbucket.hooks.impl.factions.SavageFactionsHook;
 import net.prosavage.genbucket.utils.ChatUtils;
-import net.prosavage.genbucket.utils.Message;
+import net.prosavage.genbucket.config.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class FactionHook implements PluginHook<FactionHook> {
@@ -44,7 +43,7 @@ public class FactionHook implements PluginHook<FactionHook> {
         return this;
     }
 
-    public boolean canBuild(Block block, Player player) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public boolean canBuild(Block block, Player player) {
         return true;
     }
 

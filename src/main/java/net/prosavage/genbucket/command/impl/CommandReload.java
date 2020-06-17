@@ -1,11 +1,10 @@
 package net.prosavage.genbucket.command.impl;
 
-import com.cryptomorin.xseries.XMaterial;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.command.AbstractCommand;
-import net.prosavage.genbucket.menu.impl.GenerationShopGUI;
+import net.prosavage.genbucket.config.Config;
+import net.prosavage.genbucket.config.Message;
 import net.prosavage.genbucket.utils.ChatUtils;
-import net.prosavage.genbucket.utils.Message;
 import org.bukkit.command.CommandSender;
 
 public class CommandReload extends AbstractCommand {
@@ -18,7 +17,7 @@ public class CommandReload extends AbstractCommand {
     @Override
     public boolean execute(CommandSender commandSender, String[] args) {
         getPlugin().loadConfig();
-        commandSender.sendMessage(ChatUtils.color(Message.PLUGIN_RELOAD.getMessage()));
+        commandSender.sendMessage(ChatUtils.color(Message.CMD_RELOAD_SUCCESS.getMessage()));
         return false;
     }
 
@@ -29,7 +28,7 @@ public class CommandReload extends AbstractCommand {
 
     @Override
     public String getPermission() {
-        return "genbucket.command.reload";
+        return Config.PERMISSION_RELOAD.getString();
     }
 
 }

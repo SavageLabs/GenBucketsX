@@ -1,7 +1,7 @@
 package net.prosavage.genbucket.api;
 
-import net.prosavage.genbucket.gen.GenType;
-import org.bukkit.Location;
+import net.prosavage.genbucket.gen.GenData;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -11,14 +11,14 @@ public class PlayerPlaceGenEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
 
-    private GenType genType;
-    private Location location;
+    private GenData genData;
+    private Block block;
     private Player player;
 
-    public PlayerPlaceGenEvent(Player player, Location location, GenType genType) {
+    public PlayerPlaceGenEvent(Player player, Block block, GenData genData) {
         this.player = player;
-        this.location = location;
-        this.genType = genType;
+        this.block = block;
+        this.genData = genData;
     }
 
     public static HandlerList getHandlerList() {
@@ -44,12 +44,12 @@ public class PlayerPlaceGenEvent extends Event implements Cancellable {
         return player;
     }
 
-    public Location getLocation() {
-        return location;
+    public Block getBlock() {
+        return block;
     }
 
-    public GenType getGenType() {
-        return genType;
+    public GenData getGenData() {
+        return genData;
     }
 
 }

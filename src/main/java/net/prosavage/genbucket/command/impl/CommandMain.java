@@ -2,7 +2,8 @@ package net.prosavage.genbucket.command.impl;
 
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.command.AbstractCommand;
-import net.prosavage.genbucket.utils.Message;
+import net.prosavage.genbucket.config.Config;
+import net.prosavage.genbucket.config.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -27,7 +28,7 @@ public class CommandMain extends AbstractCommand {
 
     @Override
     public String getPermission() {
-        return "genbucket.command.menu";
+        return Config.PERMISSION_GUI.getString();
     }
 
 }

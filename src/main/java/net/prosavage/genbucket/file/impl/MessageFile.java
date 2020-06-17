@@ -1,7 +1,7 @@
 package net.prosavage.genbucket.file.impl;
 
 import net.prosavage.genbucket.file.CustomFile;
-import net.prosavage.genbucket.utils.Message;
+import net.prosavage.genbucket.config.Message;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MessageFile extends CustomFile {

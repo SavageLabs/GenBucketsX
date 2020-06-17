@@ -1,5 +1,7 @@
 package net.prosavage.genbucket.hooks.impl.factions;
 
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.iface.RelationParticipator;
@@ -7,10 +9,10 @@ import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.RelationUtil;
-import net.prosavage.genbucket.GenBucket;
+import net.prosavage.genbucket.config.Config;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.ChatUtils;
-import net.prosavage.genbucket.utils.Message;
+import net.prosavage.genbucket.config.Message;
 import net.prosavage.genbucket.utils.VanishUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -32,12 +34,16 @@ public class FactionsUUIDHook extends FactionHook {
     }
 
     @Override
-    public boolean canBuild(Block block, Player player) throws InvocationTargetException, IllegalAccessException {
-        if (!GenBucket.get().getConfig().getBoolean("canbuild-check", true)) {
+    public boolean canBuild(Block block, Player player) {
+        if (!Config.HOOK_CANBUILD_CHECK.getOption()) {
             return true;
         }
-        if (!(boolean) playerCanBuildDestroyBlock.invoke(FactionsBlockListener.class, player, block.getLocation(), PermissibleAction.BUILD, true)) {
-            player.sendMessage(ChatUtils.color(Message.GEN_CANT_PLACE.getMessage()));
+        try {
+            if (!(boolean) playerCanBuildDestroyBlock.invoke(FactionsBlockListener.class, player, block.getLocation(), PermissibleAction.BUILD, true) || Config.HOOK_DISABLE_WILD.getOption() && isWilderness(block.getLocation())) {
+                player.sendMessage(ChatUtils.color(Message.GEN_CANT_PLACE.getMessage()));
+                return false;
+            }
+        } catch (Exception ex) {
             return false;
         }
         return true;
@@ -45,10 +51,10 @@ public class FactionsUUIDHook extends FactionHook {
 
     @Override
     public boolean hasNearbyPlayer(Player player) {
-        if (player == null || !GenBucket.get().getConfig().getBoolean("nearby-check", true)) {
+        if (player == null || !Config.HOOK_NEARBY_CHECK.getOption()) {
             return false;
         }
-        int radius = GenBucket.get().getConfig().getInt("radius", 32);
+        int radius = Config.HOOK_NEARBY_RADIUS.getInt();
         FPlayer me = FPlayers.getInstance().getByPlayer(player);
         if (me != null && isEnemyNear(me, radius)) {
             player.sendMessage(ChatUtils.color(Message.GEN_ENEMY_NEARBY.getMessage()));
@@ -57,6 +63,10 @@ public class FactionsUUIDHook extends FactionHook {
         return false;
     }
 
+    public boolean isWilderness(Location location) {
+        FLocation fLoc = new FLocation(location);
+        return Board.getInstance().getFactionAt(fLoc).isWilderness();
+    }
 
     public boolean isEnemyNear(FPlayer p, int rad) {
 

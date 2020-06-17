@@ -1,27 +1,25 @@
 package net.prosavage.genbucket.file;
 
-import net.prosavage.genbucket.GenBucket;
-import net.prosavage.genbucket.file.impl.DataFile;
+import net.prosavage.genbucket.file.impl.ConfigFile;
+import net.prosavage.genbucket.file.impl.GenFile;
 import net.prosavage.genbucket.file.impl.MessageFile;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
-public class FileManager {
+public class ConfigManager {
 
-    private GenBucket plugin;
     private Map<String, CustomFile> fileMap = new HashMap<>();
 
-    public FileManager(GenBucket plugin) {
-        this.plugin = plugin;
+    public ConfigManager(JavaPlugin plugin) {
         addFile(new MessageFile(plugin));
-        addFile(new DataFile(plugin));
+        addFile(new ConfigFile(plugin));
+        addFile(new GenFile(plugin));
     }
 
     private void addFile(CustomFile file) {
         fileMap.put(file.getName(), file);
-        plugin.getLogger().log(Level.INFO, file.getName() + ".yml has initialized.");
         file.init();
     }
 
