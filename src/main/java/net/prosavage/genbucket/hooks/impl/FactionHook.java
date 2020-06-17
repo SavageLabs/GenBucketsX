@@ -2,10 +2,7 @@ package net.prosavage.genbucket.hooks.impl;
 
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.hooks.PluginHook;
-import net.prosavage.genbucket.hooks.impl.factions.FactionsMCHook;
-import net.prosavage.genbucket.hooks.impl.factions.FactionsUUIDHook;
-import net.prosavage.genbucket.hooks.impl.factions.FactionsXHook;
-import net.prosavage.genbucket.hooks.impl.factions.SavageFactionsHook;
+import net.prosavage.genbucket.hooks.impl.factions.*;
 import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.config.Message;
 import org.bukkit.Bukkit;
@@ -21,6 +18,9 @@ public class FactionHook implements PluginHook<FactionHook> {
         if (Bukkit.getPluginManager().isPluginEnabled("FactionsX")) {
             ChatUtils.sendConsole(Message.PREFIX.getMessage() + "Server Factions type has been set to FactionsX");
             return new FactionsXHook();
+        } else if (Bukkit.getPluginManager().isPluginEnabled("Lands")) {
+            ChatUtils.sendConsole(Message.PREFIX.getMessage() + "Server Factions type has been set to Lands");
+            return new LandsHook();
         } else if (Bukkit.getPluginManager().isPluginEnabled("Factions")) {
             List<String> authors = GenBucket.get().getServer().getPluginManager().getPlugin(getName()).getDescription().getAuthors();
             if (!authors.contains("drtshock") && !authors.contains("Benzimmer")) {

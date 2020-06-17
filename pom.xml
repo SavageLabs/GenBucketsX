@@ -176,6 +176,13 @@
             <version>2.14.1-SNAPSHOT</version>
             <systemPath>${project.basedir}/dependencies/FactionsUUID2.jar</systemPath>
         </dependency>
+        <!-- Lands -->
+        <dependency>
+            <groupId>com.github.Angeschossen</groupId>
+            <artifactId>LandsAPI</artifactId>
+            <version>4.5.2.0</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- CoreProtect -->
         <dependency>
