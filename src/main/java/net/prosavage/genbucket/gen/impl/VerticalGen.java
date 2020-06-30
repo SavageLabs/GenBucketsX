@@ -29,10 +29,10 @@ public class VerticalGen extends Generator {
             this.blockDataValue = genData.getItem().getDurability();
         ChatUtils.debug("face=" + face);
         if (genData.getDirection() == GenDirection.AUTO) {
-            if (face == BlockFace.UP) {
-                direction = BlockFace.UP;
-            } else {
+            if (face == BlockFace.DOWN) {
                 direction = BlockFace.DOWN;
+            } else {
+                direction = BlockFace.UP;
             }
         } else if (genData.getDirection() == GenDirection.UP) {
             direction = BlockFace.UP;
