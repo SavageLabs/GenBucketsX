@@ -7,7 +7,7 @@
     <groupId>net.prosavage</groupId>
     <artifactId>SavageGenbuckets</artifactId>
     <name>SavageGenbuckets</name>
-    <version>2.0.1</version>
+    <version>2.0.2</version>
     <url>https://savagelabs.net/</url>
     <packaging>jar</packaging>
 
@@ -130,7 +130,7 @@
         <dependency>
             <groupId>net.prosavage.factionsx</groupId>
             <artifactId>FactionsX</artifactId>
-            <version>0.4.2-PATREON</version>
+            <version>0.6-PATREON</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
