@@ -28,6 +28,7 @@ public class VerticalGen extends Generator {
         if (GenBucket.getServerVersion() < 13)
             this.blockDataValue = genData.getItem().getDurability();
         ChatUtils.debug("face=" + face);
+        ChatUtils.debug("direction=" + genData.getDirection());
         if (genData.getDirection() == GenDirection.AUTO) {
             if (face == BlockFace.DOWN) {
                 direction = BlockFace.DOWN;
