@@ -19,6 +19,7 @@ public class VanishUtils {
     }
 
     public static boolean isVanished(Player player, Player target) {
+        if (target == null) return false;
         if (isVanished(target)) return true;
         return (!player.canSee(target));
     }
