@@ -70,9 +70,7 @@ public class GenBucket extends JavaPlugin {
         getFileManager().getFileMap().get("messages").init();
         getFileManager().getFileMap().get("genbuckets").init();
         replaceBlocksWhiteList.clear();
-        Config.REPLACE_BLOCKS.getStringList().forEach(s -> {
-            replaceBlocksWhiteList.add(ItemUtils.parseMaterial(s));
-        });
+        Config.REPLACE_BLOCKS.getStringList().forEach(s -> replaceBlocksWhiteList.add(ItemUtils.parseMaterial(s)));
         this.generationShopGUI = new GenerationShopGUI(this);
     }
 
