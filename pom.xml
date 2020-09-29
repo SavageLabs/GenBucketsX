@@ -79,11 +79,6 @@
     </build>
 
     <repositories>
-        <!-- SavageLabs repository -->
-        <repository>
-            <id>savagelabs</id>
-            <url>https://nexus.savagelabs.net/repository/maven-releases/</url>
-        </repository>
         <!-- CodeMC repository -->
         <repository>
             <id>nms-repo</id>
