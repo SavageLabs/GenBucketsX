@@ -82,7 +82,7 @@
         <!-- SavageLabs repository -->
         <repository>
             <id>savagelabs</id>
-            <url>https://nexus.savagelabs.net/repository/maven-public/</url>
+            <url>https://nexus.savagelabs.net/repository/maven-releases/</url>
         </repository>
         <!-- CodeMC repository -->
         <repository>
