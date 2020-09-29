@@ -86,7 +86,7 @@
         </repository>
         <repository>
             <id>CodeMC</id>
-            <url>https://repo.codemc.org/repository/maven-public</url>
+            <url>https://repo.codemc.org/repository/maven-public/</url>
         </repository>
         <!-- JitPack repository -->
         <repository>
@@ -98,10 +98,10 @@
             <id>coreprotect</id>
             <url>https://maven.playpro.com</url>
         </repository>
-        <!-- Maven Central repository -->
+        <!-- SavageLabs repository -->
         <repository>
-            <id>maven-central</id>
-            <url>https://oss.sonatype.org/content/groups/public</url>
+            <id>savagelabs</id>
+            <url>https://nexus.savagelabs.net/repository/maven-public/</url>
         </repository>
     </repositories>
 
