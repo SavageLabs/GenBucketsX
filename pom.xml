@@ -177,9 +177,8 @@
         <dependency>
             <groupId>com.github.MyzelYam</groupId>
             <artifactId>SuperVanish</artifactId>
-            <version>LATEST</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/dependencies/SuperVanish_v6.1.5.jar</systemPath>
+            <version>6.2.0</version>
+            <scope>provided</scope>
         </dependency>
         <!-- WorldGuard -->
         <dependency>

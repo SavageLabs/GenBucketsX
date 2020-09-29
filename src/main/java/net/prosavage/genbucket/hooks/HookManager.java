@@ -1,9 +1,9 @@
 package net.prosavage.genbucket.hooks;
 
 import net.prosavage.genbucket.GenBucket;
+import net.prosavage.genbucket.config.Message;
 import net.prosavage.genbucket.hooks.impl.*;
 import net.prosavage.genbucket.utils.ChatUtils;
-import net.prosavage.genbucket.config.Message;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +23,10 @@ public class HookManager {
     }
 
     private void hookPlugin(PluginHook pluginHook) {
+        if (pluginHook.getName().equalsIgnoreCase("PremiumVanish") && plugin.getServer().getPluginManager().getPlugin("SuperVanish") != null) {
+            pluginMap.put(pluginHook.getName(), (PluginHook<?>) pluginHook.setup(plugin));
+            return;
+        }
         if (!pluginHook.getName().equalsIgnoreCase("Factions") && plugin.getServer().getPluginManager().getPlugin(pluginHook.getName()) == null) {
             ChatUtils.sendConsole(Message.ERROR_HOOK_NOTFOUND.getMessage().replace("%plugin%", pluginHook.getName()));
             return;

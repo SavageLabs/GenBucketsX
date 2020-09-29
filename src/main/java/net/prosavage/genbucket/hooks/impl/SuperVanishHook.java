@@ -17,7 +17,7 @@ public class SuperVanishHook implements PluginHook {
     @Override
     public Object setup(GenBucket genBucket) {
         if (Bukkit.getServer().getPluginManager().getPlugin("SuperVanish") != null || Bukkit.getServer().getPluginManager().getPlugin("PremiumVanish") != null) isSetup = true;
-        return null;
+        return this;
     }
 
     @Override
