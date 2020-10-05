@@ -2,6 +2,7 @@ package net.prosavage.genbucket.gen;
 
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.config.Config;
+import net.prosavage.genbucket.hooks.impl.WorldBorderHook;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -104,6 +105,7 @@ public abstract class Generator {
     }
 
     public boolean isOutsideBorder(Location location) {
+        if (WorldBorderHook.isSetup() && WorldBorderHook.isOutside(location)) return true;
         WorldBorder border = location.getWorld().getWorldBorder();
         if (GenBucket.getServerVersion() >= 11) {
             return !border.isInside(location);

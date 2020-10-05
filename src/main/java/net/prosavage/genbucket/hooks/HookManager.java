@@ -20,6 +20,7 @@ public class HookManager {
         hookPlugin(new EssentialsHook());
         hookPlugin(new SuperVanishHook());
         hookPlugin(new CoreProtectHook());
+        hookPlugin(new WorldBorderHook());
     }
 
     private void hookPlugin(PluginHook pluginHook) {
