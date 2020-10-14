@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class GenerationShopGUI extends MenuBuilder {
                         .replace("%consumable%", genData.isConsumable() + "")
                         .replace("%distance%", genData.getHorizontalDistance() + "")
                         .replace("%material%", item.getType().name())
-                        .replace("%price%", GenBucket.econ.format(genData.getPrice()))
+                        .replace("%price%", formatPrice(genData.getPrice()))
                 );
                 meta.setLore(ChatUtils.color(lore));
                 item.setItemMeta(meta);
@@ -53,6 +54,10 @@ public class GenerationShopGUI extends MenuBuilder {
             if (getInventory().getItem(i) == null) getInventory().setItem(i, getBlankItem());
         }
         return this;
+    }
+    private String formatPrice(Double price) {
+        if (GenBucket.econ == null) return NumberFormat.getCurrencyInstance().format(price);
+        return GenBucket.econ.format(price);
     }
 
     private ItemStack getBlankItem() {
