@@ -163,6 +163,10 @@ public class GenListener implements Listener, Runnable {
 
     public boolean withdraw(GenData genData, Player player) {
         double price = genData.getPrice();
+        if (GenBucket.econ == null) {
+            player.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + "No Economy provider found! ex: Essentials, please install one.\n Automatically approving purchase for now..."));
+            return true;
+        }
         if (GenBucket.econ.withdrawPlayer(player, price).transactionSuccess()) {
             player.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + Message.GEN_CHARGED.getMessage().replace("%amount%", price + "")));
             return true;
