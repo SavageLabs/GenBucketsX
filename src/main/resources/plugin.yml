@@ -1,14 +1,14 @@
-name: SavageGenBuckets
+name: ${project.name}
 main: net.prosavage.genbucket.GenBucket
 version: ${project.version}
 api-version: '1.13'
-authors: [ProSavage, Valentina_pro]
-depend: [Vault]
-softdepend: [CoreProtect, Essentials, FastAsyncWorldedit, Factions, FactionsX, Lands, MassiveCore, PremiumVanish, SuperVanish, WorldBorder, WorldGuard]
+authors: [ ProSavage, Valentina_pro ]
+depend: [ Vault ]
+softdepend: [ CoreProtect, Essentials, FastAsyncWorldedit, Factions, FactionsX, Lands, MassiveCore, PremiumVanish, SuperVanish, WorldBorder, WorldGuard ]
 commands:
   genbucket:
     description: Main Command
-    aliases: [genbucket, gb, genshop, gen, savagegenbucket]
+    aliases: [ genbucket, gb, genshop, gen, savagegenbucket ]
 permissions:
   genbucket.command.help:
     description: Allows help subcommand
