@@ -1,7 +1,6 @@
 package net.prosavage.genbucket;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.google.common.collect.ImmutableList;
 import net.prosavage.genbucket.api.PlayerGenEvent;
 import net.prosavage.genbucket.api.PlayerPlaceGenEvent;
 import net.prosavage.genbucket.config.Config;
@@ -35,8 +34,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import static org.bukkit.block.BlockFace.*;
 
 public class GenListener implements Listener, Runnable {
 
@@ -207,13 +204,19 @@ public class GenListener implements Listener, Runnable {
         GenData genData = GenBucket.genDataMap.get(genID);
         PlayerPlaceGenEvent placeGenEvent = new PlayerPlaceGenEvent(player, block, genData);
         Bukkit.getServer().getPluginManager().callEvent(placeGenEvent);
-        if (placeGenEvent.isCancelled()) return;
+        if (placeGenEvent.isCancelled()) {
+            ChatUtils.debug("PlayerPlaceGenEvent was cancelled by another plugin");
+            return;
+        }
         FactionHook facHook = ((FactionHook) plugin.getHookManager().getPluginMap().get("Factions"));
         if (plugin.hasWorldGuard() && !plugin.getWorldGuard().hasBuildPermission(player, block)) {
             player.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + Message.GEN_CANCELLED.getMessage()));
             return;
         }
-        if (!facHook.canBuild(block, player) || facHook.hasNearbyPlayer(player)) return;
+        if (!facHook.canBuild(block, player) || facHook.hasNearbyPlayer(player)) {
+            ChatUtils.debug("Factions denied " + player.getName() + "from placing a genBucket at " + block.getLocation().toString());
+            return;
+        }
         if (!withdraw(genData, player)) return;
         if (genData.getType() == GenType.VERTICAL) {
             register(new VerticalGen(plugin, player, block, blockFace, genData));
