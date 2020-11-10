@@ -32,11 +32,11 @@ public class HorizontalGen extends Generator {
         if (isValidLocation(block)) {
             if (!Config.USE_SOURCEBLOCK.getOption()) {
                 this.setSourceMaterial(getMaterial());
-                block.setType(getMaterial());
+                block.setType(getMaterial(), false);
                 if (Config.USE_FACING.getOption()) ItemUtils.setFacing(block, pDir);
             } else {
                 this.setSourceMaterial(ItemUtils.parseMaterial(Config.SOURCEBLOCK_MATERIAL.getString()));
-                block.setType(getSourceMaterial());
+                block.setType(getSourceMaterial(), false);
             }
         } else {
             ChatUtils.debug("cant-place validlocation failed");

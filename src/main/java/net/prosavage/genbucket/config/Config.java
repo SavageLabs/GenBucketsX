@@ -15,7 +15,7 @@ public enum Config {
                     "#     You can find (and also edit :D) all permissions in the Permissions section of this config.\n" +
                     "#   > My server has low specs and TPS drop too much, how to mitigate?\n" +
                     "#     You can mitigate TPS loss by using a higher 'ticks-between-block-generations' value and\n" +
-                    "#     disabling liquids generation. Also consider disabling 'apply-facing' and 'apply-blockdata'\n" +
+                    "#     disabling liquids generation. Other heavy options are 'apply-facing', 'apply-blockdata' and 'allow-vert-down-gravity-block-place'\n" +
                     "\n"
     }),
 
@@ -36,6 +36,7 @@ public enum Config {
     USE_FACING("Settings.genbuckets.apply-facing", false),
     USE_OPPOSITE_FACING("Settings.genbuckets.invert-facing", false),
     USE_BLOCKDATA("Settings.genbuckets.apply-block-data", false),
+    ALLOW_GRAVITY_DOWN("Settings.genbuckets.allow-vert-down-gravity-block-place", false),
     GENERATION_DELAY("Settings.genbuckets.ticks-between-block-generations", 15),
     USE_SPONGE_CHECK("Settings.genbuckets.cancel-generation-if-near-sponge", false),
     SOURCEBLOCK_MATERIAL("Settings.genbuckets.source-block.material", "WHITE_WOOL"),

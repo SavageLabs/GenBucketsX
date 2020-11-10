@@ -62,6 +62,8 @@ public class GenBucket extends JavaPlugin {
                 wg = new WorldGuard();
             }
             getServer().getPluginManager().registerEvents(new GenListener(this), this);
+            if (Config.ALLOW_GRAVITY_DOWN.getOption())
+                getServer().getPluginManager().registerEvents(new GenPhysicsListener(), this);
         }, 2);
     }
 
@@ -99,6 +101,8 @@ public class GenBucket extends JavaPlugin {
     public Set<Material> getReplacements() {
         return replaceBlocksWhiteList;
     }
+
+    public static Set<String> activeGenXZ = new HashSet<>();
 
     private static int ver;
 

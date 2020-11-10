@@ -21,6 +21,7 @@ public class VerticalGen extends Generator {
     private int blockDataValue = 0;
     private GenData genData;
     private BlockFace direction;
+    private String genLocXZ = null;
 
     public VerticalGen(GenBucket plugin, Player player, Block block, BlockFace face, GenData genData) {
         super(plugin, player, block, genData);
@@ -40,6 +41,12 @@ public class VerticalGen extends Generator {
         } else {
             direction = BlockFace.DOWN;
         }
+        if (!Config.ALLOW_GRAVITY_DOWN.getOption() && getMaterial().hasGravity() && direction == BlockFace.DOWN) {
+            direction = BlockFace.UP;
+        } else {
+            genLocXZ = block.getX() + ";" + block.getZ();
+            GenBucket.activeGenXZ.add(genLocXZ);
+        }
         if (GenBucket.getServerVersion() > 13) {
             this.pDir = player.getFacing();
         } else {
@@ -48,19 +55,17 @@ public class VerticalGen extends Generator {
         setIndex(getIndex() + (direction == BlockFace.UP ? 1 : -1));
         if (isValidLocation(block)) {
             if (!Config.USE_SOURCEBLOCK.getOption()) {
-                ChatUtils.debug(getMaterial().name() + " is the getMaterial() pre-gen");
                 this.setSourceMaterial(getMaterial());
                 block.setType(getMaterial(), false);
                 if (Config.USE_FACING.getOption()) ItemUtils.setFacing(block, pDir);
             } else {
-                ChatUtils.debug(getMaterial().name() + " is the getMaterial() pre-gen");
                 this.setSourceMaterial(ItemUtils.parseMaterial(Config.SOURCEBLOCK_MATERIAL.getString()));
                 block.setType(getSourceMaterial(), false);
             }
         } else {
             ChatUtils.debug("cant-place validlocation failed");
             player.sendMessage(Message.GEN_CANT_PLACE.getMessage());
-            setFinished(true);
+            setFinish(true);
             return;
         }
     }
@@ -79,13 +84,12 @@ public class VerticalGen extends Generator {
                 ChatUtils.debug("Something went wrong so that SourceMaterial returns null. check your Material in config!");
         }
 
-        if (!(getMaterial().hasGravity() && direction == BlockFace.DOWN))
-            setIndex(getIndex() + (direction == BlockFace.UP ? 1 : -1));
+        setIndex(getIndex() + (direction == BlockFace.UP ? 1 : -1));
 
         if (!isValidLocation(gen)) {
             getBlock().setType(getMaterial(), false);
             if (Config.USE_FACING.getOption()) ItemUtils.setFacing(getBlock(), pDir);
-            setFinished(true);
+            setFinish(true);
             return;
         }
 
@@ -97,7 +101,7 @@ public class VerticalGen extends Generator {
             getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
             getBlock().setType(getMaterial(), false);
             if (Config.USE_FACING.getOption()) ItemUtils.setFacing(getBlock(), pDir);
-            setFinished(true);
+            setFinish(true);
             return;
         }
 
@@ -113,7 +117,7 @@ public class VerticalGen extends Generator {
         } else {
             getBlock().setType(getMaterial(), false);
             if (Config.USE_FACING.getOption()) ItemUtils.setFacing(getBlock(), pDir);
-            setFinished(true);
+            setFinish(true);
         }
     }
 
@@ -138,4 +142,9 @@ public class VerticalGen extends Generator {
         return loc.getWorld().getName() + ":" + loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
     }
 
+    public void setFinish(boolean finished) {
+        if (genLocXZ != null)
+            GenBucket.activeGenXZ.remove(genLocXZ);
+        setFinished(finished);
+    }
 }
