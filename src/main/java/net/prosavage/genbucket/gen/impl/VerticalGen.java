@@ -10,6 +10,7 @@ import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.hooks.impl.CoreProtectHook;
 import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.ItemUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -53,6 +54,19 @@ public class VerticalGen extends Generator {
         if (isValidLocation(block)) {
             if (!Config.USE_SOURCEBLOCK.getOption()) {
                 this.setSourceMaterial(getMaterial());
+                if (Config.ALLOW_GRAVITY_DOWN.getOption() && getMaterial().hasGravity() && direction == BlockFace.DOWN) {
+                    Block underGen = block.getRelative(BlockFace.DOWN);
+                    if (underGen.getY() > 0 && (underGen.getType() == XMaterial.AIR.parseMaterial()
+                            || (Config.REPLACE_LIQUIDS.getOption() && underGen.isLiquid()))) {
+                        ChatUtils.debug("Placing support block under...");
+                        Material orUnderGenType = underGen.getType();
+                        underGen.setType(XMaterial.GLASS.parseMaterial(), false);
+                        Bukkit.getScheduler().runTaskLater(GenBucket.get(), () -> {
+                            if (underGen.getType() == XMaterial.GLASS.parseMaterial())
+                                underGen.setType(orUnderGenType, false);
+                        }, Config.GENERATION_DELAY.getInt() + 5L);
+                    }
+                }
                 block.setType(getMaterial(), false);
                 if (Config.USE_FACING.getOption()) ItemUtils.setFacing(block, pDir);
             } else {
@@ -104,8 +118,17 @@ public class VerticalGen extends Generator {
 
         if (!isNearSponge(gen, 3) && (getBlock().getY() + getIndex()) >= 0 && (getBlock().getY() + getIndex()) < 256) {
             if (Config.ALLOW_GRAVITY_DOWN.getOption() && getMaterial().hasGravity() && direction == BlockFace.DOWN) {
-                if (!gen.getRelative(BlockFace.DOWN).getType().isSolid())
-                    gen.getRelative(BlockFace.DOWN).setType(XMaterial.GLASS.parseMaterial(), false);
+                Block underGen = gen.getRelative(BlockFace.DOWN);
+                if (underGen.getY() > 0 && (underGen.getType() == XMaterial.AIR.parseMaterial()
+                        || (Config.REPLACE_LIQUIDS.getOption() && underGen.isLiquid()))) {
+                    ChatUtils.debug("Placing support block under...");
+                    Material orUnderGenType = underGen.getType();
+                    underGen.setType(XMaterial.GLASS.parseMaterial(), false);
+                    Bukkit.getScheduler().runTaskLater(GenBucket.get(), () -> {
+                        if (underGen.getType() == XMaterial.GLASS.parseMaterial())
+                            underGen.setType(orUnderGenType, false);
+                    }, Config.GENERATION_DELAY.getInt() + 5L);
+                }
             }
             gen.setType(getMaterial(), false);
             ItemUtils.setBlockData(gen, blockDataValue);

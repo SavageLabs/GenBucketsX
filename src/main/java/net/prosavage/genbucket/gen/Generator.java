@@ -1,5 +1,6 @@
 package net.prosavage.genbucket.gen;
 
+import com.cryptomorin.xseries.XMaterial;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.config.Config;
 import net.prosavage.genbucket.hooks.impl.WorldBorderHook;
@@ -80,18 +81,24 @@ public abstract class Generator {
 
     public boolean isValidLocation(Block block) {
         if (isOutsideBorder(block.getLocation())) {
-            setFinished(true);
+            ChatUtils.debug("[ValidLoc] CHECK_BORDER - FAILED");
             return false;
         }
-        ChatUtils.debug("isOutsideBorder PASSED");
         if (Config.HOOK_WG_CHECK.getOption() && GenBucket.get().hasWorldGuard() && !GenBucket.get().getWorldGuard().hasBuildPermission(player, block)) {
+            ChatUtils.debug("[ValidLoc] CHECK_WG - FAILED");
             return false;
         }
-        ChatUtils.debug("HOOK_WG_CHECK PASSED");
-        if (Config.REPLACE_LIQUIDS.getOption() && block.isLiquid()) return true;
-        ChatUtils.debug("LIQUID CHECK PASSED");
-        ChatUtils.debug("contains CHECK =" + GenBucket.get().getReplacements().contains(block.getType()));
-        ChatUtils.debug("isPseudo() CHECK =" + isPseudo() + " getMaterial() == block.getType()=>" + (getMaterial() == block.getType()));
+        ChatUtils.debug("[ValidLoc] CHECK_LQ - opt=" + Config.REPLACE_LIQUIDS.getOption() + " isLiquid?=" + block.isLiquid() + " mat=" + block.getType().name());
+        if (Config.REPLACE_LIQUIDS.getOption() && block.isLiquid())
+            return true;
+
+        ChatUtils.debug("[ValidLoc] getReplacements().contains? =" + GenBucket.get().getReplacements().contains(block.getType()));
+        ChatUtils.debug("[ValidLoc] pseudo=" + isPseudo() + " isSameType=" + (getMaterial() == block.getType()));
+        ChatUtils.debug("[ValidLoc] ALLOW_GRAVITY_DOWN=" + Config.ALLOW_GRAVITY_DOWN.getOption() + " gr=" + getMaterial().hasGravity() + " mat=" + block.getType().name());
+        if (Config.ALLOW_GRAVITY_DOWN.getOption() && getMaterial().hasGravity() && block.getType() == XMaterial.GLASS.parseMaterial()) {
+            ChatUtils.debug("[ValidLoc] CHECK_GR=TRUE");
+            return true;
+        }
         return GenBucket.get().getReplacements().contains(block.getType()) || (isPseudo() && getMaterial() == block.getType()) || Config.USE_BUCKETS.getOption() && block.getType().name().contains("LAVA");
     }
 
