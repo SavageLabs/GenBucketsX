@@ -192,7 +192,7 @@ public class GenListener implements Listener, Runnable {
 
     private void gen(Player player, ItemStack item, Block block, BlockFace blockFace) {
         if (!Util.isEnabledWorld(block.getWorld().getName())) {
-            player.sendMessage(Message.PREFIX.getMessage() + Message.GEN_CANT_PLACE.getMessage()
+            player.sendMessage(Message.PREFIX.getMessage() + Message.GEN_CANT_PLACE_WORLD.getMessage()
                     .replace("%world%", block.getWorld().getName()));
             return;
         }

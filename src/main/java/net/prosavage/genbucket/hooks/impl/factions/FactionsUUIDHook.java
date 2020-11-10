@@ -10,9 +10,9 @@ import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.RelationUtil;
 import net.prosavage.genbucket.config.Config;
+import net.prosavage.genbucket.config.Message;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
 import net.prosavage.genbucket.utils.ChatUtils;
-import net.prosavage.genbucket.config.Message;
 import net.prosavage.genbucket.utils.VanishUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -41,9 +41,12 @@ public class FactionsUUIDHook extends FactionHook {
         try {
             if (!(boolean) playerCanBuildDestroyBlock.invoke(FactionsBlockListener.class, player, block.getLocation(), PermissibleAction.BUILD, true) || Config.HOOK_DISABLE_WILD.getOption() && isWilderness(block.getLocation())) {
                 player.sendMessage(ChatUtils.color(Message.GEN_CANT_PLACE.getMessage()));
+                ChatUtils.debug("Factions CANT_PLACE check for " + player.getName() + " ");
                 return false;
             }
         } catch (Exception ex) {
+            ChatUtils.debug("Factions CANT_PLACE check EXCEPTION ");
+            if (Config.DEBUG.getOption()) ex.printStackTrace();
             return false;
         }
         return true;

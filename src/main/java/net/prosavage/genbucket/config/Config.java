@@ -62,9 +62,12 @@ public enum Config {
 
     HOOK_CANBUILD_CHECK("Hooks.General.use-canbuild-check", true),
     HOOK_DISABLE_WILD("Hooks.General.disable-genbuckets-in-wilderness", false),
+    HOOK_VANILLA_BORDER("Hooks.General.use-vanilla-worldborder-check", true),
     HOOK_NEARBY_CHECK("Hooks.General.use-nearby-enemy-check", true),
     HOOK_NEARBY_RADIUS("Hooks.General.nearby-enemy-check-radius", 30),
     HOOK_WG_CHECK("Hooks.WorldGuard.disable-genbuckets-in-protected-regions", true),
+    HOOK_BORDER_CHECK("Hooks.WorldBorder.disable-genbuckets-outside-worldborder", true),
+    HOOK_FUUID_FORCESTANDARD("Hooks.FactionsUUID.force-standard-hook", false),
 
     PERMISSION_RELOAD("Permissions.perm-reload", "genbuckets.command.reload"),
     PERMISSION_GIVE("Permissions.perm-give", "genbuckets.command.give"),

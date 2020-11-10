@@ -13,6 +13,7 @@ public enum Message {
     GEN_CANCELLED("GenBuckets.generation-cancelled", "&cYou have cancelled your generation."),
     GEN_HAS_ALREADY("GenBuckets.already-have-bucket", "&cYou already have this gen bucket!"),
     GEN_CANT_PLACE("GenBuckets.cant-place-here", "&cYou can't place gen buckets here!"),
+    GEN_CANT_PLACE_WORLD("GenBuckets.cant-place-in-this-world", "&cYou can't place gen buckets in this world!"),
     GEN_CANT_AFFORD("GenBuckets.cant-afford", "&cYou do not have sufficient funds."),
     GEN_CHARGED("GenBuckets.you-have-been-charged", "&cYou have been charged $%amount%"),
     GEN_ENEMY_NEARBY("GenBuckets.enemy-nearby", "&cYou cannot place gen buckets with enemies nearby!"),

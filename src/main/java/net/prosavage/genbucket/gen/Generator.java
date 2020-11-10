@@ -105,7 +105,9 @@ public abstract class Generator {
     }
 
     public boolean isOutsideBorder(Location location) {
-        if (WorldBorderHook.isSetup() && WorldBorderHook.isOutside(location)) return true;
+        if (!Config.HOOK_VANILLA_BORDER.getOption()) return false;
+        if (Config.HOOK_BORDER_CHECK.getOption() && WorldBorderHook.isSetup() && WorldBorderHook.isOutside(location))
+            return true;
         WorldBorder border = location.getWorld().getWorldBorder();
         if (GenBucket.getServerVersion() >= 11) {
             return !border.isInside(location);

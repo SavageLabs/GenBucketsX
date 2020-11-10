@@ -26,8 +26,12 @@ public class WorldBorderHook implements PluginHook {
     }
 
     public static boolean isOutside(Location location) {
-        if (!isSetup) return false;
-        return !WorldBorder.plugin.getWorldBorder(location.getWorld().getName()).insideBorder(location);
+        try {
+            if (!isSetup()) return false;
+            return !WorldBorder.plugin.getWorldBorder(location.getWorld().getName()).insideBorder(location);
+        } catch (NullPointerException npe) {
+            return false;
+        }
     }
 
 }
