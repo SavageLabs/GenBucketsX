@@ -90,6 +90,15 @@ public class ItemUtils {
         }
     }
 
+    public static ItemStack parseItem(String material) {
+        try {
+            Material mat = Material.valueOf(material.toUpperCase());
+            return new ItemStack(mat);
+        } catch (Exception e) {
+            return XMaterial.matchXMaterial(material).get().parseItem();
+        }
+    }
+
     public static BlockFace yawToFace(float yaw, boolean useSubCardinalDirections) {
         if (useSubCardinalDirections)
             return radial[Math.round(yaw / 45f) & 0x7].getOppositeFace();

@@ -1,14 +1,14 @@
 package net.prosavage.genbucket.gen.impl;
 
-import com.cryptomorin.xseries.XMaterial;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.config.Config;
+import net.prosavage.genbucket.config.Message;
 import net.prosavage.genbucket.gen.GenData;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.hooks.impl.CoreProtectHook;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
+import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.ItemUtils;
-import net.prosavage.genbucket.config.Message;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -35,11 +35,14 @@ public class HorizontalGen extends Generator {
                 block.setType(getMaterial());
                 if (Config.USE_FACING.getOption()) ItemUtils.setFacing(block, pDir);
             } else {
-                this.setSourceMaterial(XMaterial.valueOf(Config.SOURCEBLOCK_MATERIAL.getString()).parseMaterial());
+                this.setSourceMaterial(ItemUtils.parseMaterial(Config.SOURCEBLOCK_MATERIAL.getString()));
                 block.setType(getSourceMaterial());
             }
         } else {
+            ChatUtils.debug("cant-place validlocation failed");
             player.sendMessage(Message.GEN_CANT_PLACE.getMessage());
+            setFinished(true);
+            return;
         }
     }
 
@@ -63,6 +66,10 @@ public class HorizontalGen extends Generator {
             }
 
             if (getBlock().getType() != getSourceMaterial() && getPlayer() != null) {
+                ChatUtils.debug("getBlock().getType() != getSourceMaterial() "
+                        + getBlock().getType().name() +
+                        " is not "
+                        + getSourceMaterial().name());
                 getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
                 getBlock().setType(getMaterial(), false);
                 if (Config.USE_FACING.getOption()) ItemUtils.setFacing(getBlock(), pDir);

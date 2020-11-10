@@ -14,6 +14,7 @@ public class GenData {
     private ItemStack item;
     private GenType type;
     private GenDirection direction;
+    private String material;
     private boolean pseudo;
     private int data = 0;
     private int slot;
@@ -26,6 +27,7 @@ public class GenData {
         this.slot = slot;
         this.horizontalDistance = horizontalDistance;
         this.consumable = consumable;
+        this.material = material;
         if (direction.equalsIgnoreCase("horizontal")) {
             this.type = GenType.HORIZONTAL;
             this.direction = GenDirection.AUTO;
@@ -39,18 +41,7 @@ public class GenData {
             }
             this.type = GenType.VERTICAL;
         }
-        Material mat = ItemUtils.parseMaterial(material);
-        if (mat == XMaterial.WATER.parseMaterial()) {
-            item = XMaterial.WATER_BUCKET.parseItem();
-        } else if (mat == XMaterial.LAVA.parseMaterial()) {
-            item = XMaterial.LAVA_BUCKET.parseItem();
-        } else {
-            try {
-                item = new ItemStack(Material.valueOf(material));
-            } catch (Exception ex) {
-                item = XMaterial.matchXMaterial(material).get().parseItem();
-            }
-        }
+        item = ItemUtils.parseItem(material);
         if (GenBucket.getServerVersion() < 13)
             this.data = item.getDurability();
         if (name != null) {
@@ -64,7 +55,17 @@ public class GenData {
     }
 
     public ItemStack getItem() {
-        return item;
+        return item.clone();
+    }
+
+    public ItemStack getShownItem() {
+        if (item.getType() == XMaterial.WATER.parseMaterial()) {
+            return XMaterial.WATER_BUCKET.parseItem();
+        } else if (item.getType() == XMaterial.LAVA.parseMaterial()) {
+            return XMaterial.LAVA_BUCKET.parseItem();
+        } else {
+            return item.clone();
+        }
     }
 
     public GenType getType() {
@@ -102,6 +103,10 @@ public class GenData {
 
     public String getGenID() {
         return genID;
+    }
+
+    public Material getMaterial() {
+        return ItemUtils.parseMaterial(material);
     }
 
 }

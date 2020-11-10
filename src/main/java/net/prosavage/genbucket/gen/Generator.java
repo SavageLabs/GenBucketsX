@@ -3,6 +3,7 @@ package net.prosavage.genbucket.gen;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.config.Config;
 import net.prosavage.genbucket.hooks.impl.WorldBorderHook;
+import net.prosavage.genbucket.utils.ChatUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -60,7 +61,7 @@ public abstract class Generator {
     }
 
     public Material getMaterial() {
-        return genData.getItem().getType();
+        return genData.getMaterial();
     }
 
     public int getIndex() {
@@ -82,14 +83,16 @@ public abstract class Generator {
             setFinished(true);
             return false;
         }
-
-        if (GenBucket.get().hasWorldGuard() && !GenBucket.get().getWorldGuard().hasBuildPermission(player, block)) {
+        ChatUtils.debug("isOutsideBorder PASSED");
+        if (Config.HOOK_WG_CHECK.getOption() && GenBucket.get().hasWorldGuard() && !GenBucket.get().getWorldGuard().hasBuildPermission(player, block)) {
             return false;
         }
-
+        ChatUtils.debug("HOOK_WG_CHECK PASSED");
         if (Config.REPLACE_LIQUIDS.getOption() && block.isLiquid()) return true;
-
-        return GenBucket.get().getReplacements().contains(block.getType()) || (isPseudo() && getMaterial() == block.getType());
+        ChatUtils.debug("LIQUID CHECK PASSED");
+        ChatUtils.debug("contains CHECK =" + GenBucket.get().getReplacements().contains(block.getType()));
+        ChatUtils.debug("isPseudo() CHECK =" + isPseudo() + " getMaterial() == block.getType()=>" + (getMaterial() == block.getType()));
+        return GenBucket.get().getReplacements().contains(block.getType()) || (isPseudo() && getMaterial() == block.getType()) || Config.USE_BUCKETS.getOption() && block.getType().name().contains("LAVA");
     }
 
     public Material getSourceMaterial() {

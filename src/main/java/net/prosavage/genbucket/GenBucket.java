@@ -53,14 +53,14 @@ public class GenBucket extends JavaPlugin {
         checkServerVersion();
         this.getCommand("genbucket").setExecutor(new GenBucketCommand(this));
         Bukkit.getScheduler().runTaskLater(this, () -> {
+            this.fileManager = new ConfigManager(this);
+            loadConfig();
             this.hookManager = new HookManager(this);
             if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
                 hook_WG = true;
                 ChatUtils.debug("WorldGuard found, enabling hook...");
                 wg = new WorldGuard();
             }
-            this.fileManager = new ConfigManager(this);
-            loadConfig();
             getServer().getPluginManager().registerEvents(new GenListener(this), this);
         }, 2);
     }

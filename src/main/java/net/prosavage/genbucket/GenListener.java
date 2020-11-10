@@ -194,6 +194,8 @@ public class GenListener implements Listener, Runnable {
         if (!Util.isEnabledWorld(block.getWorld().getName())) {
             player.sendMessage(Message.PREFIX.getMessage() + Message.GEN_CANT_PLACE_WORLD.getMessage()
                     .replace("%world%", block.getWorld().getName()));
+            if (player.isOp() || player.hasPermission("is.op"))
+                player.sendMessage(Message.PREFIX.getMessage() + "&cHey, OP, if you want to enable this world for GenBuckets, look in the config for the enabled-worlds section!");
             return;
         }
         String genID = ItemUtils.getKeyString(item, "GENBUCKET-ID");
@@ -209,8 +211,9 @@ public class GenListener implements Listener, Runnable {
             return;
         }
         FactionHook facHook = ((FactionHook) plugin.getHookManager().getPluginMap().get("Factions"));
-        if (plugin.hasWorldGuard() && !plugin.getWorldGuard().hasBuildPermission(player, block)) {
+        if (Config.HOOK_WG_CHECK.getOption() && plugin.hasWorldGuard() && !plugin.getWorldGuard().hasBuildPermission(player, block)) {
             player.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + Message.GEN_CANCELLED.getMessage()));
+            ChatUtils.debug("WorldGuard denied " + player.getName() + "from placing a genBucket at " + block.getLocation().toString());
             return;
         }
         if (!facHook.canBuild(block, player) || facHook.hasNearbyPlayer(player)) {

@@ -15,7 +15,7 @@ public enum Config {
                     "#     You can find (and also edit :D) all permissions in the Permissions section of this config.\n" +
                     "#   > My server has low specs and TPS drop too much, how to mitigate?\n" +
                     "#     You can mitigate TPS loss by using a higher 'ticks-between-block-generations' value and\n" +
-                    "#     disabling liquids generation.\n" +
+                    "#     disabling liquids generation. Also consider disabling 'apply-facing' and 'apply-blockdata'\n" +
                     "\n"
     }),
 

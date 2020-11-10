@@ -2,13 +2,13 @@ package net.prosavage.genbucket.gen.impl;
 
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.config.Config;
+import net.prosavage.genbucket.config.Message;
 import net.prosavage.genbucket.gen.GenData;
 import net.prosavage.genbucket.gen.GenDirection;
 import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.hooks.impl.CoreProtectHook;
 import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.ItemUtils;
-import net.prosavage.genbucket.config.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -48,21 +48,36 @@ public class VerticalGen extends Generator {
         setIndex(getIndex() + (direction == BlockFace.UP ? 1 : -1));
         if (isValidLocation(block)) {
             if (!Config.USE_SOURCEBLOCK.getOption()) {
+                ChatUtils.debug(getMaterial().name() + " is the getMaterial() pre-gen");
                 this.setSourceMaterial(getMaterial());
                 block.setType(getMaterial(), false);
                 if (Config.USE_FACING.getOption()) ItemUtils.setFacing(block, pDir);
             } else {
+                ChatUtils.debug(getMaterial().name() + " is the getMaterial() pre-gen");
                 this.setSourceMaterial(ItemUtils.parseMaterial(Config.SOURCEBLOCK_MATERIAL.getString()));
                 block.setType(getSourceMaterial(), false);
             }
         } else {
+            ChatUtils.debug("cant-place validlocation failed");
             player.sendMessage(Message.GEN_CANT_PLACE.getMessage());
+            setFinished(true);
+            return;
         }
     }
 
     public void run() {
 
         Block gen = getBlock().getWorld().getBlockAt(getBlock().getX(), getBlock().getY() + getIndex(), getBlock().getZ());
+        if (getSourceMaterial() == null) {
+            ChatUtils.debug("getSourceMaterial is null for some reason! Patching it for now..");
+            if (!Config.USE_SOURCEBLOCK.getOption()) {
+                this.setSourceMaterial(getBlock().getType());
+            } else {
+                this.setSourceMaterial(ItemUtils.parseMaterial(Config.SOURCEBLOCK_MATERIAL.getString()));
+            }
+            if (getSourceMaterial() == null)
+                ChatUtils.debug("Something went wrong so that SourceMaterial returns null. check your Material in config!");
+        }
 
         if (!(getMaterial().hasGravity() && direction == BlockFace.DOWN))
             setIndex(getIndex() + (direction == BlockFace.UP ? 1 : -1));
@@ -75,6 +90,10 @@ public class VerticalGen extends Generator {
         }
 
         if (getBlock().getType() != getSourceMaterial() && getPlayer() != null) {
+            ChatUtils.debug("getBlock().getType() != getSourceMaterial() "
+                    + getBlock().getType().name() +
+                    " is not "
+                    + getSourceMaterial().name());
             getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
             getBlock().setType(getMaterial(), false);
             if (Config.USE_FACING.getOption()) ItemUtils.setFacing(getBlock(), pDir);

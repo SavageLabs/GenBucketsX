@@ -26,7 +26,7 @@ public class GenerationShopGUI extends MenuBuilder {
     @Override
     public GenerationShopGUI init() {
         for (GenData genData : GenBucket.genDataMap.values()) {
-            ItemStack item = genData.getItem().clone();
+            ItemStack item = genData.getShownItem().clone();
             List<String> lore = new ArrayList<>();
             lore.addAll(Config.GUI_ITEM_GEN_LORE.getStringList());
             if (lore != null && !lore.isEmpty()) {
