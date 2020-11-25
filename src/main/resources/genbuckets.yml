@@ -68,3 +68,4 @@ GenBuckets:
     slot: 34
     distance: 10
     consumable: true
+    interval-ticks: 5
