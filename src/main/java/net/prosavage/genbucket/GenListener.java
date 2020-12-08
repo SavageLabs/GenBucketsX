@@ -1,6 +1,7 @@
 package net.prosavage.genbucket;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.messages.ActionBar;
 import net.prosavage.genbucket.api.PlayerGenEvent;
 import net.prosavage.genbucket.api.PlayerPlaceGenEvent;
 import net.prosavage.genbucket.config.Config;
@@ -166,8 +167,13 @@ public class GenListener implements Listener, Runnable {
             return true;
         }
         if (GenBucket.econ.withdrawPlayer(player, price).transactionSuccess()) {
-            if (!Config.DISABLE_GEN_CHARGED_MESSAGE.getOption()) {
-                player.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + Message.GEN_CHARGED.getMessage().replace("%amount%", price + "")));
+            if (!Config.ECON_DISABLE_CHARGEDMSG.getOption()) {
+                String message = ChatUtils.color(Message.PREFIX.getMessage() + Message.GEN_CHARGED.getMessage().replace("%amount%", price + ""));
+                if (!Config.ECON_USE_ACTIONBAR.getOption()) {
+                    player.sendMessage(message);
+                } else {
+                    ActionBar.sendActionBar(player, message);
+                }
             }
             return true;
         }
