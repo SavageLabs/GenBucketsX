@@ -166,7 +166,9 @@ public class GenListener implements Listener, Runnable {
             return true;
         }
         if (GenBucket.econ.withdrawPlayer(player, price).transactionSuccess()) {
-            player.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + Message.GEN_CHARGED.getMessage().replace("%amount%", price + "")));
+            if (!Config.DISABLE_GEN_CHARGED_MESSAGE.getOption()) {
+                player.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + Message.GEN_CHARGED.getMessage().replace("%amount%", price + "")));
+            }
             return true;
         }
         player.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + Message.GEN_CANT_AFFORD.getMessage()));

@@ -73,7 +73,8 @@ public enum Config {
     PERMISSION_RELOAD("Permissions.perm-reload", "genbuckets.command.reload"),
     PERMISSION_GIVE("Permissions.perm-give", "genbuckets.command.give"),
     PERMISSION_HELP("Permissions.perm-help", "genbuckets.command.help"),
-    PERMISSION_GUI("Permissions.perm-gui", "genbuckets.command.gui");
+    PERMISSION_GUI("Permissions.perm-gui", "genbuckets.command.gui"),
+    DISABLE_GEN_CHARGED_MESSAGE("disable-gen-charged-message", false);
 
     String config, message;
     Boolean option;
