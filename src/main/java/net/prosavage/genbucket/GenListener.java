@@ -54,7 +54,7 @@ public class GenListener implements Listener, Runnable {
             ChatUtils.debug("key check passed");
             event.setCancelled(true);
             Block block = event.getBlockClicked().getRelative(event.getBlockFace());
-            gen(event.getPlayer(), item, block, event.getBlockFace());
+            if (!gen(event.getPlayer(), item, block, event.getBlockFace())) event.getPlayer().updateInventory();
         }
     }
 
@@ -65,7 +65,10 @@ public class GenListener implements Listener, Runnable {
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK
                 && item.hasItemMeta() && ItemUtils.hasKey(item, "GENBUCKET-ID")) {
             Block block = event.getClickedBlock().getRelative(event.getBlockFace());
-            if (!gen(event.getPlayer(), item, block, event.getBlockFace())) event.setCancelled(true);
+            if (!gen(event.getPlayer(), item, block, event.getBlockFace())) {
+                event.setCancelled(true);
+                event.getPlayer().updateInventory();
+            }
         }
     }
 
