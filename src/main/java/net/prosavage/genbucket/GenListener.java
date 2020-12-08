@@ -57,18 +57,18 @@ public class GenListener implements Listener, Runnable {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlaceBlock(PlayerInteractEvent event) {
         if (Config.USE_BUCKETS.getOption()) return;
         ItemStack item = getTool(event.getPlayer());
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK
                 && item.hasItemMeta() && ItemUtils.hasKey(item, "GENBUCKET-ID")) {
             Block block = event.getClickedBlock().getRelative(event.getBlockFace());
-            gen(event.getPlayer(), item, block, event.getBlockFace());
+            if (!gen(event.getPlayer(), item, block, event.getBlockFace())) event.setCancelled(true);
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onDropItem(PlayerDropItemEvent event) {
         if (ItemUtils.hasKey(event.getItemDrop().getItemStack(), "GENBUCKET-ID"))
             event.getItemDrop().remove();
@@ -160,6 +160,7 @@ public class GenListener implements Listener, Runnable {
 
     public boolean withdraw(GenData genData, Player player) {
         double price = genData.getPrice();
+        if (price <= 0) return true;
         if (GenBucket.econ == null) {
             player.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + "No Economy provider found! ex: Essentials, please install one.\n Automatically approving purchase for now..."));
             return true;
@@ -190,37 +191,37 @@ public class GenListener implements Listener, Runnable {
         }
     }
 
-    private void gen(Player player, ItemStack item, Block block, BlockFace blockFace) {
+    private boolean gen(Player player, ItemStack item, Block block, BlockFace blockFace) {
         if (!Util.isEnabledWorld(block.getWorld().getName())) {
             player.sendMessage(Message.PREFIX.getMessage() + Message.GEN_CANT_PLACE_WORLD.getMessage()
                     .replace("%world%", block.getWorld().getName()));
             if (player.isOp() || player.hasPermission("is.op"))
                 player.sendMessage(Message.PREFIX.getMessage() + "&cHey, OP, if you want to enable this world for GenBuckets, look in the config for the enabled-worlds section!");
-            return;
+            return false;
         }
         String genID = ItemUtils.getKeyString(item, "GENBUCKET-ID");
-        if (!GenBucket.genDataMap.containsKey(genID)) {
-            item.setType(Material.AIR);
-            return;
-        }
+        //if (!GenBucket.genDataMap.containsKey(genID)) {
+        //    item.setType(Material.AIR);
+        //    return;
+        //}
         GenData genData = GenBucket.genDataMap.get(genID);
         PlayerPlaceGenEvent placeGenEvent = new PlayerPlaceGenEvent(player, block, genData);
         Bukkit.getServer().getPluginManager().callEvent(placeGenEvent);
         if (placeGenEvent.isCancelled()) {
             ChatUtils.debug("PlayerPlaceGenEvent was cancelled by another plugin");
-            return;
+            return false;
         }
         FactionHook facHook = ((FactionHook) plugin.getHookManager().getPluginMap().get("Factions"));
         if (Config.HOOK_WG_CHECK.getOption() && plugin.hasWorldGuard() && !plugin.getWorldGuard().hasBuildPermission(player, block)) {
             player.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + Message.GEN_CANCELLED.getMessage()));
             ChatUtils.debug("WorldGuard denied " + player.getName() + "from placing a genBucket at " + block.getLocation().toString());
-            return;
+            return false;
         }
         if (!facHook.canBuild(block, player) || facHook.hasNearbyPlayer(player)) {
             ChatUtils.debug("Factions denied " + player.getName() + "from placing a genBucket at " + block.getLocation().toString());
-            return;
+            return false;
         }
-        if (!withdraw(genData, player)) return;
+        if (!withdraw(genData, player)) return false;
         if (genData.getType() == GenType.VERTICAL) {
             register(new VerticalGen(plugin, player, block, blockFace, genData));
         } else {
@@ -229,6 +230,7 @@ public class GenListener implements Listener, Runnable {
         Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, block, genData));
         if (genData.isConsumable())
             setTool(player, XMaterial.AIR.parseItem());
+        return true;
     }
 
 }
