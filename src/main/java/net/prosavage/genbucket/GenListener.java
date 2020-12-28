@@ -30,7 +30,6 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -74,8 +73,13 @@ public class GenListener implements Listener, Runnable {
 
     @EventHandler(ignoreCancelled = true)
     public void onDropItem(PlayerDropItemEvent event) {
-        if (ItemUtils.hasKey(event.getItemDrop().getItemStack(), "GENBUCKET-ID"))
-            event.getItemDrop().remove();
+        if (ItemUtils.hasKey(event.getItemDrop().getItemStack(), "GENBUCKET-ID")) {
+            if (Config.PREVENT_DROP.getOption()) {
+                event.setCancelled(true);
+            }
+            if (Config.REMOVE_ONDROP.getOption())
+                event.getItemDrop().remove();
+        }
     }
 
     @EventHandler
@@ -89,35 +93,14 @@ public class GenListener implements Listener, Runnable {
                         && event.getCurrentItem().getType() != XMaterial.AIR.parseMaterial()
                         && ItemUtils.hasKey(event.getCurrentItem(), "GENBUCKET-ID")) {
 
-                    ItemStack item = event.getCurrentItem().clone();
-                    GenData genData = GenBucket.genDataMap.get(ItemUtils.getKeyString(item, "GENBUCKET-ID").toLowerCase());
+                    GenData genData = GenBucket.genDataMap.get(ItemUtils.getKeyString(event.getCurrentItem(), "GENBUCKET-ID").toLowerCase());
+                    ItemStack item = genData.getShownItem();
                     if ((item.getType() == XMaterial.WATER_BUCKET.parseMaterial() || item.getType() == XMaterial.LAVA_BUCKET.parseMaterial())
                             && !Config.ALLOW_LIQUIDS.getOption()) {
                         player.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + Message.GEN_LIQUID_DISABLED.getMessage()));
                         return;
                     }
-                    if (item.getType() != XMaterial.LAVA_BUCKET.parseMaterial()) {
-                        if (Config.USE_BUCKETS.getOption()) {
-                            String name = item.getItemMeta().getDisplayName();
-                            List<String> lore = item.getItemMeta().getLore();
-                            item = XMaterial.LAVA_BUCKET.parseItem();
-                            if (item != null && item.getItemMeta() != null) {
-                                ItemMeta itmMeta = item.getItemMeta();
-                                itmMeta.setDisplayName(name);
-                                if (lore != null && !lore.isEmpty())
-                                    itmMeta.setLore(lore);
-                                item.setItemMeta(itmMeta);
-                            }
-                            item = ItemUtils.setKeyString(item, "GENBUCKET-ID", genData.getGenID());
-                        } else {
-                            item.setAmount(64);
-                        }
-                    }
-                    if (!player.getInventory().contains(item)) {
-                        player.getInventory().addItem(item);
-                    } else {
-                        player.sendMessage(Message.PREFIX.getMessage() + Message.GEN_HAS_ALREADY.getMessage());
-                    }
+                    ItemUtils.giveOrDrop(player, item);
                 }
             }
             if (event.getView().getTitle().equals(ChatUtils.color(Config.GUI_TITLE.getString())))
@@ -239,8 +222,14 @@ public class GenListener implements Listener, Runnable {
             register(new HorizontalGen(plugin, player, block, blockFace, genData));
         }
         Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, block, genData));
-        if (genData.isConsumable())
-            setTool(player, XMaterial.AIR.parseItem());
+        if (genData.isConsumable()) {
+            int amountPlayer = getTool(player).getAmount();
+            if (amountPlayer > 1) {
+                getTool(player).setAmount(amountPlayer - 1);
+            } else {
+                getTool(player).setAmount(0);
+            }
+        }
         return true;
     }
 

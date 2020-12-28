@@ -10,12 +10,15 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 
 public class ItemUtils {
 
@@ -116,6 +119,21 @@ public class ItemUtils {
             } catch (Exception ex) {
                 ChatUtils.debug("Exception while getting setDataMethod");
             }
+    }
+
+    public static void giveOrDrop(Player player, List<ItemStack> itemsToGive) {
+        ItemStack[] array = new ItemStack[itemsToGive.size()];
+        giveOrDrop(player, itemsToGive.toArray(array));
+    }
+
+    public static void giveOrDrop(Player player, ItemStack itemToGive) {
+        giveOrDrop(player, new ItemStack[]{itemToGive});
+    }
+
+    public static void giveOrDrop(Player player, ItemStack[] itemsToGive) {
+        Map<Integer, ItemStack> remainingItems = player.getInventory().addItem(itemsToGive);
+        if (!remainingItems.isEmpty())
+            remainingItems.values().forEach(item -> player.getWorld().dropItem(player.getLocation(), item));
     }
 
     private static final BlockFace[] axis = {BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST};

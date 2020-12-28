@@ -2,11 +2,14 @@ package net.prosavage.genbucket.gen;
 
 import com.cryptomorin.xseries.XMaterial;
 import net.prosavage.genbucket.GenBucket;
+import net.prosavage.genbucket.config.Config;
 import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.List;
 
 public class GenData {
 
@@ -21,9 +24,11 @@ public class GenData {
     private double price;
     private boolean consumable;
     private int horizontalDistance = 10;
+    private int amount;
 
-    public GenData(String genID, String direction, String material, String name, boolean pseudo, int slot, double price, boolean consumable, int horizontalDistance) {
+    public GenData(String genID, String direction, String material, String name, boolean pseudo, int slot, int amount, double price, boolean consumable, int horizontalDistance) {
         this.genID = genID;
+        this.amount = amount;
         this.slot = slot;
         this.horizontalDistance = horizontalDistance;
         this.consumable = consumable;
@@ -49,6 +54,8 @@ public class GenData {
             meta.setDisplayName(ChatUtils.color(name));
             item.setItemMeta(meta);
         }
+        if (item.getAmount() != amount)
+            item.setAmount(amount);
         item = ItemUtils.setKeyString(item, "GENBUCKET-ID", genID);
         this.pseudo = pseudo;
         this.price = price;
@@ -59,12 +66,21 @@ public class GenData {
     }
 
     public ItemStack getShownItem() {
-        if (item.getType() == XMaterial.WATER.parseMaterial()) {
-            return XMaterial.WATER_BUCKET.parseItem();
-        } else if (item.getType() == XMaterial.LAVA.parseMaterial()) {
-            return XMaterial.LAVA_BUCKET.parseItem();
+        ItemStack clone = item.clone();
+        if (Config.USE_BUCKETS.getOption() || item.getType() == XMaterial.LAVA.parseMaterial() || item.getType() == XMaterial.WATER.parseMaterial()) {
+            String name = clone.getItemMeta().getDisplayName();
+            List<String> lore = clone.getItemMeta().getLore();
+            clone = item.getType() == XMaterial.WATER.parseMaterial() ? XMaterial.WATER_BUCKET.parseItem() : XMaterial.LAVA_BUCKET.parseItem();
+            if (clone != null && clone.getItemMeta() != null) {
+                ItemMeta itmMeta = clone.getItemMeta();
+                itmMeta.setDisplayName(name);
+                if (lore != null && !lore.isEmpty())
+                    itmMeta.setLore(lore);
+                clone.setItemMeta(itmMeta);
+            }
+            return ItemUtils.setKeyString(clone, "GENBUCKET-ID", getGenID());
         } else {
-            return item.clone();
+            return clone;
         }
     }
 
@@ -103,6 +119,10 @@ public class GenData {
 
     public String getGenID() {
         return genID;
+    }
+
+    public int getAmount() {
+        return amount;
     }
 
     public Material getMaterial() {

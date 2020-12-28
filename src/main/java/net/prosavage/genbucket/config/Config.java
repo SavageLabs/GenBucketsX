@@ -23,8 +23,10 @@ public enum Config {
 
     USE_BUCKETS("Settings.genbuckets.use-buckets", true),
     ALLOW_LIQUIDS("Settings.genbuckets.allow-placing-liquid-blocks", false),
+    REMOVE_ONDROP("Settings.genbuckets.remove-genbuckets-on-drop", false),
+    PREVENT_DROP("Settings.genbuckets.prevent-genbuckets-from-being-dropped", false),
     REPLACE_LIQUIDS("Settings.genbuckets.replace-liquid-blocks", false),
-    REPLACE_BLOCKS("Settings.genbuckets.replace-blocks", new String[] {
+    REPLACE_BLOCKS("Settings.genbuckets.replace-blocks", new String[]{
             "AIR",
             "TALL_GRASS",
             "LARGE_FERN",
