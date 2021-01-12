@@ -27,6 +27,7 @@ public enum Config {
 
     USE_BUCKETS("Settings.genbuckets.use-buckets", true),
     DEFAULT_AUTO_VERTICAL("Settings.genbuckets.default-automatic-vertical-orientation", "DOWN"),
+    GLOW_ONLY_GUI("Settings.genbuckets.glow-attribute-only-in-gen-gui", true),
     ALLOW_LIQUIDS("Settings.genbuckets.allow-placing-liquid-blocks", false),
     REMOVE_ONDROP("Settings.genbuckets.remove-genbuckets-on-drop", false),
     PREVENT_DROP("Settings.genbuckets.prevent-genbuckets-from-being-dropped", false),

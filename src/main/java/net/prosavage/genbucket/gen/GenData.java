@@ -50,6 +50,9 @@ public class GenData {
         item = ItemUtils.parseItem(material);
         if (GenBucket.getServerVersion() < 13)
             this.data = item.getDurability();
+        if (!Config.GLOW_ONLY_GUI.getOption() && glow) {
+            item = ItemUtils.setGlowing(item);
+        }
         if (name != null) {
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName(ChatUtils.color(name));
