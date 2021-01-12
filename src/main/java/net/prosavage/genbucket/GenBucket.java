@@ -26,8 +26,6 @@ public class GenBucket extends JavaPlugin {
     public static Economy econ;
     private static GenBucket instance;
 
-    public int taskID;
-
     public GenerationShopGUI generationShopGUI;
 
     public Set<Material> replaceBlocksWhiteList = new HashSet<>();
@@ -61,7 +59,7 @@ public class GenBucket extends JavaPlugin {
                 ChatUtils.debug("WorldGuard found, enabling hook...");
                 wg = new WorldGuard();
             }
-            getServer().getPluginManager().registerEvents(new GenListener(this), this);
+            getServer().getPluginManager().registerEvents(new GenListener(), this);
         }, 2);
     }
 
@@ -78,14 +76,6 @@ public class GenBucket extends JavaPlugin {
     public void onDisable() {
         getServer().getScheduler().cancelTasks(this);
         instance = null;
-    }
-
-    public void start() {
-        taskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new GenListener(this), 0L, Config.GENERATION_DELAY.getInt());
-    }
-
-    public void stop() {
-        getServer().getScheduler().cancelTask(taskID);
     }
 
     public ConfigManager getFileManager() {

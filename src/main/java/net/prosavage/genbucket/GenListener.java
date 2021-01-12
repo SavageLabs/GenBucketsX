@@ -12,6 +12,7 @@ import net.prosavage.genbucket.gen.Generator;
 import net.prosavage.genbucket.gen.impl.HorizontalGen;
 import net.prosavage.genbucket.gen.impl.VerticalGen;
 import net.prosavage.genbucket.hooks.impl.FactionHook;
+import net.prosavage.genbucket.tasks.GenTask;
 import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.ItemUtils;
 import net.prosavage.genbucket.utils.Util;
@@ -31,18 +32,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-public class GenListener implements Listener, Runnable {
-
-    public static List<Generator> generations = new ArrayList<>();
-    private GenBucket plugin;
-
-    public GenListener(GenBucket plugin) {
-        this.plugin = plugin;
-    }
+public class GenListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEmptyBucket(PlayerBucketEmptyEvent event) {
@@ -87,7 +77,7 @@ public class GenListener implements Listener, Runnable {
         Player player = (Player) event.getWhoClicked();
         try {
             if (event.getView() == null) return;
-            if (event.getView().getTitle().equals(plugin.generationShopGUI.getTitle()) && event.getView().getTopInventory() != player.getInventory()) {
+            if (event.getView().getTitle().equals(ChatUtils.color(Config.GUI_TITLE.getString())) && event.getView().getTopInventory() != player.getInventory()) {
                 event.setCancelled(true);
                 if (event.getCurrentItem() != null
                         && event.getCurrentItem().getType() != XMaterial.AIR.parseMaterial()
@@ -118,31 +108,7 @@ public class GenListener implements Listener, Runnable {
             }
         } catch (NullPointerException npe) {
             //ignored
-            ChatUtils.debug("NPE on InventoryClick TITLE=" + plugin.generationShopGUI.getTitle());
         }
-    }
-
-    public void run() {
-        if (!generations.isEmpty()) {
-            for (Iterator<Generator> iterator = generations.iterator(); iterator.hasNext(); ) {
-                Generator generator = iterator.next();
-                if (generator.isFinished()) {
-                    iterator.remove();
-                    continue;
-                }
-                generator.run();
-            }
-        } else {
-            GenBucket.get().stop();
-            generations.clear();
-        }
-    }
-
-    public void register(Generator generator) {
-        if (generations.isEmpty()) {
-            GenBucket.get().start();
-        }
-        generations.add(generator);
     }
 
     public boolean withdraw(GenData genData, Player player) {
@@ -185,6 +151,13 @@ public class GenListener implements Listener, Runnable {
         }
     }
 
+    private static void register(Generator generator, int delayTicks) {
+        if (delayTicks <= 0) {
+            delayTicks = Config.GENERATION_DELAY.getInt();
+        }
+        new GenTask(generator).runTaskTimer(GenBucket.get(), 0L, delayTicks);
+    }
+
     private boolean gen(Player player, ItemStack item, Block block, BlockFace blockFace) {
         if (!Util.isEnabledWorld(block.getWorld().getName())) {
             player.sendMessage(Message.PREFIX.getMessage() + Message.GEN_CANT_PLACE_WORLD.getMessage()
@@ -205,8 +178,8 @@ public class GenListener implements Listener, Runnable {
             ChatUtils.debug("PlayerPlaceGenEvent was cancelled by another plugin");
             return false;
         }
-        FactionHook facHook = ((FactionHook) plugin.getHookManager().getPluginMap().get("Factions"));
-        if (Config.HOOK_WG_CHECK.getOption() && plugin.hasWorldGuard() && !plugin.getWorldGuard().hasBuildPermission(player, block)) {
+        FactionHook facHook = ((FactionHook) GenBucket.get().getHookManager().getPluginMap().get("Factions"));
+        if (Config.HOOK_WG_CHECK.getOption() && GenBucket.get().hasWorldGuard() && !GenBucket.get().getWorldGuard().hasBuildPermission(player, block)) {
             player.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + Message.GEN_CANCELLED.getMessage()));
             ChatUtils.debug("WorldGuard denied " + player.getName() + "from placing a genBucket at " + block.getLocation().toString());
             return false;
@@ -217,9 +190,9 @@ public class GenListener implements Listener, Runnable {
         }
         if (!withdraw(genData, player)) return false;
         if (genData.getType() == GenType.VERTICAL) {
-            register(new VerticalGen(plugin, player, block, blockFace, genData));
+            register(new VerticalGen(GenBucket.get(), player, block, blockFace, genData), genData.getDelayTicks());
         } else {
-            register(new HorizontalGen(plugin, player, block, blockFace, genData));
+            register(new HorizontalGen(GenBucket.get(), player, block, blockFace, genData), genData.getDelayTicks());
         }
         Bukkit.getServer().getPluginManager().callEvent(new PlayerGenEvent(player, block, genData));
         if (genData.isConsumable()) {

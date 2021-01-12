@@ -26,14 +26,17 @@ public class GenData {
     private boolean consumable;
     private int horizontalDistance = 10;
     private int amount;
+    private int delayTicks;
 
-    public GenData(String genID, String direction, String material, String name, boolean pseudo, int slot, int amount, double price, boolean consumable, int horizontalDistance, boolean glow) {
+    public GenData(String genID, String direction, String material, String name, boolean pseudo, int slot, int amount, double price, boolean consumable, int horizontalDistance, boolean glow, int delayTicks) {
         this.genID = genID;
         this.amount = amount;
         this.slot = slot;
         this.horizontalDistance = horizontalDistance;
         this.consumable = consumable;
         this.material = material;
+        this.glow = glow;
+        this.delayTicks = delayTicks;
         if (direction.equalsIgnoreCase("horizontal")) {
             this.type = GenType.HORIZONTAL;
             this.direction = GenDirection.AUTO;
@@ -129,6 +132,14 @@ public class GenData {
 
     public int getAmount() {
         return amount;
+    }
+
+    public boolean isGlow() {
+        return glow;
+    }
+
+    public int getDelayTicks() {
+        return delayTicks;
     }
 
     public Material getMaterial() {
