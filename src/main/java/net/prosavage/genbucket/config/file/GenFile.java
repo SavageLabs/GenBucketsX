@@ -1,21 +1,20 @@
-package net.prosavage.genbucket.file.impl;
+package net.prosavage.genbucket.config.file;
 
 import net.prosavage.genbucket.GenBucket;
-import net.prosavage.genbucket.file.CustomFile;
 import net.prosavage.genbucket.gen.GenData;
-import org.bukkit.plugin.java.JavaPlugin;
+import pro.dracarys.configlib.config.CustomFile;
 
 public class GenFile extends CustomFile {
 
-    public GenFile(JavaPlugin instance) {
-        super(instance, "");
+    public GenFile() {
+        super("");
     }
 
     @Override
     public GenFile init() {
-        if (!this.getConfig().isConfigurationSection("GenBuckets"))
+        if (!getConfig().isConfigurationSection("GenBuckets"))
             GenBucket.get().saveResource(getName() + ".yml", true);
-        this.reloadConfig();
+        reloadConfig();
         GenBucket.genDataMap.clear();
         for (String genID : this.getConfig().getConfigurationSection("GenBuckets").getKeys(false)) {
             String direction = this.getConfig().getString("GenBuckets." + genID + ".direction");

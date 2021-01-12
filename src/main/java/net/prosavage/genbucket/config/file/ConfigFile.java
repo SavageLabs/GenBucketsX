@@ -1,13 +1,12 @@
-package net.prosavage.genbucket.file.impl;
+package net.prosavage.genbucket.config.file;
 
 import net.prosavage.genbucket.config.Config;
-import net.prosavage.genbucket.file.CustomFile;
-import org.bukkit.plugin.java.JavaPlugin;
+import pro.dracarys.configlib.config.CustomFile;
 
 public class ConfigFile extends CustomFile {
 
-    public ConfigFile(JavaPlugin instance) {
-        super(instance, "");
+    public ConfigFile() {
+        super("");
         for (Config message : Config.values()) {
             if (message.getStrings() != null) {
                 getConfig().addDefault(message.getConfig(), message.getStrings());
@@ -25,8 +24,8 @@ public class ConfigFile extends CustomFile {
         saveConfig();
     }
 
-    public net.prosavage.genbucket.file.impl.ConfigFile init() {
-        this.reloadConfig();
+    public ConfigFile init() {
+        reloadConfig();
         for (Config message : Config.values()) {
             if (message.getStrings() != null) {
                 if (message.getConfig().equalsIgnoreCase("Info")

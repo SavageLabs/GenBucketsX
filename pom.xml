@@ -64,6 +64,10 @@
                                     <pattern>org.bstats</pattern>
                                     <shadedPattern>net.prosavage.genbucket.shade.bstats</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>pro.dracarys.configlib</pattern>
+                                    <shadedPattern>net.prosavage.genbucket.shade.configlib</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -111,6 +115,13 @@
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
             <version>7.8.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- ConfigLib -->
+        <dependency>
+            <groupId>com.github.Drc-DEV</groupId>
+            <artifactId>configlib</artifactId>
+            <version>1.4</version>
             <scope>compile</scope>
         </dependency>
         <!-- bStats -->

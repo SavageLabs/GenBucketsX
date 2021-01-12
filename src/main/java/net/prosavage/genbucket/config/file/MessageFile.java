@@ -1,13 +1,12 @@
-package net.prosavage.genbucket.file.impl;
+package net.prosavage.genbucket.config.file;
 
-import net.prosavage.genbucket.file.CustomFile;
 import net.prosavage.genbucket.config.Message;
-import org.bukkit.plugin.java.JavaPlugin;
+import pro.dracarys.configlib.config.CustomFile;
 
 public class MessageFile extends CustomFile {
 
-    public MessageFile(JavaPlugin plugin) {
-        super(plugin, "");
+    public MessageFile() {
+        super("");
         for (Message message : Message.values()) {
             getConfig().addDefault(message.getConfig(), message.getMessage());
         }
@@ -16,7 +15,7 @@ public class MessageFile extends CustomFile {
     }
 
     public MessageFile init() {
-        this.reloadConfig();
+        reloadConfig();
         for (Message message : Message.values()) {
             if (message.getMessages() != null) {
                 message.setMessages(getConfig().getStringList(message.getConfig()));

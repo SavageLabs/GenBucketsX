@@ -3,7 +3,9 @@ package net.prosavage.genbucket;
 import net.milkbowl.vault.economy.Economy;
 import net.prosavage.genbucket.command.GenBucketCommand;
 import net.prosavage.genbucket.config.Config;
-import net.prosavage.genbucket.file.ConfigManager;
+import net.prosavage.genbucket.config.file.ConfigFile;
+import net.prosavage.genbucket.config.file.GenFile;
+import net.prosavage.genbucket.config.file.MessageFile;
 import net.prosavage.genbucket.gen.GenData;
 import net.prosavage.genbucket.hooks.HookManager;
 import net.prosavage.genbucket.hooks.impl.WorldGuard;
@@ -14,6 +16,7 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
+import pro.dracarys.configlib.ConfigLib;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,7 +34,6 @@ public class GenBucket extends JavaPlugin {
     public Set<Material> replaceBlocksWhiteList = new HashSet<>();
 
     private HookManager hookManager;
-    private ConfigManager fileManager;
 
     public static Map<String, GenData> genDataMap = new HashMap<>();
 
@@ -51,7 +53,7 @@ public class GenBucket extends JavaPlugin {
         checkServerVersion();
         this.getCommand("genbucket").setExecutor(new GenBucketCommand(this));
         Bukkit.getScheduler().runTaskLater(this, () -> {
-            this.fileManager = new ConfigManager(this);
+            initConfig();
             loadConfig();
             this.hookManager = new HookManager(this);
             if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
@@ -63,10 +65,15 @@ public class GenBucket extends JavaPlugin {
         }, 2);
     }
 
+    public void initConfig() {
+        ConfigLib.setPlugin(this);
+        ConfigLib.addFile(new ConfigFile());
+        ConfigLib.addFile(new MessageFile());
+        ConfigLib.addFile(new GenFile());
+    }
+
     public void loadConfig() {
-        getFileManager().getFileMap().get("config").init();
-        getFileManager().getFileMap().get("messages").init();
-        getFileManager().getFileMap().get("genbuckets").init();
+        ConfigLib.initAll();
         replaceBlocksWhiteList.clear();
         Config.REPLACE_BLOCKS.getStringList().forEach(s -> replaceBlocksWhiteList.add(ItemUtils.parseMaterial(s)));
         this.generationShopGUI = new GenerationShopGUI(this);
@@ -76,10 +83,6 @@ public class GenBucket extends JavaPlugin {
     public void onDisable() {
         getServer().getScheduler().cancelTasks(this);
         instance = null;
-    }
-
-    public ConfigManager getFileManager() {
-        return fileManager;
     }
 
     public HookManager getHookManager() {
