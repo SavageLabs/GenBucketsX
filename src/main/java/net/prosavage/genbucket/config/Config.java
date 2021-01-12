@@ -16,12 +16,17 @@ public enum Config {
                     "#   > My server has low specs and TPS drop too much, how to mitigate?\n" +
                     "#     You can mitigate TPS loss by using a higher 'ticks-between-block-generations' value and\n" +
                     "#     disabling liquids generation. Other heavy options are 'apply-facing', 'apply-blockdata' and 'allow-vert-down-gravity-block-place'\n" +
-                    "\n"
+                    "\n",
+            "# | OTHER DETAILS| ",
+            "#   > 'default-automatic-vertical-orientation' is the orientation of the genbucket when set\n",
+            "#   > to automatic and placed on a side of the block (valid for vertical genbuckets): DOWN or UP\n",
+            "\n"
     }),
 
     DEBUG("Settings.debug", false),
 
     USE_BUCKETS("Settings.genbuckets.use-buckets", true),
+    DEFAULT_AUTO_VERTICAL("Settings.genbuckets.default-automatic-vertical-orientation", "DOWN"),
     ALLOW_LIQUIDS("Settings.genbuckets.allow-placing-liquid-blocks", false),
     REMOVE_ONDROP("Settings.genbuckets.remove-genbuckets-on-drop", false),
     PREVENT_DROP("Settings.genbuckets.prevent-genbuckets-from-being-dropped", false),

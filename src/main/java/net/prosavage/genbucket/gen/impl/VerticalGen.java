@@ -35,7 +35,10 @@ public class VerticalGen extends Generator {
             if (face == BlockFace.DOWN) {
                 direction = BlockFace.DOWN;
             } else {
-                direction = BlockFace.UP;
+                if (Config.DEFAULT_AUTO_VERTICAL.getString().equalsIgnoreCase("UP"))
+                    direction = BlockFace.UP;
+                else
+                    direction = BlockFace.DOWN;
             }
         } else if (genData.getDirection() == GenDirection.UP) {
             direction = BlockFace.UP;
