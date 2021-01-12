@@ -27,7 +27,8 @@ public class GenFile extends CustomFile {
             double price = this.getConfig().getInt("GenBuckets." + genID + ".price");
             int distance = this.getConfig().getInt("GenBuckets." + genID + ".distance");
             boolean consumable = this.getConfig().getBoolean("GenBuckets." + genID + ".consumable");
-            GenBucket.genDataMap.put(genID.toLowerCase(), new GenData(genID.toLowerCase(), direction, material, name, pseudo, slot, amount, price, consumable, distance));
+            boolean glow = this.getConfig().getBoolean("GenBuckets." + genID + ".glow");
+            GenBucket.genDataMap.put(genID.toLowerCase(), new GenData(genID.toLowerCase(), direction, material, name, pseudo, slot, amount, price, consumable, distance, glow));
         }
         return this;
     }

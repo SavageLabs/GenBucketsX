@@ -39,6 +39,7 @@ GenBuckets:
     material: 'OBSIDIAN'
     direction: horizontal
     name: '&aObsidian Horizontal'
+    glow: true
     price: 500
     pseudo: true
     slot: 25

@@ -19,6 +19,7 @@ public class GenData {
     private GenDirection direction;
     private String material;
     private boolean pseudo;
+    private boolean glow;
     private int data = 0;
     private int slot;
     private double price;
@@ -26,7 +27,7 @@ public class GenData {
     private int horizontalDistance = 10;
     private int amount;
 
-    public GenData(String genID, String direction, String material, String name, boolean pseudo, int slot, int amount, double price, boolean consumable, int horizontalDistance) {
+    public GenData(String genID, String direction, String material, String name, boolean pseudo, int slot, int amount, double price, boolean consumable, int horizontalDistance, boolean glow) {
         this.genID = genID;
         this.amount = amount;
         this.slot = slot;
@@ -72,6 +73,8 @@ public class GenData {
             List<String> lore = clone.getItemMeta().getLore();
             clone = item.getType() == XMaterial.WATER.parseMaterial() ? XMaterial.WATER_BUCKET.parseItem() : XMaterial.LAVA_BUCKET.parseItem();
             if (clone != null && clone.getItemMeta() != null) {
+                if (glow)
+                    clone = ItemUtils.setGlowing(clone);
                 ItemMeta itmMeta = clone.getItemMeta();
                 itmMeta.setDisplayName(name);
                 if (lore != null && !lore.isEmpty())
