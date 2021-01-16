@@ -24,7 +24,7 @@ public class GenData {
     private int slot;
     private double price;
     private boolean consumable;
-    private int horizontalDistance = 10;
+    private int horizontalDistance;
     private int amount;
     private int delayTicks;
 
@@ -33,6 +33,8 @@ public class GenData {
         this.amount = amount;
         this.slot = slot;
         this.horizontalDistance = horizontalDistance;
+        if (this.horizontalDistance <= 0)
+            this.horizontalDistance = 10;
         this.consumable = consumable;
         this.material = material;
         this.glow = glow;
@@ -73,6 +75,10 @@ public class GenData {
     }
 
     public ItemStack getShownItem() {
+        if (item == null) {
+            ChatUtils.error("Cached item is NULL");
+            return null;
+        }
         ItemStack clone = item.clone();
         if (Config.USE_BUCKETS.getOption() || item.getType() == XMaterial.LAVA.parseMaterial() || item.getType() == XMaterial.WATER.parseMaterial()) {
             String name = clone.getItemMeta().getDisplayName();
