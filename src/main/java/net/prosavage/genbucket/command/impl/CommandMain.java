@@ -1,6 +1,7 @@
 package net.prosavage.genbucket.command.impl;
 
 import net.prosavage.genbucket.GenBucket;
+import net.prosavage.genbucket.api.GenBucketsXAPI;
 import net.prosavage.genbucket.command.AbstractCommand;
 import net.prosavage.genbucket.config.Config;
 import net.prosavage.genbucket.config.Message;
@@ -17,7 +18,7 @@ public class CommandMain extends AbstractCommand {
     @Override
     public boolean execute(CommandSender commandSender, String[] args) {
         Player player = (Player) commandSender;
-        player.openInventory(getPlugin().generationShopGUI.init().getInventory());
+        GenBucketsXAPI.openGenShopGUI(player);
         return false;
     }
 

@@ -1,5 +1,6 @@
 package net.prosavage.genbucket;
 
+import fr.minuskube.inv.InventoryManager;
 import net.milkbowl.vault.economy.Economy;
 import net.prosavage.genbucket.command.GenBucketCommand;
 import net.prosavage.genbucket.config.Config;
@@ -9,7 +10,6 @@ import net.prosavage.genbucket.config.file.MessageFile;
 import net.prosavage.genbucket.gen.GenData;
 import net.prosavage.genbucket.hooks.HookManager;
 import net.prosavage.genbucket.hooks.impl.WorldGuard;
-import net.prosavage.genbucket.menu.impl.GenerationShopGUI;
 import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.ItemUtils;
 import org.bstats.bukkit.Metrics;
@@ -29,8 +29,6 @@ public class GenBucket extends JavaPlugin {
     public static Economy econ;
     private static GenBucket instance;
 
-    public GenerationShopGUI generationShopGUI;
-
     public Set<Material> replaceBlocksWhiteList = new HashSet<>();
 
     private HookManager hookManager;
@@ -39,6 +37,13 @@ public class GenBucket extends JavaPlugin {
 
     public static GenBucket get() {
         return instance;
+    }
+
+
+    public static InventoryManager invManager;
+
+    public InventoryManager getInventoryManager() {
+        return invManager;
     }
 
     @Override
@@ -52,6 +57,8 @@ public class GenBucket extends JavaPlugin {
         GenBucket.instance = this;
         checkServerVersion();
         this.getCommand("genbucket").setExecutor(new GenBucketCommand(this));
+        invManager = new InventoryManager(this);
+        invManager.init();
         Bukkit.getScheduler().runTaskLater(this, () -> {
             initConfig();
             loadConfig();
@@ -76,7 +83,6 @@ public class GenBucket extends JavaPlugin {
         ConfigLib.initAll();
         replaceBlocksWhiteList.clear();
         Config.REPLACE_BLOCKS.getStringList().forEach(s -> replaceBlocksWhiteList.add(ItemUtils.parseMaterial(s)));
-        this.generationShopGUI = new GenerationShopGUI(this);
     }
 
     @Override

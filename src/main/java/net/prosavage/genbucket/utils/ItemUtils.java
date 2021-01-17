@@ -26,6 +26,29 @@ public class ItemUtils {
         throw new AssertionError("Instantiating utility class.");
     }
 
+    public static ItemStack getBlankItem() {
+        ItemStack item;
+        try {
+            item = XMaterial.matchXMaterial(Config.GUI_ITEM_EMPTY.getString()).get().parseItem();
+        } catch (NullPointerException npe) {
+            // Handle case in which the user uses invalid Material
+            item = new ItemStack(Material.AIR);
+        }
+        if (Config.GUI_ITEM_EMPTY_GLOW.getOption()) {
+            item = ItemUtils.setGlowing(item);
+        }
+        ItemMeta itemMeta = item.getItemMeta();
+        String displayName = Config.GUI_ITEM_EMPTY_NAME.getString();
+        List<String> lore = Config.GUI_ITEM_EMPTY_LORE.getStringList();
+        if (displayName != null)
+            itemMeta.setDisplayName(ChatUtils.color(displayName));
+        if (lore != null && !lore.isEmpty()) {
+            itemMeta.setLore(ChatUtils.color(lore));
+        }
+        item.setItemMeta(itemMeta);
+        return item;
+    }
+
     public static ItemStack setKeyString(ItemStack item, String key, String value) {
         return NBTEditor.set(item, value, key);
     }

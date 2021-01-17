@@ -38,7 +38,7 @@ public class GenListener implements Listener {
     public void onEmptyBucket(PlayerBucketEmptyEvent event) {
         if (!Config.USE_BUCKETS.getOption()) return;
         ItemStack item = getTool(event.getPlayer());
-        if ((item.getType() == XMaterial.LAVA_BUCKET.parseMaterial() || item.getType() == XMaterial.WATER_BUCKET.parseMaterial())
+        if ((item.getType() == XMaterial.LAVA_BUCKET.parseMaterial() || item.getType() == XMaterial.WATER_BUCKET.parseMaterial() || item.getType() == XMaterial.MILK_BUCKET.parseMaterial())
                 && ItemUtils.hasKey(item, "GENBUCKET-ID")) {
             ChatUtils.debug("key check passed");
             event.setCancelled(true);
@@ -76,35 +76,18 @@ public class GenListener implements Listener {
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         try {
-            if (event.getView() == null) return;
-            if (event.getView().getTitle().equals(ChatUtils.color(Config.GUI_TITLE.getString())) && event.getView().getTopInventory() != player.getInventory()) {
-                event.setCancelled(true);
-                if (event.getCurrentItem() != null
-                        && event.getCurrentItem().getType() != XMaterial.AIR.parseMaterial()
-                        && ItemUtils.hasKey(event.getCurrentItem(), "GENBUCKET-ID")) {
-
-                    GenData genData = GenBucket.genDataMap.get(ItemUtils.getKeyString(event.getCurrentItem(), "GENBUCKET-ID").toLowerCase());
-                    ItemStack item = genData.getShownItem();
-                    if ((item.getType() == XMaterial.WATER_BUCKET.parseMaterial() || item.getType() == XMaterial.LAVA_BUCKET.parseMaterial())
-                            && !Config.ALLOW_LIQUIDS.getOption()) {
-                        player.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + Message.GEN_LIQUID_DISABLED.getMessage()));
-                        return;
-                    }
-                    ItemUtils.giveOrDrop(player, item);
-                }
-            }
-            if (event.getView().getTitle().equals(ChatUtils.color(Config.GUI_TITLE.getString())))
-                return;
             ItemStack item = event.getCursor();
-            assert item != null;
-            if (item.getType() == Material.AIR && event.getClick().isShiftClick()) item = event.getCurrentItem();
-            if (item.hasItemMeta()
-                    && player.getOpenInventory().getType().equals(InventoryType.FURNACE)
-                    && ItemUtils.hasKey(item, "GENBUCKET-ID")
-                    && event.getClick().isShiftClick()) {
-                event.setCancelled(true);
-                player.sendMessage(Message.PREFIX.getMessage() + Message.GEN_BLOCKED_ACTION.getMessage());
-                player.closeInventory();
+            if (item != null) {
+                if (item.getType() == Material.AIR && event.getClick().isShiftClick()) item = event.getCurrentItem();
+                if (item != null
+                        && item.hasItemMeta()
+                        && player.getOpenInventory().getType().equals(InventoryType.FURNACE)
+                        && ItemUtils.hasKey(item, "GENBUCKET-ID")
+                        && event.getClick().isShiftClick()) {
+                    event.setCancelled(true);
+                    player.sendMessage(Message.PREFIX.getMessage() + Message.GEN_BLOCKED_ACTION.getMessage());
+                    player.closeInventory();
+                }
             }
         } catch (NullPointerException npe) {
             //ignored

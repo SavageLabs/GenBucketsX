@@ -9,12 +9,10 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.List;
-
 public class GenData {
 
     private String genID;
-    private ItemStack item;
+    private String name;
     private GenType type;
     private GenDirection direction;
     private String material;
@@ -32,6 +30,7 @@ public class GenData {
         this.genID = genID;
         this.amount = amount;
         this.slot = slot;
+        this.name = name;
         this.horizontalDistance = horizontalDistance;
         if (this.horizontalDistance <= 0)
             this.horizontalDistance = 10;
@@ -52,51 +51,49 @@ public class GenData {
             }
             this.type = GenType.VERTICAL;
         }
-        item = ItemUtils.parseItem(material);
-        if (GenBucket.getServerVersion() < 13)
-            this.data = item.getDurability();
-        if (!Config.GLOW_ONLY_GUI.getOption() && glow) {
-            item = ItemUtils.setGlowing(item);
-        }
-        if (name != null) {
-            ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(ChatUtils.color(name));
-            item.setItemMeta(meta);
-        }
-        if (item.getAmount() != amount)
-            item.setAmount(amount);
-        item = ItemUtils.setKeyString(item, "GENBUCKET-ID", genID);
         this.pseudo = pseudo;
         this.price = price;
     }
 
+    private ItemStack finalizeItem(ItemStack toFinalize) {
+        if (GenBucket.getServerVersion() < 13)
+            this.data = toFinalize.getDurability();
+        if (this.name != null) {
+            ItemMeta meta = toFinalize.getItemMeta();
+            meta.setDisplayName(ChatUtils.color(this.name));
+            toFinalize.setItemMeta(meta);
+        }
+        if (toFinalize.getAmount() != amount && amount > 0)
+            toFinalize.setAmount(amount);
+        return ItemUtils.setKeyString(toFinalize, "GENBUCKET-ID", genID);
+    }
+
     public ItemStack getItem() {
-        return item.clone();
+        ItemStack item = ItemUtils.parseItem(material);
+        if (item.getType() == XMaterial.WATER.parseMaterial()) {
+            item = XMaterial.WATER_BUCKET.parseItem();
+        } else if (item.getType() == XMaterial.LAVA.parseMaterial()) {
+            item = XMaterial.LAVA_BUCKET.parseItem();
+        } else if (Config.USE_BUCKETS.getOption()) {
+            item = XMaterial.MILK_BUCKET.parseItem();
+        }
+        item = finalizeItem(item);
+        if (!Config.GLOW_ONLY_GUI.getOption() && this.glow) {
+            item = ItemUtils.setGlowing(item);
+        }
+        return item;
     }
 
     public ItemStack getShownItem() {
-        if (item == null) {
-            ChatUtils.error("Cached item is NULL");
-            return null;
+        ItemStack shown = ItemUtils.parseItem(material);
+        if (shown.getType() == XMaterial.WATER.parseMaterial()) {
+            shown = XMaterial.WATER_BUCKET.parseItem();
+        } else if (shown.getType() == XMaterial.LAVA.parseMaterial()) {
+            shown = XMaterial.LAVA_BUCKET.parseItem();
         }
-        ItemStack clone = item.clone();
-        if (Config.USE_BUCKETS.getOption() || item.getType() == XMaterial.LAVA.parseMaterial() || item.getType() == XMaterial.WATER.parseMaterial()) {
-            String name = clone.getItemMeta().getDisplayName();
-            List<String> lore = clone.getItemMeta().getLore();
-            clone = item.getType() == XMaterial.WATER.parseMaterial() ? XMaterial.WATER_BUCKET.parseItem() : XMaterial.LAVA_BUCKET.parseItem();
-            if (clone != null && clone.getItemMeta() != null) {
-                if (glow)
-                    clone = ItemUtils.setGlowing(clone);
-                ItemMeta itmMeta = clone.getItemMeta();
-                itmMeta.setDisplayName(name);
-                if (lore != null && !lore.isEmpty())
-                    itmMeta.setLore(lore);
-                clone.setItemMeta(itmMeta);
-            }
-            return ItemUtils.setKeyString(clone, "GENBUCKET-ID", getGenID());
-        } else {
-            return clone;
-        }
+        if (glow)
+            return ItemUtils.setGlowing(shown);
+        return finalizeItem(shown);
     }
 
     public GenType getType() {
