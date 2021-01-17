@@ -137,9 +137,9 @@
         </dependency>
         <!-- SmartInvs (dev) -->
         <dependency>
-            <groupId>fr.minuskube.inv</groupId>
-            <artifactId>smart-invs</artifactId>
-            <version>1.3.0</version>
+            <groupId>com.github.MinusKube</groupId>
+            <artifactId>SmartInvs</artifactId>
+            <version>1.3.0-31b788b8f4-1</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.bukkit</groupId>
