@@ -39,12 +39,7 @@ public class GenBucket extends JavaPlugin {
         return instance;
     }
 
-
     public static InventoryManager invManager;
-
-    public InventoryManager getInventoryManager() {
-        return invManager;
-    }
 
     @Override
     public void onEnable() {
@@ -72,6 +67,12 @@ public class GenBucket extends JavaPlugin {
         }, 2);
     }
 
+    @Override
+    public void onDisable() {
+        getServer().getScheduler().cancelTasks(this);
+        instance = null;
+    }
+
     public void initConfig() {
         ConfigLib.setPlugin(this);
         ConfigLib.addFile(new ConfigFile());
@@ -83,12 +84,6 @@ public class GenBucket extends JavaPlugin {
         ConfigLib.initAll();
         replaceBlocksWhiteList.clear();
         Config.REPLACE_BLOCKS.getStringList().forEach(s -> replaceBlocksWhiteList.add(ItemUtils.parseMaterial(s)));
-    }
-
-    @Override
-    public void onDisable() {
-        getServer().getScheduler().cancelTasks(this);
-        instance = null;
     }
 
     public HookManager getHookManager() {

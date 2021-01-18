@@ -55,7 +55,8 @@ public class GenShopGUI implements InventoryProvider {
                     return;
                 }
                 ItemUtils.giveOrDrop(player, genData.getItem());
-                player.closeInventory();
+                if (Config.GUI_CLOSE_AFTER_CLICK.getOption())
+                    player.closeInventory();
             }));
         }
     }

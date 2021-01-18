@@ -56,6 +56,7 @@ public enum Config {
     ENABLED_WORLDS_ASBLACKLIST("Settings.enabled-worlds.make-enabled-worlds-a-blacklist", true),
 
     GUI_ENABLED("Settings.gen-gui.enabled", true),
+    GUI_CLOSE_AFTER_CLICK("Settings.gen-gui.close-after-buying", false),
     GUI_SIZE("Settings.gen-gui.gui-size", 5),
     GUI_TITLE("Settings.gen-gui.gui-title", "&9Genbucket Shop"),
     GUI_ITEM_EMPTY("Settings.gen-gui.blank-item.material", "BLACK_STAINED_GLASS_PANE"),
