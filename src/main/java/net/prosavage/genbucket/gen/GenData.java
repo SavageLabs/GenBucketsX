@@ -75,7 +75,7 @@ public class GenData {
         } else if (item.getType() == XMaterial.LAVA.parseMaterial()) {
             item = XMaterial.LAVA_BUCKET.parseItem();
         } else if (Config.USE_BUCKETS.getOption()) {
-            item = XMaterial.MILK_BUCKET.parseItem();
+            item = XMaterial.matchXMaterial(Config.DEFAULT_BUCKET_TYPE.getString()).orElse(XMaterial.BUCKET).parseItem();
         }
         item = finalizeItem(item);
         if (!Config.GLOW_ONLY_GUI.getOption() && this.glow) {

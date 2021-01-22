@@ -1,6 +1,5 @@
 package net.prosavage.genbucket;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.messages.ActionBar;
 import net.prosavage.genbucket.api.PlayerGenEvent;
 import net.prosavage.genbucket.api.PlayerPlaceGenEvent;
@@ -21,24 +20,25 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class GenListener implements Listener {
 
+    /*
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEmptyBucket(PlayerBucketEmptyEvent event) {
         if (!Config.USE_BUCKETS.getOption()) return;
         ItemStack item = getTool(event.getPlayer());
-        if ((item.getType() == XMaterial.LAVA_BUCKET.parseMaterial() || item.getType() == XMaterial.WATER_BUCKET.parseMaterial() || item.getType() == XMaterial.MILK_BUCKET.parseMaterial())
+        if ((item.getType() == XMaterial.LAVA_BUCKET.parseMaterial() || item.getType() == XMaterial.WATER_BUCKET.parseMaterial() || item.getType() == XMaterial.BUCKET.parseMaterial())
                 && ItemUtils.hasKey(item, "GENBUCKET-ID")) {
             ChatUtils.debug("key check passed");
             event.setCancelled(true);
@@ -46,16 +46,19 @@ public class GenListener implements Listener {
             if (!gen(event.getPlayer(), item, block, event.getBlockFace())) event.getPlayer().updateInventory();
         }
     }
+     */
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlaceBlock(PlayerInteractEvent event) {
-        if (Config.USE_BUCKETS.getOption()) return;
+        //if (Config.USE_BUCKETS.getOption()) return;
         ItemStack item = getTool(event.getPlayer());
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.hasBlock()
                 && item.hasItemMeta() && ItemUtils.hasKey(item, "GENBUCKET-ID")) {
             Block block = event.getClickedBlock().getRelative(event.getBlockFace());
             if (!gen(event.getPlayer(), item, block, event.getBlockFace())) {
                 event.setCancelled(true);
+                event.setUseItemInHand(Event.Result.DENY);
+                event.setUseInteractedBlock(Event.Result.DENY);
                 event.getPlayer().updateInventory();
             }
         }
@@ -98,7 +101,9 @@ public class GenListener implements Listener {
         double price = genData.getPrice();
         if (price <= 0) return true;
         if (GenBucket.econ == null) {
-            player.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + "No Economy provider found! ex: Essentials, please install one.\n Automatically approving purchase for now..."));
+            if (player.isOp())
+                player.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + "No Economy provider found! ex: Essentials, please install one.\n Automatically approving purchase for now..."));
+            ChatUtils.debug("No Economy provider found! ex: Essentials, please install one. All transactions are being approved for free!");
             return true;
         }
         if (GenBucket.econ.withdrawPlayer(player, price).transactionSuccess()) {
@@ -112,7 +117,12 @@ public class GenListener implements Listener {
             }
             return true;
         }
-        player.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + Message.GEN_CANT_AFFORD.getMessage()));
+        String cantAffordMessage = ChatUtils.color(Message.PREFIX.getMessage() + Message.GEN_CANT_AFFORD.getMessage());
+        if (!Config.ECON_USE_ACTIONBAR.getOption()) {
+            player.sendMessage(cantAffordMessage);
+        } else {
+            ActionBar.sendActionBar(player, cantAffordMessage);
+        }
         return false;
     }
 
