@@ -31,7 +31,7 @@ public class CoreProtectHook implements PluginHook<CoreProtectHook> {
         Plugin plugin = GenBucket.get().getServer().getPluginManager().getPlugin("CoreProtect");
 
         // Check that CoreProtect is loaded
-        if (!(plugin instanceof CoreProtect)) {
+        if (plugin == null || !plugin.isEnabled() || !(plugin instanceof CoreProtect)) {
             return null;
         }
 
