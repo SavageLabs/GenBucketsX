@@ -16,11 +16,17 @@ public enum Config {
                     "#   > My server has low specs and TPS drop too much, how to mitigate?\n" +
                     "#     You can mitigate TPS loss by using a higher 'ticks-between-block-generations' value and\n" +
                     "#     disabling liquids generation. Other heavy options are 'apply-facing', 'apply-blockdata' and 'allow-vert-down-gravity-block-place'\n" +
-                    "\n",
-            "# | OTHER DETAILS| ",
-            "#   > 'default-automatic-vertical-orientation' is the orientation of the genbucket when set\n",
-            "#   > to automatic and placed on a side of the block (valid for vertical genbuckets): DOWN or UP\n",
-            "\n"
+                    "# | OTHER DETAILS| \n" +
+                    "#   > 'default-automatic-vertical-orientation' is the orientation of the genbucket when set\n" +
+                    "#   > to automatic and placed on a side of the block (valid for vertical genbuckets): DOWN or UP\n" +
+                    "# | INTERNAL PLACEHOLDERS FOR ITEM LORE |\n" +
+                    "#    - %type% -> horizontal/vertical\n" +
+                    "#    - %pseudo% -> if is pseudo\n" +
+                    "#    - %consumable% -> if is consumable\n" +
+                    "#    - %distance% -> max distance\n" +
+                    "#    - %material% -> genned material\n" +
+                    "#    - %price% -> price\n" +
+                    "#    - %delay% -> delay ticks\n"
     }),
 
     DEBUG("Settings.debug", false),
