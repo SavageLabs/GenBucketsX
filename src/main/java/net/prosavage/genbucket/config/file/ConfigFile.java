@@ -40,6 +40,14 @@ public class ConfigFile extends CustomFile {
             } else if (message.getDouble() != null) {
                 message.setDouble(getConfig().getDouble(message.getConfig()));
             } else if (message.getString() != null) {
+                if (message.getConfig().equalsIgnoreCase("Info")) {
+                    if (getConfig().getString(message.getConfig()) == null ||
+                            !message.getString().equals(getConfig().getString(message.getConfig()))) {
+                        getConfig().set(message.getConfig(), message.getString());
+                        saveConfig();
+                        continue;
+                    }
+                }
                 message.setString(getConfig().getString(message.getConfig()));
             } else {
                 message.setOption(getConfig().getBoolean(message.getConfig()));

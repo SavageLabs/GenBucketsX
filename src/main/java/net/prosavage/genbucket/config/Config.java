@@ -6,27 +6,28 @@ import java.util.List;
 public enum Config {
 
     INFO("Info", new String[]{
-            "# [GenBuckets] SpigotMC Page: https://www.spigotmc.org/resources/savagegenbuckets-1-8-1-15-the-ultimate-genbucket-plugin.63051\n" +
-                    "\n" +
-                    "# |----------|\n" +
-                    "# |  F.A.Q.  |\n" +
-                    "# |----------|\n" +
-                    "#   > What are the permissions for this plugin?\n" +
-                    "#     You can find (and also edit :D) all permissions in the Permissions section of this config.\n" +
-                    "#   > My server has low specs and TPS drop too much, how to mitigate?\n" +
-                    "#     You can mitigate TPS loss by using a higher 'ticks-between-block-generations' value and\n" +
-                    "#     disabling liquids generation. Other heavy options are 'apply-facing', 'apply-blockdata' and 'allow-vert-down-gravity-block-place'\n" +
-                    "# | OTHER DETAILS| \n" +
-                    "#   > 'default-automatic-vertical-orientation' is the orientation of the genbucket when set\n" +
-                    "#   > to automatic and placed on a side of the block (valid for vertical genbuckets): DOWN or UP\n" +
-                    "# | INTERNAL PLACEHOLDERS FOR ITEM LORE |\n" +
-                    "#    - %type% -> horizontal/vertical\n" +
-                    "#    - %pseudo% -> if is pseudo\n" +
-                    "#    - %consumable% -> if is consumable\n" +
-                    "#    - %distance% -> max distance\n" +
-                    "#    - %material% -> genned material\n" +
-                    "#    - %price% -> price\n" +
-                    "#    - %delay% -> delay ticks\n"
+            "[GenBuckets] SpigotMC Page: https://www.spigotmc.org/resources/savagegenbuckets-1-8-1-15-the-ultimate-genbucket-plugin.63051",
+            "",
+            "|----------|",
+            "|  F.A.Q.  |",
+            "|----------|",
+            "> What are the permissions for this plugin?",
+            "You can find (and also edit :D) all perms in the Permissions section of this config.",
+            "> My server has low specs and TPS drop too much, how to mitigate?",
+            "You can mitigate TPS loss by using a higher 'ticks-between-block-generations' value and disabling liquids generation. Other heavy options are 'apply-facing', 'apply-blockdata' and 'allow-vert-down-gravity-block-place'",
+            "",
+            "OTHER DETAILS:",
+            "> 'default-automatic-vertical-orientation' is the default orientation of the vertical generation when the genbucket is placed on a side of the block. Valid Options: 'DOWN' or 'UP'",
+            "",
+            "INTERNAL PLACEHOLDERS FOR ITEM LORE:",
+            " - %type% -> horizontal/vertical",
+            " - %pseudo% -> if is pseudo",
+            " - %consumable% -> if is consumable",
+            " - %distance% -> max distance",
+            " - %material% -> genned material",
+            " - %price% -> price",
+            " - %delay% -> delay ticks",
+            ""
     }),
 
     DEBUG("Settings.debug", false),
