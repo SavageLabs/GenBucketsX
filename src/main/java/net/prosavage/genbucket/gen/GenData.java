@@ -64,7 +64,7 @@ public class GenData {
         }
         this.pseudo = pseudo;
         this.price = price;
-        ItemStack testItem = getItem();
+        ItemStack testItem = ItemUtils.parseItem(material);
         if (GenBucket.getServerVersion() < 13)
             this.data = testItem.getDurability();
         this.parsedMaterial = testItem.getType().name();
