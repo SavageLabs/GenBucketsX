@@ -33,6 +33,7 @@ public enum Config {
     DEBUG("Settings.debug", false),
 
     USE_BUCKETS("Settings.genbuckets.use-buckets", true),
+    CANCEL_BUCKET_USAGE("Settings.genbuckets.cancel-buckets-usage", true),
     DEFAULT_BUCKET_TYPE("Settings.genbuckets.default-bucket-type", "BUCKET"),
     DEFAULT_AUTO_VERTICAL("Settings.genbuckets.default-automatic-vertical-orientation", "DOWN"),
     GLOW_ONLY_GUI("Settings.genbuckets.glow-attribute-only-in-gen-gui", true),

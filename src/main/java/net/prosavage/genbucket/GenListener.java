@@ -1,5 +1,6 @@
 package net.prosavage.genbucket;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.messages.ActionBar;
 import net.prosavage.genbucket.api.PlayerGenEvent;
 import net.prosavage.genbucket.api.PlayerPlaceGenEvent;
@@ -27,26 +28,24 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class GenListener implements Listener {
 
-    /*
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEmptyBucket(PlayerBucketEmptyEvent event) {
-        if (!Config.USE_BUCKETS.getOption()) return;
+        if (!Config.CANCEL_BUCKET_USAGE.getOption()) return;
         ItemStack item = getTool(event.getPlayer());
         if ((item.getType() == XMaterial.LAVA_BUCKET.parseMaterial() || item.getType() == XMaterial.WATER_BUCKET.parseMaterial() || item.getType() == XMaterial.BUCKET.parseMaterial())
                 && ItemUtils.hasKey(item, "GENBUCKET-ID")) {
-            ChatUtils.debug("key check passed");
             event.setCancelled(true);
-            Block block = event.getBlockClicked().getRelative(event.getBlockFace());
-            if (!gen(event.getPlayer(), item, block, event.getBlockFace())) event.getPlayer().updateInventory();
+            //Block block = event.getBlockClicked().getRelative(event.getBlockFace());
+            // if (!gen(event.getPlayer(), item, block, event.getBlockFace())) event.getPlayer().updateInventory();
         }
     }
-     */
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlaceBlock(PlayerInteractEvent event) {
