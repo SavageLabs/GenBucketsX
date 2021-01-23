@@ -88,6 +88,7 @@ public class GenData {
                 .replace("%consumable%", isConsumable() + "")
                 .replace("%distance%", getHorizontalDistance() + "")
                 .replace("%material%", parsedMaterial)
+                .replace("%delay%", getDelayTicks() + "")
                 .replace("%price%", Util.formatPrice(getPrice()))
         );
         return ChatUtils.color(toParse);
