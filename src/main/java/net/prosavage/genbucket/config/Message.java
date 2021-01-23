@@ -2,6 +2,7 @@ package net.prosavage.genbucket.config;
 
 import net.prosavage.genbucket.utils.ChatUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 public enum Message {
@@ -60,6 +61,10 @@ public enum Message {
 
     public String[] getMessages() {
         return this.messages;
+    }
+
+    public List<String> getStringList() {
+        return Arrays.asList(this.messages);
     }
 
     public void setMessages(List<String> list) {

@@ -63,6 +63,8 @@ GenBuckets:
     distance: 10
   'dirt_horizontal_consumable':
     material: 'DIRT'
+    gui-material: 'DIRT'
+    given-material: 'DIRT'
     direction: horizontal
     name: '&aDirt Horizontal (Consumable)'
     price: 20

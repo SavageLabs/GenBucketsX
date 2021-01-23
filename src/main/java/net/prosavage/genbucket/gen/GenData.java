@@ -3,22 +3,27 @@ package net.prosavage.genbucket.gen;
 import com.cryptomorin.xseries.XMaterial;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.config.Config;
+import net.prosavage.genbucket.config.Message;
 import net.prosavage.genbucket.utils.ChatUtils;
 import net.prosavage.genbucket.utils.ItemUtils;
+import net.prosavage.genbucket.utils.Util;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.List;
 
 public class GenData {
 
     private String genID;
     private String name;
+    private String guiMaterial;
     private GenType type;
     private GenDirection direction;
     private String material;
     private boolean pseudo;
     private boolean glow;
-    private int data = 0;
+
     private int slot;
     private double price;
     private boolean consumable;
@@ -26,11 +31,17 @@ public class GenData {
     private int amount;
     private int delayTicks;
 
-    public GenData(String genID, String direction, String material, String name, boolean pseudo, int slot, int amount, double price, boolean consumable, int horizontalDistance, boolean glow, int delayTicks) {
+    private String parsedMaterial;
+    private String givenMaterial;
+    private int data = 0;
+
+    public GenData(String genID, String direction, String material, String guiMaterial, String givenMaterial, String name, boolean pseudo, int slot, int amount, double price, boolean consumable, int horizontalDistance, boolean glow, int delayTicks) {
         this.genID = genID;
         this.amount = amount;
         this.slot = slot;
         this.name = name;
+        this.guiMaterial = guiMaterial;
+        this.givenMaterial = givenMaterial;
         this.horizontalDistance = horizontalDistance;
         if (this.horizontalDistance <= 0)
             this.horizontalDistance = 10;
@@ -53,11 +64,13 @@ public class GenData {
         }
         this.pseudo = pseudo;
         this.price = price;
+        ItemStack testItem = getItem();
+        if (GenBucket.getServerVersion() < 13)
+            this.data = testItem.getDurability();
+        this.parsedMaterial = testItem.getType().name();
     }
 
     private ItemStack finalizeItem(ItemStack toFinalize) {
-        if (GenBucket.getServerVersion() < 13)
-            this.data = toFinalize.getDurability();
         if (this.name != null) {
             ItemMeta meta = toFinalize.getItemMeta();
             meta.setDisplayName(ChatUtils.color(this.name));
@@ -68,14 +81,32 @@ public class GenData {
         return ItemUtils.setKeyString(toFinalize, "GENBUCKET-ID", genID);
     }
 
+    public List<String> parsePlaceholders(List<String> toParse) {
+        toParse.replaceAll(s -> s
+                .replace("%type%", getTypeLocalized())
+                .replace("%pseudo%", isPseudo() + "")
+                .replace("%consumable%", isConsumable() + "")
+                .replace("%distance%", getHorizontalDistance() + "")
+                .replace("%material%", parsedMaterial)
+                .replace("%price%", Util.formatPrice(getPrice()))
+        );
+        return ChatUtils.color(toParse);
+    }
+
     public ItemStack getItem() {
-        ItemStack item = ItemUtils.parseItem(material);
-        if (item.getType() == XMaterial.WATER.parseMaterial()) {
-            item = XMaterial.WATER_BUCKET.parseItem();
-        } else if (item.getType() == XMaterial.LAVA.parseMaterial()) {
-            item = XMaterial.LAVA_BUCKET.parseItem();
-        } else if (Config.USE_BUCKETS.getOption()) {
-            item = XMaterial.matchXMaterial(Config.DEFAULT_BUCKET_TYPE.getString()).orElse(XMaterial.BUCKET).parseItem();
+        ItemStack item = ItemUtils.parseItem(givenMaterial);
+        if (givenMaterial.equalsIgnoreCase(material))
+            if (item.getType() == XMaterial.WATER.parseMaterial()) {
+                item = XMaterial.WATER_BUCKET.parseItem();
+            } else if (item.getType() == XMaterial.LAVA.parseMaterial()) {
+                item = XMaterial.LAVA_BUCKET.parseItem();
+            } else if (Config.USE_BUCKETS.getOption()) {
+                item = XMaterial.matchXMaterial(Config.DEFAULT_BUCKET_TYPE.getString()).orElse(XMaterial.BUCKET).parseItem();
+            }
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setLore(parsePlaceholders(Config.GEN_ITEM_LORE.getStringList()));
+            item.setItemMeta(meta);
         }
         item = finalizeItem(item);
         if (!Config.GLOW_ONLY_GUI.getOption() && this.glow) {
@@ -85,11 +116,17 @@ public class GenData {
     }
 
     public ItemStack getShownItem() {
-        ItemStack shown = ItemUtils.parseItem(material);
-        if (shown.getType() == XMaterial.WATER.parseMaterial()) {
-            shown = XMaterial.WATER_BUCKET.parseItem();
-        } else if (shown.getType() == XMaterial.LAVA.parseMaterial()) {
-            shown = XMaterial.LAVA_BUCKET.parseItem();
+        ItemStack shown = ItemUtils.parseItem(guiMaterial);
+        if (guiMaterial.equalsIgnoreCase(material))
+            if (shown.getType() == XMaterial.WATER.parseMaterial()) {
+                shown = XMaterial.WATER_BUCKET.parseItem();
+            } else if (shown.getType() == XMaterial.LAVA.parseMaterial()) {
+                shown = XMaterial.LAVA_BUCKET.parseItem();
+            }
+        ItemMeta meta = shown.getItemMeta();
+        if (meta != null) {
+            meta.setLore(parsePlaceholders(Config.GUI_ITEM_GEN_LORE.getStringList()));
+            shown.setItemMeta(meta);
         }
         if (glow)
             return ItemUtils.setGlowing(shown);
@@ -98,6 +135,14 @@ public class GenData {
 
     public GenType getType() {
         return type;
+    }
+
+    public String getTypeLocalized() {
+        if (getType() == GenType.HORIZONTAL) {
+            return Message.GENTYPE_HORIZONTAL.getMessage();
+        } else {
+            return Message.GENTYPE_VERTICAL.getMessage();
+        }
     }
 
     public GenDirection getDirection() {

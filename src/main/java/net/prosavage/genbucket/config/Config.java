@@ -71,6 +71,11 @@ public enum Config {
             "&7Placement Price:&4 $%price%"
     }),
 
+    GEN_ITEM_LORE("Settings.given-item.lore", new String[]{
+            "&e%type% &6GenBucket",
+            "&fGenerates: &7%material%"
+    }),
+
     HOOK_CANBUILD_CHECK("Hooks.General.use-canbuild-check", true),
     HOOK_DISABLE_WILD("Hooks.General.disable-genbuckets-in-wilderness", false),
     HOOK_VANILLA_BORDER("Hooks.General.use-vanilla-worldborder-check", true),
