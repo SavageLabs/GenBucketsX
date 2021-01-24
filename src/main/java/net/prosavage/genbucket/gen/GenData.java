@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GenData {
@@ -82,7 +83,8 @@ public class GenData {
     }
 
     public List<String> parsePlaceholders(List<String> toParse) {
-        toParse.replaceAll(s -> s
+        List<String> parsed = new ArrayList<>(toParse);
+        parsed.replaceAll(s -> s
                 .replace("%type%", getTypeLocalized())
                 .replace("%pseudo%", isPseudo() + "")
                 .replace("%consumable%", isConsumable() + "")
@@ -91,7 +93,7 @@ public class GenData {
                 .replace("%delay%", getDelayTicks() + "")
                 .replace("%price%", Util.formatPrice(getPrice()))
         );
-        return ChatUtils.color(toParse);
+        return ChatUtils.color(parsed);
     }
 
     public ItemStack getItem() {
@@ -195,4 +197,7 @@ public class GenData {
         return ItemUtils.parseMaterial(material);
     }
 
+    public String getParsedMaterial() {
+        return parsedMaterial;
+    }
 }

@@ -5,8 +5,10 @@ import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.config.Config;
 import net.prosavage.genbucket.hooks.impl.WorldBorderHook;
 import net.prosavage.genbucket.utils.ChatUtils;
+import net.prosavage.genbucket.utils.ItemUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 public abstract class Generator {
@@ -108,6 +110,12 @@ public abstract class Generator {
 
     public void setSourceMaterial(Material sourceMaterial) {
         this.sourceMaterial = sourceMaterial;
+    }
+
+    public void revertSourceBlock(BlockFace facing) {
+        getBlock().setType(getMaterial(), false);
+        if (Config.USE_FACING.getOption()) ItemUtils.setFacing(getBlock(), facing);
+        ItemUtils.setBlockData(getBlock(), genData.getData());
     }
 
     public boolean isPseudo() {

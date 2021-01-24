@@ -103,8 +103,7 @@ public class VerticalGen extends Generator {
         setIndex(getIndex() + (direction == BlockFace.UP ? 1 : -1));
 
         if (!isValidLocation(gen)) {
-            getBlock().setType(getMaterial(), false);
-            if (Config.USE_FACING.getOption()) ItemUtils.setFacing(getBlock(), pDir);
+            revertSourceBlock(pDir);
             setFinished(true);
             return;
         }
@@ -115,8 +114,7 @@ public class VerticalGen extends Generator {
                     " is not "
                     + getSourceMaterial().name());
             getPlayer().sendMessage(Message.GEN_CANCELLED.getMessage());
-            getBlock().setType(getMaterial(), false);
-            if (Config.USE_FACING.getOption()) ItemUtils.setFacing(getBlock(), pDir);
+            revertSourceBlock(pDir);
             setFinished(true);
             return;
         }
@@ -144,8 +142,7 @@ public class VerticalGen extends Generator {
                 // ignored
             }
         } else {
-            getBlock().setType(getMaterial(), false);
-            if (Config.USE_FACING.getOption()) ItemUtils.setFacing(getBlock(), pDir);
+            revertSourceBlock(pDir);
             setFinished(true);
         }
     }

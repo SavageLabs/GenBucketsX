@@ -1,6 +1,5 @@
 package net.prosavage.genbucket.menu;
 
-import com.cryptomorin.xseries.XMaterial;
 import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
@@ -21,7 +20,8 @@ public class GenShopGUI implements InventoryProvider {
         for (GenData genData : GenBucket.genDataMap.values()) {
             ItemStack item = genData.getShownItem().clone();
             contents.set(genData.getSlot(), ClickableItem.from(item, e -> {
-                if ((item.getType() == XMaterial.WATER_BUCKET.parseMaterial() || item.getType() == XMaterial.LAVA_BUCKET.parseMaterial())
+                if ((genData.getParsedMaterial().equalsIgnoreCase("LAVA")
+                        || genData.getParsedMaterial().equalsIgnoreCase("WATER"))
                         && !Config.ALLOW_LIQUIDS.getOption()) {
                     player.sendMessage(ChatUtils.color(Message.PREFIX.getMessage() + Message.GEN_LIQUID_DISABLED.getMessage()));
                     return;
