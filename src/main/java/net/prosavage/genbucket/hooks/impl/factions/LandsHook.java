@@ -65,6 +65,8 @@ public class LandsHook extends FactionHook {
         for (Entity ent : nearby) {
             if (ent instanceof Player) {
                 Player pEnt = (Player) ent;
+                // Citizens NPC.
+                if (pEnt.hasMetadata("NPC")) continue;
                 LandPlayer nearP = landsAddon.getLandPlayer(pEnt.getUniqueId());
                 if (pEnt.isOp() || VanishUtils.isVanished(pEnt)) continue;
                 return nearP.getLands().stream().anyMatch(p.getLands()::contains);

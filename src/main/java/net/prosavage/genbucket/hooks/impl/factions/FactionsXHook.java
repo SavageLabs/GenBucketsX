@@ -55,7 +55,10 @@ public class FactionsXHook extends FactionHook {
         if (nearby.isEmpty()) return false;
         for (Entity ent : nearby) {
             if (ent instanceof Player) {
-                FPlayer nearP = PlayerManager.INSTANCE.getFPlayer((Player) ent);
+                Player player = (Player) ent;
+                // Citizens NPC.
+                if (player.hasMetadata("NPC")) continue;
+                FPlayer nearP = PlayerManager.INSTANCE.getFPlayer(player);
                 if (nearP.getInBypass() || VanishUtils.isVanished(nearP.getPlayer())) continue;
                 return nearP.getFaction().getRelationTo(p.getFaction()) == Relation.ENEMY;
             }

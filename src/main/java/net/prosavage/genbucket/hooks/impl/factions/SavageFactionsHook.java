@@ -74,7 +74,10 @@ public class SavageFactionsHook extends FactionHook {
         List<Entity> nearby = p.getPlayer().getNearbyEntities(rad, rad, rad);
         for (Entity ent : nearby) {
             if (ent instanceof Player) {
-                FPlayer nearP = FPlayers.getInstance().getByPlayer((Player) ent);
+                Player player = (Player) ent;
+                // Citizens NPC.
+                if (player.hasMetadata("NPC")) continue;
+                FPlayer nearP = FPlayers.getInstance().getByPlayer(player);
                 if (nearP.isAdminBypassing() || VanishUtils.isVanished(nearP.getPlayer())) continue;
                 Relation relation = nearP.getRelationTo(p);
                 if (relation.isEnemy()) return true;

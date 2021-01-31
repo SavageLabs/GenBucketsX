@@ -49,7 +49,10 @@ public class FactionsMCHook extends FactionHook {
         List<Entity> nearby = p.getPlayer().getNearbyEntities(rad, rad, rad);
         for (Entity ent : nearby) {
             if (ent instanceof Player) {
-                MPlayer nearP = MPlayer.get((Player) ent);
+                Player player = (Player) ent;
+                // Citizens NPC.
+                if (player.hasMetadata("NPC")) continue;
+                MPlayer nearP = MPlayer.get(player);
                 if (nearP.isOverriding() || VanishUtils.isVanished(nearP.getPlayer())) continue;
                 Rel rel = nearP.getFaction().getRelationTo(p.getFaction());
                 if (rel == Rel.ENEMY) return true;
