@@ -3,6 +3,7 @@ package net.prosavage.genbucket.hooks.impl;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 import net.prosavage.genbucket.GenBucket;
+import net.prosavage.genbucket.config.Config;
 import net.prosavage.genbucket.hooks.PluginHook;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.Plugin;
@@ -57,6 +58,8 @@ public class CoreProtectHook implements PluginHook<CoreProtectHook> {
             cpAPI.logPlacement(playerName, block.getLocation(), block.getType(), block.getData());
         } catch (NullPointerException e) {
             // rip
+            if (Config.DEBUG.getOption())
+                e.printStackTrace();
         }
     }
 

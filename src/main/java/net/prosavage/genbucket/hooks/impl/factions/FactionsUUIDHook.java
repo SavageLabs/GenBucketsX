@@ -21,7 +21,6 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
 
 
 public class FactionsUUIDHook extends FactionHook {
@@ -53,36 +52,21 @@ public class FactionsUUIDHook extends FactionHook {
     }
 
     @Override
-    public boolean hasNearbyPlayer(Player player) {
-        if (player == null || !Config.HOOK_NEARBY_CHECK.getOption()) {
-            return false;
-        }
-        int radius = Config.HOOK_NEARBY_RADIUS.getInt();
-        FPlayer me = FPlayers.getInstance().getByPlayer(player);
-        if (me != null && isEnemyNear(me, radius)) {
-            player.sendMessage(ChatUtils.color(Message.GEN_ENEMY_NEARBY.getMessage()));
-            return true;
-        }
-        return false;
-    }
-
     public boolean isWilderness(Location location) {
         FLocation fLoc = new FLocation(location);
         return Board.getInstance().getFactionAt(fLoc).isWilderness();
     }
 
-    public boolean isEnemyNear(FPlayer p, int rad) {
-
-        List<Entity> nearby = p.getPlayer().getNearbyEntities(rad, rad, rad);
-        for (Entity ent : nearby) {
-            if (ent instanceof Player) {
-                Player player = (Player) ent;
-                // Citizens NPC.
-                if (player.hasMetadata("NPC")) continue;
-                FPlayer nearP = FPlayers.getInstance().getByPlayer(player);
-                if (nearP.isAdminBypassing() || VanishUtils.isVanished(nearP.getPlayer())) continue;
+    @Override
+    public boolean isEnemyNear(Player player, int rad) {
+        FPlayer me = FPlayers.getInstance().getByPlayer(player);
+        for (Entity ent : player.getNearbyEntities(rad, rad, rad)) {
+            if (ent instanceof Player && !ent.hasMetadata("NPC")) {
+                Player nearPlayer = (Player) ent;
+                FPlayer nearP = FPlayers.getInstance().getByPlayer(nearPlayer);
+                if (nearP.isAdminBypassing() || VanishUtils.isVanished(nearPlayer)) continue;
                 try {
-                    Relation rel = (Relation) getRelationTo.invoke(RelationUtil.class, nearP, p, false);
+                    Relation rel = (Relation) getRelationTo.invoke(RelationUtil.class, nearP, me, false);
                     if (rel.isEnemy()) return true;
                 } catch (InvocationTargetException | IllegalAccessException exception) {
                     ChatUtils.sendConsole(Message.PREFIX.getMessage() + "&eError while trying to get Relation! Contact the author! (FactionsUUIDHook)");

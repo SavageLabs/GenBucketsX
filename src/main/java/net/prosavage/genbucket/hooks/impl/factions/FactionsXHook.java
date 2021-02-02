@@ -14,8 +14,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 public class FactionsXHook extends FactionHook {
 
     @Override
@@ -32,36 +30,24 @@ public class FactionsXHook extends FactionHook {
     }
 
     @Override
-    public boolean hasNearbyPlayer(Player player) {
-        if (player == null || !Config.HOOK_NEARBY_CHECK.getOption()) {
-            return false;
-        }
-        int radius = Config.HOOK_NEARBY_RADIUS.getInt();
-        FPlayer me = PlayerManager.INSTANCE.getFPlayer(player);
-        if (isEnemyNear(me, radius)) {
-            player.sendMessage(ChatUtils.color(Message.GEN_ENEMY_NEARBY.getMessage()));
-            return true;
-        }
-        return false;
-    }
-
-
     public boolean isWilderness(Location loc) {
         return GridManager.INSTANCE.getFactionAt(loc.getChunk()).isWilderness();
     }
 
-    public boolean isEnemyNear(FPlayer p, int rad) {
-        List<Entity> nearby = p.getPlayer().getNearbyEntities(rad, rad, rad);
-        if (nearby.isEmpty()) return false;
-        for (Entity ent : nearby) {
-            if (ent instanceof Player) {
-                Player player = (Player) ent;
-                // Citizens NPC.
-                if (player.hasMetadata("NPC")) continue;
-                FPlayer nearP = PlayerManager.INSTANCE.getFPlayer(player);
-                if (nearP.getInBypass() || VanishUtils.isVanished(nearP.getPlayer())) continue;
-                return nearP.getFaction().getRelationTo(p.getFaction()) == Relation.ENEMY;
+    @Override
+    public boolean isEnemyNear(Player player, int rad) {
+        try {
+            FPlayer me = PlayerManager.INSTANCE.getFPlayer(player);
+            for (Entity ent : player.getNearbyEntities(rad, rad, rad)) {
+                if (ent instanceof Player && !ent.hasMetadata("NPC")) {
+                    Player nearPlayer = (Player) ent;
+                    FPlayer nearFPlayer = PlayerManager.INSTANCE.getFPlayer(nearPlayer);
+                    if (nearFPlayer.getInBypass() || VanishUtils.isVanished(nearPlayer)) continue;
+                    if (nearFPlayer.getFaction().getRelationTo(me.getFaction()) == Relation.ENEMY) return true;
+                }
             }
+        } catch (NullPointerException npe) {
+            return false;
         }
         return false;
     }

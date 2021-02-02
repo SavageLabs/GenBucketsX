@@ -14,8 +14,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 public class LandsHook extends FactionHook {
 
     LandsIntegration landsAddon;
@@ -37,20 +35,6 @@ public class LandsHook extends FactionHook {
     }
 
     @Override
-    public boolean hasNearbyPlayer(Player player) {
-        if (player == null || !Config.HOOK_NEARBY_CHECK.getOption()) {
-            return false;
-        }
-        int radius = Config.HOOK_NEARBY_RADIUS.getInt();
-        LandPlayer me = landsAddon.getLandPlayer(player.getUniqueId());
-        if (isEnemyNear(me, radius)) {
-            player.sendMessage(ChatUtils.color(Message.GEN_ENEMY_NEARBY.getMessage()));
-            return true;
-        }
-        return false;
-    }
-
-
     public boolean isWilderness(Location loc) {
         try {
             return !landsAddon.getLand(loc).exists();
@@ -59,17 +43,16 @@ public class LandsHook extends FactionHook {
         }
     }
 
-    public boolean isEnemyNear(LandPlayer p, int rad) {
-        List<Entity> nearby = p.getPlayer().getNearbyEntities(rad, rad, rad);
-        if (nearby.isEmpty()) return false;
-        for (Entity ent : nearby) {
-            if (ent instanceof Player) {
+    @Override
+    public boolean isEnemyNear(Player player, int rad) {
+        LandPlayer me = landsAddon.getLandPlayer(player.getUniqueId());
+        if (me == null) return false;
+        for (Entity ent : player.getNearbyEntities(rad, rad, rad)) {
+            if (ent instanceof Player && !ent.hasMetadata("NPC")) {
                 Player pEnt = (Player) ent;
-                // Citizens NPC.
-                if (pEnt.hasMetadata("NPC")) continue;
                 LandPlayer nearP = landsAddon.getLandPlayer(pEnt.getUniqueId());
-                if (pEnt.isOp() || VanishUtils.isVanished(pEnt)) continue;
-                return nearP.getLands().stream().anyMatch(p.getLands()::contains);
+                if (nearP == null || pEnt.isOp() || VanishUtils.isVanished(pEnt)) continue;
+                if (nearP.getLands().stream().noneMatch(me.getLands()::contains)) return true;
             }
         }
         return false;

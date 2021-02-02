@@ -7,6 +7,7 @@ import net.prosavage.genbucket.hooks.PluginHook;
 import net.prosavage.genbucket.hooks.impl.factions.*;
 import net.prosavage.genbucket.utils.ChatUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -56,7 +57,24 @@ public class FactionHook implements PluginHook<FactionHook> {
         return true;
     }
 
+    public boolean isEnemyNear(Player player, int rad) {
+        return false;
+    }
+
     public boolean hasNearbyPlayer(Player player) {
+        if (player == null || !Config.HOOK_NEARBY_CHECK.getOption()) {
+            return false;
+        }
+        int radius = Config.HOOK_NEARBY_RADIUS.getInt();
+
+        if (isEnemyNear(player, radius)) {
+            player.sendMessage(ChatUtils.color(Message.GEN_ENEMY_NEARBY.getMessage()));
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isWilderness(Location loc) {
         return false;
     }
 
