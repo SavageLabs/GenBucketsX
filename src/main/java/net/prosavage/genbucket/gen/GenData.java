@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class GenData {
 
@@ -79,7 +80,8 @@ public class GenData {
         }
         if (toFinalize.getAmount() != amount && amount > 0)
             toFinalize.setAmount(amount);
-        return ItemUtils.setKeyString(toFinalize, "GENBUCKET-ID", genID);
+        ItemStack itemWithGenId = ItemUtils.setKeyString(toFinalize, "GENBUCKET-ID", genID);
+        return ItemUtils.setKeyString(itemWithGenId, "UNIQUE_ID", UUID.randomUUID().toString());
     }
 
     public List<String> parsePlaceholders(List<String> toParse) {
@@ -109,7 +111,6 @@ public class GenData {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setLore(parsePlaceholders(Config.GEN_ITEM_LORE.getStringList()));
-            item.setItemMeta(meta);
         }
         item = finalizeItem(item);
         if (!Config.GLOW_ONLY_GUI.getOption() && this.glow) {
