@@ -33,6 +33,10 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public class GenListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -53,8 +57,17 @@ public class GenListener implements Listener {
         ItemStack item = getTool(event.getPlayer());
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.hasBlock()
                 && item.hasItemMeta() && ItemUtils.hasKey(item, "GENBUCKET-ID")) {
+            if (clickCool.containsKey(event.getPlayer().getUniqueId()) &&
+                    System.currentTimeMillis() - clickCool.get(event.getPlayer().getUniqueId()) < 250) {
+                event.setCancelled(true);
+                event.setUseItemInHand(Event.Result.DENY);
+                event.setUseInteractedBlock(Event.Result.DENY);
+                event.getPlayer().updateInventory();
+                return;
+            }
             Block block = event.getClickedBlock().getRelative(event.getBlockFace());
             if (!gen(event.getPlayer(), item, block, event.getBlockFace())) {
+                clickCool.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
                 event.setCancelled(true);
                 event.setUseItemInHand(Event.Result.DENY);
                 event.setUseInteractedBlock(Event.Result.DENY);
@@ -73,6 +86,8 @@ public class GenListener implements Listener {
                 event.getItemDrop().remove();
         }
     }
+
+    private static Map<UUID, Long> clickCool = new HashMap<>();
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
