@@ -52,9 +52,14 @@ public class GenListener implements Listener {
         }
     }
 
+    public boolean filterHandSlot(PlayerInteractEvent event) {
+        if (GenBucket.getServerVersion() <= 8) return false;
+        return event.getHand() != EquipmentSlot.HAND;
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlaceBlock(PlayerInteractEvent event) {
-        if (event.getHand() != EquipmentSlot.HAND) return;
+        if (filterHandSlot(event)) return;
         //if (Config.USE_BUCKETS.getOption()) return;
         ItemStack item = getTool(event.getPlayer());
 
