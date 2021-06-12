@@ -7,8 +7,6 @@ import com.sk89q.worldguard.protection.association.Associables;
 import com.sk89q.worldguard.protection.association.RegionAssociable;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.utils.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

@@ -7,7 +7,7 @@
     <groupId>net.prosavage</groupId>
     <artifactId>SavageGenbuckets</artifactId>
     <name>SavageGenBuckets</name>
-    <version>2.7.5</version>
+    <version>2.7.6</version>
     <url>https://savagelabs.net/</url>
     <packaging>jar</packaging>
 
@@ -90,11 +90,11 @@
         <!-- CodeMC repository -->
         <repository>
             <id>nms-repo</id>
-            <url>https://repo.codemc.org/repository/nms/</url>
+            <url>https://repo.codemc.io/repository/nms/</url>
         </repository>
         <repository>
             <id>CodeMC</id>
-            <url>https://repo.codemc.org/repository/maven-public/</url>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
         </repository>
         <!-- JitPack repository -->
         <repository>
@@ -118,14 +118,14 @@
         <dependency>
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
-            <version>7.8.0</version>
+            <version>8.0.0</version>
             <scope>compile</scope>
         </dependency>
         <!-- ConfigLib -->
         <dependency>
             <groupId>com.github.Drc-DEV</groupId>
             <artifactId>configlib</artifactId>
-            <version>1.5</version>
+            <version>1.9.2</version>
             <scope>compile</scope>
         </dependency>
         <!-- bStats -->
@@ -195,7 +195,7 @@
         <dependency>
             <groupId>net.coreprotect</groupId>
             <artifactId>coreprotect</artifactId>
-            <version>19.3</version>
+            <version>19.5</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -244,24 +244,15 @@
         <dependency>
             <groupId>net.prosavage.factionsx</groupId>
             <artifactId>FactionsX</artifactId>
-            <version>1.0.8-RC</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.bstats</groupId>
-                    <artifactId>bstats-bukkit</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>io.papermc</groupId>
-                    <artifactId>paperlib</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>LATEST</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/dependencies/FactionsX-1.2-STABLE.jar</systemPath>
         </dependency>
         <!-- SpigotMC -->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.17-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
