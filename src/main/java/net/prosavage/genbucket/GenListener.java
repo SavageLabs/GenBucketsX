@@ -31,6 +31,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
@@ -51,10 +52,17 @@ public class GenListener implements Listener {
         }
     }
 
+    public boolean filterHandSlot(PlayerInteractEvent event) {
+        if (GenBucket.getServerVersion() <= 8) return false;
+        return event.getHand() != EquipmentSlot.HAND;
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlaceBlock(PlayerInteractEvent event) {
+        if (filterHandSlot(event)) return;
         //if (Config.USE_BUCKETS.getOption()) return;
         ItemStack item = getTool(event.getPlayer());
+
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.hasBlock()
                 && item.hasItemMeta() && ItemUtils.hasKey(item, "GENBUCKET-ID")) {
             if (clickCool.containsKey(event.getPlayer().getUniqueId()) &&
