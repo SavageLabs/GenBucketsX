@@ -2,6 +2,7 @@ package net.prosavage.genbucket.utils;
 
 import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.XMaterial;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.prosavage.genbucket.GenBucket;
 import net.prosavage.genbucket.config.Config;
 import org.bukkit.Material;
@@ -42,7 +43,7 @@ public class ItemUtils {
         List<String> lore = Config.GUI_ITEM_EMPTY_LORE.getStringList();
         if (displayName != null)
             itemMeta.setDisplayName(ChatUtils.color(displayName));
-        if (lore != null && !lore.isEmpty()) {
+        if (!lore.isEmpty()) {
             itemMeta.setLore(ChatUtils.color(lore));
         }
         item.setItemMeta(itemMeta);

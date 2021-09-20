@@ -72,6 +72,10 @@
                                     <pattern>fr.minuskube.inv</pattern>
                                     <shadedPattern>net.prosavage.genbucket.shade.inv</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>io.github.bananapuncher714.nbteditor</pattern>
+                                    <shadedPattern>net.prosavage.genbucket.shade.nbteditor</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -118,7 +122,14 @@
         <dependency>
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
-            <version>8.0.0</version>
+            <version>8.4.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.bananapuncher714</groupId>
+            <artifactId>nbteditor</artifactId>
+            <version>7.17.0</version>
             <scope>compile</scope>
         </dependency>
         <!-- ConfigLib -->
@@ -252,7 +263,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.17-R0.1-SNAPSHOT</version>
+            <version>1.17.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
