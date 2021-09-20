@@ -29,7 +29,7 @@ public class HookManager {
             return;
         }
         if (!pluginHook.getName().equalsIgnoreCase("Factions") && plugin.getServer().getPluginManager().getPlugin(pluginHook.getName()) == null) {
-            ChatUtils.sendConsole(Message.ERROR_HOOK_NOTFOUND.getMessage().replace("%plugin%", pluginHook.getName()));
+            ChatUtils.debug(Message.ERROR_HOOK_NOTFOUND.getMessage().replace("%plugin%", pluginHook.getName()));
             return;
         }
         pluginMap.put(pluginHook.getName(), (PluginHook<?>) pluginHook.setup(plugin));
